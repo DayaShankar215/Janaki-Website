@@ -1,29 +1,15 @@
 import { cn } from '@/utils/cn';
 
-interface SectionHeadingProps {
-  eyebrow?: string;
-  title: string;
-  description?: string;
-  align?: 'left' | 'center';
-  dark?: boolean;
-  className?: string;
-}
-
-export function SectionHeading({
-  eyebrow,
-  title,
-  description,
-  align = 'center',
-  dark = false,
-  className,
-}: SectionHeadingProps) {
+export function SectionHeading({ eyebrow, title, description, align = 'center', dark = false, className }) {
   return (
     <div className={cn('max-w-3xl', align === 'center' ? 'mx-auto text-center' : 'text-left', className)}>
       {eyebrow && (
         <span
           className={cn(
             'inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] rounded-full px-4 py-1.5 mb-4',
-            dark ? 'bg-accent-500/15 text-accent-400' : 'bg-accent-50 text-accent-700 dark:bg-accent-500/15 dark:text-accent-400'
+            dark
+              ? 'bg-accent-500/15 text-accent-400'
+              : 'bg-accent-50 text-accent-700 dark:bg-accent-500/15 dark:text-accent-400'
           )}
         >
           {eyebrow}

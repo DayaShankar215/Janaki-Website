@@ -2,18 +2,6 @@ import { useState } from 'react';
 import { cn } from '@/utils/cn';
 import { DynamicIcon } from './DynamicIcon';
 
-interface SmartImageProps {
-  src: string;
-  alt: string;
-  className?: string;
-  wrapperClassName?: string;
-  /** Tailwind aspect ratio class, e.g. "aspect-[4/3]" */
-  aspect?: string;
-  /** Icon name shown if the image fails to load */
-  fallbackIcon?: string;
-  priority?: boolean;
-}
-
 /**
  * Image with graceful degradation: if the remote image fails
  * (e.g. placeholder URLs offline), a branded gradient panel with
@@ -27,13 +15,23 @@ export function SmartImage({
   aspect = 'aspect-[4/3]',
   fallbackIcon = 'hard-hat',
   priority = false,
-}: SmartImageProps) {
+}) {
   const [failed, setFailed] = useState(false);
 
   return (
-    <div className={cn('relative overflow-hidden bg-gradient-to-br from-navy-700 via-navy-800 to-navy-950', aspect, wrapperClassName)}>
+    <div
+      className={cn(
+        'relative overflow-hidden bg-gradient-to-br from-navy-700 via-navy-800 to-navy-950',
+        aspect,
+        wrapperClassName
+      )}
+    >
       {failed ? (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-white/70" role="img" aria-label={alt}>
+        <div
+          className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-white/70"
+          role="img"
+          aria-label={alt}
+        >
           <DynamicIcon name={fallbackIcon} className="h-10 w-10 text-accent-400/80" strokeWidth={1.5} />
           <span className="px-4 text-center text-xs font-medium uppercase tracking-widest">{alt}</span>
         </div>

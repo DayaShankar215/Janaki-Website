@@ -17,9 +17,9 @@ export const siteConfig = {
     'Practical technical and vocational training designed to equip learners with industry-relevant skills and real-world, hands-on experience.',
 
   // ── Contact details ─────────────────────────────────────────
-  // TODO: Replace ALL of these placeholders before going live.
-  email: 'YOUR_OFFICIAL_EMAIL@example.com',
-  phone: '+977-98XXXXXXXX',
+  // ✅ Real details added. Address/map still need to be filled in.
+  email: 'janakitechnical73@gmail.com',
+  phone: '9804804563',
   phoneAlt: '',
   address: 'YOUR_COMPLETE_OFFICE_ADDRESS, Nepal',
   mapLinkUrl: '', // e.g. a Google Maps share link for directions

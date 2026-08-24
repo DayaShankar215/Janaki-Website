@@ -1,16 +1,16 @@
 ﻿
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-//  GALLERY DATA â€” EDITABLE CONTENT
+// ═══════════════════════════════════════════════════════════════
+//  GALLERY DATA — EDITABLE CONTENT
 //  Replace sample images with real photos of training sessions,
 //  workshops, students and events. Add/remove items freely.
 //  Categories: 'Training' | 'Workshops' | 'Students' | 'Events' | 'Facilities'
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════
 
-const U = (id: string) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=900&q=70`;
+const U = (id) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=900&q=70`;
 
 export const galleryCategories = ['All', 'Training', 'Workshops', 'Students', 'Events', 'Facilities'];
 
-export const galleryItems: GalleryItem[] = [
+export const galleryItems = [
   {
     id: 'g1',
     title: 'Electrical wiring practice session',
@@ -55,7 +55,7 @@ export const galleryItems: GalleryItem[] = [
   },
   {
     id: 'g7',
-    title: 'Kitchen practice â€” food production class',
+    title: 'Kitchen practice — food production class',
     category: 'Training',
     image: U('photo-1556910103-1c02745aae4d'),
     alt: 'Cooking training session in the kitchen practice area',
@@ -68,4 +68,5 @@ export const galleryItems: GalleryItem[] = [
     alt: 'Demonstration of mechanical equipment during class',
   },
 ];
+
 

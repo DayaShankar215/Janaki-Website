@@ -1,11 +1,11 @@
 ﻿
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-//  âš ï¸ SAMPLE TESTIMONIALS â€” clearly marked as samples.
+// ═══════════════════════════════════════════════════════════════
+//  ⚠️ SAMPLE TESTIMONIALS — clearly marked as samples.
 //  Replace with genuine student feedback (with permission) before
 //  launch. Set `isSample: false` only for REAL testimonials.
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════
 
-export const testimonials: Testimonial[] = [
+export const testimonials = [
   {
     id: 't1',
     name: 'Student Name',
@@ -34,4 +34,5 @@ export const testimonials: Testimonial[] = [
     isSample: true,
   },
 ];
+
 

@@ -1,9 +1,9 @@
 ﻿
-// â”€â”€â”€ WHY CHOOSE US â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-export const whyChooseUs: WhyChooseItem[] = [
+// ─── WHY CHOOSE US ─────────────────────────────────────────────
+export const whyChooseUs = [
   {
     title: 'Practical Training',
-    description: 'Students learn by doing â€” working with real tools, materials and equipment instead of theory alone.',
+    description: 'Students learn by doing — working with real tools, materials and equipment instead of theory alone.',
     icon: 'hammer',
   },
   {
@@ -33,19 +33,19 @@ export const whyChooseUs: WhyChooseItem[] = [
   },
 ];
 
-// â”€â”€â”€ OUR VALUES (About page) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-export const values: ValueItem[] = [
+// ─── OUR VALUES (About page) ───────────────────────────────────
+export const values = [
   { title: 'Practical Learning', description: 'Skills are developed through doing, practicing and repeating under guidance.', icon: 'hammer' },
   { title: 'Discipline', description: 'Punctuality, preparation and respect for the craft are part of every lesson.', icon: 'shield-check' },
   { title: 'Professionalism', description: 'We train not only hands but also attitudes employers value.', icon: 'badge-check' },
   { title: 'Safety', description: 'Safe habits around tools and equipment come before speed or output.', icon: 'shield-check' },
   { title: 'Quality', description: 'Work is checked against standards so trainees learn to take pride in results.', icon: 'award' },
   { title: 'Skill Development', description: 'Every learner should leave measurably more capable than they arrived.', icon: 'trending' },
-  { title: 'Opportunity', description: 'Vocational skills open doors to jobs, trades and businesses of oneâ€™s own.', icon: 'lightbulb' },
+  { title: 'Opportunity', description: 'Vocational skills open doors to jobs, trades and businesses of one’s own.', icon: 'lightbulb' },
 ];
 
-// â”€â”€â”€ TRAINING METHODOLOGY (Learn â†’ Prepare) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-export const methodologySteps: MethodStep[] = [
+// ─── TRAINING METHODOLOGY (Learn → Prepare) ────────────────────
+export const methodologySteps = [
   { step: '01', title: 'Learn', description: 'Understand concepts and fundamentals through clear demonstrations.', icon: 'book-open' },
   { step: '02', title: 'Practice', description: 'Work directly with tools and equipment in supervised sessions.', icon: 'wrench' },
   { step: '03', title: 'Build', description: 'Complete practical tasks and exercises from start to finish.', icon: 'hard-hat' },
@@ -53,8 +53,8 @@ export const methodologySteps: MethodStep[] = [
   { step: '05', title: 'Prepare', description: 'Develop confidence and workplace-ready professional habits.', icon: 'briefcase' },
 ];
 
-// â”€â”€â”€ CAREER PATHWAYS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-export const careerPathways: CareerPathway[] = [
+// ─── CAREER PATHWAYS ───────────────────────────────────────────
+export const careerPathways = [
   {
     title: 'Employment',
     description: 'Skilled workers are needed by construction firms, workshops, service centers, hotels, offices and factories.',
@@ -67,7 +67,7 @@ export const careerPathways: CareerPathway[] = [
   },
   {
     title: 'Self-Employment',
-    description: 'Many trades support independent service work â€” wiring, plumbing, repairs, tailoring and more.',
+    description: 'Many trades support independent service work — wiring, plumbing, repairs, tailoring and more.',
     icon: 'users',
   },
   {
@@ -87,7 +87,7 @@ export const careerPathways: CareerPathway[] = [
   },
 ];
 
-// â”€â”€â”€ CAREER EXAMPLES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── CAREER EXAMPLES ───────────────────────────────────────────
 export const careerExamples = [
   {
     course: 'An electrician may work in',
@@ -101,8 +101,8 @@ export const careerExamples = [
   },
 ];
 
-// â”€â”€â”€ ADMISSION PROCESS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-export const admissionSteps: AdmissionStep[] = [
+// ─── ADMISSION PROCESS ─────────────────────────────────────────
+export const admissionSteps = [
   { step: 1, title: 'Choose a Program', description: 'Browse our courses and pick the trade that fits your goals.', icon: 'search' },
   { step: 2, title: 'Check Eligibility', description: 'Review the eligibility notes for your chosen program.', icon: 'clipboard' },
   { step: 3, title: 'Contact Us', description: 'Call, message, or visit the center to discuss the course.', icon: 'phone' },
@@ -110,7 +110,7 @@ export const admissionSteps: AdmissionStep[] = [
   { step: 5, title: 'Complete Enrollment', description: 'Follow the guidance of our team to finalize your seat.', icon: 'badge-check' },
 ];
 
-// â”€â”€â”€ ADMISSION DOCUMENTS (typical â€” confirm with office) â”€â”€â”€â”€â”€â”€â”€
+// ─── ADMISSION DOCUMENTS (typical — confirm with office) ───────
 export const admissionDocuments = [
   'Recent passport-size photographs',
   'Copy of citizenship certificate or birth certificate',
@@ -118,7 +118,7 @@ export const admissionDocuments = [
   'Any additional documents specified by the center',
 ];
 
-// â”€â”€â”€ EDUCATION LEVEL OPTIONS (inquiry form) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── EDUCATION LEVEL OPTIONS (inquiry form) ────────────────────
 export const educationLevels = [
   'School level (below SEE)',
   'SEE completed',
@@ -127,6 +127,7 @@ export const educationLevels = [
   'Other',
 ];
 
-// â”€â”€â”€ PREFERRED TRAINING TIME OPTIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── PREFERRED TRAINING TIME OPTIONS ───────────────────────────
 export const preferredTimings = ['Regular (weekday)', 'Morning', 'Evening', 'Weekend'];
+
 

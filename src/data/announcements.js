@@ -1,12 +1,12 @@
 ﻿
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-//  NEWS & ANNOUNCEMENTS â€” EDITABLE CONTENT
-//  âš ï¸ Sample entries below are marked `isSample: true` and show a
+// ═══════════════════════════════════════════════════════════════
+//  NEWS & ANNOUNCEMENTS — EDITABLE CONTENT
+//  ⚠️ Sample entries below are marked `isSample: true` and show a
 //  "Sample" badge on the website. Set it to false only for real,
 //  verified notices. Delete samples you don't need.
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════
 
-export const announcements: Announcement[] = [
+export const announcements = [
   {
     id: 'a1',
     title: 'New training batch enrollment opening soon',
@@ -36,4 +36,5 @@ export const announcements: Announcement[] = [
     isSample: true,
   },
 ];
+
 
