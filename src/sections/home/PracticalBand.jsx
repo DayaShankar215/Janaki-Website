@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
-import { facilities } from '@/data/facilities';
+import { useContent } from '@/content/ContentContext';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Reveal } from '@/components/ui/Reveal';
 import { Button } from '@/components/ui/Button';
@@ -10,6 +10,7 @@ const IMG_B = 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto
 
 /** "Learn by Doing" — practical training teaser. */
 export function PracticalBand() {
+  const { facilities } = useContent();
   return (
     <section className="bg-white py-16 dark:bg-navy-950 sm:py-24">
       <div className="container-x grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
@@ -74,3 +75,4 @@ export function PracticalBand() {
     </section>
   );
 }
+

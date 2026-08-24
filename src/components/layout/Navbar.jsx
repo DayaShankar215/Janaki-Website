@@ -1,8 +1,8 @@
-import { Link, NavLink, useLocation } from 'react-router-dom';
+﻿import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, X, Sun, Moon, Zap, ChevronDown, Mail, Phone } from 'lucide-react';
-import { siteConfig } from '@/config/siteConfig';
+import { useContent } from '@/content/ContentContext';
 import { useTheme } from '@/hooks/useTheme';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 import { cn } from '@/utils/cn';
@@ -23,6 +23,7 @@ const moreLinks = [
 ];
 
 function Logo() {
+  const { siteConfig } = useContent();
   return (
     <Link to="/" className="flex items-center gap-2.5 group" aria-label={`${siteConfig.name} — Home`}>
       <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-navy-600 to-navy-900 shadow-card transition-transform group-hover:scale-105 dark:from-navy-500 dark:to-navy-800">
@@ -41,6 +42,7 @@ function Logo() {
 }
 
 export function Navbar() {
+  const { siteConfig } = useContent();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
@@ -234,3 +236,4 @@ export function Navbar() {
     </>
   );
 }
+

@@ -1,13 +1,14 @@
-import { Info } from 'lucide-react';
+﻿import { Info } from 'lucide-react';
 import { useSeo } from '@/hooks/useSeo';
 import { PageHero } from '@/components/layout/PageHero';
 import { FacilityCard } from '@/components/cards/FacilityCard';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Reveal } from '@/components/ui/Reveal';
 import { Button } from '@/components/ui/Button';
-import { facilities } from '@/data/facilities';
+import { useContent } from '@/content/ContentContext';
 
 export default function FacilitiesPage() {
+  const { facilities } = useContent();
   useSeo(
     'Workshops & Facilities',
     'Explore the workshops and practice areas at Janaki Technical Training Center — electrical workshop, welding bays, computer lab, construction yard and more.'
@@ -54,3 +55,4 @@ export default function FacilitiesPage() {
     </>
   );
 }
+

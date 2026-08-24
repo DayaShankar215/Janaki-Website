@@ -1,12 +1,13 @@
-import { Info, Mail } from 'lucide-react';
+﻿import { Info, Mail } from 'lucide-react';
 import { useSeo } from '@/hooks/useSeo';
 import { PageHero } from '@/components/layout/PageHero';
 import { TrainerCard } from '@/components/cards/TrainerCard';
 import { Reveal } from '@/components/ui/Reveal';
 import { Button } from '@/components/ui/Button';
-import { trainers } from '@/data/trainers';
+import { useContent } from '@/content/ContentContext';
 
 export default function TrainersPage() {
+  const { trainers } = useContent();
   useSeo(
     'Trainers & Instructors',
     'Meet the instructors guiding practical training at Janaki Technical Training Center.'
@@ -61,3 +62,4 @@ export default function TrainersPage() {
     </>
   );
 }
+

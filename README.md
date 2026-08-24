@@ -1,4 +1,4 @@
-# Janaki Technical Training Center Pvt. Ltd. — Website
+﻿# Janaki Technical Training Center Pvt. Ltd. — Website
 
 Official website for **Janaki Technical Training Center Pvt. Ltd.** — a technical & vocational training institution.
 Built to look and feel like a trustworthy, modern institutional website: courses, practical training, facilities,
@@ -61,12 +61,41 @@ npm run preview  # preview the production build locally
 
 ---
 
-## 3. Owner Setup Checklist (before going live)
+## 3. Admin Panel (edit the website without code)
+
+Open **`/admin`** (or click **Admin** in the footer). Default password: `janaki-admin`
+— change it by setting `VITE_ADMIN_PASSWORD` in your `.env` before deploying.
+
+From the dashboard you can:
+
+| Section | What you can do |
+|---|---|
+| **Site Settings** | Name, tagline, email, phone, address, office hours, social links |
+| **Map location** | Paste latitude/longitude (auto-generates an interactive map + "Get Directions" button), or a full Google Maps embed URL |
+| **Courses** | Add / edit / delete training programs — title, photo upload, duration, skills, eligibility, careers… |
+| **Trainers** | Instructor profiles with optional photo uploads |
+| **Facilities** | Workshop descriptions, features and photos |
+| **Gallery** | Upload photos of trainings & events |
+| **Testimonials / Announcements / FAQs** | Full editing |
+
+Key facts about how it works:
+
+- Photos you **upload are auto-resized and compressed**, then stored inside the browser.
+- Changes save to **the browser you edit from** (localStorage) and appear on the site instantly.
+- Use **Backup** to download all changes as a JSON file and **Restore** to apply them
+  on another device or after clearing browser data. Do this regularly!
+- **Reset** buttons revert any section (or everything) to the original code defaults.
+- The admin login is a light convenience gate for non-technical editing — it is not a
+  secure server-side authentication. Don't store anything sensitive there.
+
+---
+
+## 4. Owner Setup Checklist (before going live)
 
 ### Step A — Organization info (`src/config/siteConfig.js`)
 Replace **every placeholder**:
-- `email`, `phone`, `address`
-- `mapEmbedUrl` — Google Maps → Share → *Embed a map* → paste the `src="…"` URL
+- `email`, `phone`, `address` *(or simply edit them in `/admin` → Site Settings)*
+- `mapEmbedUrl` / `mapLat`+`mapLng` *(also editable in `/admin`)*
 - `mapLinkUrl` — optional "Get Directions" link
 - `officeHours`
 - `socialLinks` — leave `""` to hide an icon
@@ -103,7 +132,7 @@ Without these values the form runs in a clearly-labelled **demo mode**
 
 ---
 
-## 4. Managing Courses
+## 5. Managing Courses
 
 Open `src/data/courses.js` and copy any existing block:
 
@@ -133,7 +162,7 @@ dropdown all update automatically.
 
 ---
 
-## 5. Replacing Images
+## 6. Replacing Images (or use /admin)
 
 Sample photos are hot-linked from [Unsplash](https://unsplash.com) (free to use).
 To swap any image, just change its URL in the relevant data file — or place files in
@@ -148,7 +177,7 @@ If a remote image ever fails to load, the UI shows a branded fallback panel inst
 
 ---
 
-## 6. Deployment
+## 7. Deployment
 
 ### Netlify
 1. Push this project to GitHub/GitLab.
@@ -174,7 +203,7 @@ If a remote image ever fails to load, the UI shows a branded fallback panel inst
 
 ---
 
-## 7. Notes & Guarantees
+## 8. Notes & Guarantees
 
 - The site intentionally makes **no claims** about CTEVT affiliation, certification,
   placement rates or government approval unless you add verified text yourself
@@ -183,3 +212,4 @@ If a remote image ever fails to load, the UI shows a branded fallback panel inst
   so a Nepali translation layer can be added later without redesigning components.
 - Accessibility: semantic HTML, labelled forms, keyboard-navigable menus/gallery,
   visible focus states and `prefers-reduced-motion` support are built in.
+

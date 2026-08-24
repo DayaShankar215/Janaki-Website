@@ -1,9 +1,10 @@
-import { whyChooseUs } from '@/data/misc';
+﻿import { useContent } from '@/content/ContentContext';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Reveal } from '@/components/ui/Reveal';
 import { DynamicIcon } from '@/components/ui/DynamicIcon';
 
 export function WhyChooseUs() {
+  const { whyChooseUs } = useContent();
   return (
     <section className="relative overflow-hidden bg-navy-950 py-16 sm:py-24">
       <div className="absolute inset-0 hero-grid bg-grid opacity-40" aria-hidden="true" />
@@ -38,3 +39,4 @@ export function WhyChooseUs() {
     </section>
   );
 }
+

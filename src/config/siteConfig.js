@@ -31,6 +31,15 @@ export const siteConfig = {
    */
   mapEmbedUrl: '',
 
+  /**
+   * Map coordinates (optional). If set and no custom embed URL above,
+   * an OpenStreetMap embed with a marker is generated automatically.
+   * Find coordinates: right-click your location in Google Maps → the
+   * first number is latitude, second is longitude.
+   */
+  mapLat: '',
+  mapLng: '',
+
   /** Office hours — leave empty to display "contact us for hours" */
   officeHours: '',
 

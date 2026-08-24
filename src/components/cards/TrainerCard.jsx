@@ -13,7 +13,22 @@ function initials(name) {
 export function TrainerCard({ trainer }) {
   return (
     <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover dark:border-white/10 dark:bg-white/[0.04]">
-      <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-navy-500 to-navy-800 font-display text-xl font-bold text-white shadow-soft ring-4 ring-navy-100 dark:ring-white/10">
+      {trainer.photo ? (
+        <img
+          src={trainer.photo}
+          alt={`Portrait of ${trainer.name}`}
+          className="mx-auto h-20 w-20 rounded-full object-cover shadow-soft ring-4 ring-navy-100 dark:ring-white/10"
+          onError={(e) => {
+            e.currentTarget.style.display = 'none';
+            const fb = e.currentTarget.nextElementSibling;
+            if (fb) fb.style.display = 'flex';
+          }}
+        />
+      ) : null}
+      <div
+        style={trainer.photo ? { display: 'none' } : undefined}
+        className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-navy-500 to-navy-800 font-display text-xl font-bold text-white shadow-soft ring-4 ring-navy-100 dark:ring-white/10"
+      >
         {initials(trainer.name)}
       </div>
 

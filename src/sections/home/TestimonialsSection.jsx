@@ -1,9 +1,10 @@
-import { testimonials } from '@/data/testimonials';
+﻿import { useContent } from '@/content/ContentContext';
 import { TestimonialCard } from '@/components/cards/TestimonialCard';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Reveal } from '@/components/ui/Reveal';
 
 export function TestimonialsSection() {
+  const { testimonials } = useContent();
   return (
     <section className="bg-white py-16 dark:bg-navy-950 sm:py-24">
       <div className="container-x">
@@ -24,3 +25,4 @@ export function TestimonialsSection() {
     </section>
   );
 }
+

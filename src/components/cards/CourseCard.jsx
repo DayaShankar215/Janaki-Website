@@ -1,10 +1,11 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { Clock, Gauge, ArrowRight, Send } from 'lucide-react';
 import { SmartImage } from '@/components/ui/SmartImage';
 import { Badge } from '@/components/ui/Badge';
-import { getCategoryLabel } from '@/data/categories';
+import { useContent } from '@/content/ContentContext';
 
 export function CourseCard({ course }) {
+  const { getCategoryLabel } = useContent();
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover dark:border-white/10 dark:bg-white/[0.04]">
       <div className="relative">
@@ -13,6 +14,7 @@ export function CourseCard({ course }) {
           alt={course.title}
           aspect="aspect-[16/10]"
           wrapperClassName="rounded-t-2xl"
+          className="transition-transform duration-500 ease-out group-hover:scale-[1.06]"
         />
         <div className="absolute left-3 top-3 flex flex-wrap gap-1.5">
           <span className="rounded-full bg-navy-950/80 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-accent-400 backdrop-blur-sm">
@@ -75,3 +77,4 @@ export function CourseCard({ course }) {
     </article>
   );
 }
+

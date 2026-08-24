@@ -16,6 +16,7 @@ const AdmissionPage = lazy(() => import('@/pages/AdmissionPage'));
 const FaqPage = lazy(() => import('@/pages/FaqPage'));
 const ContactPage = lazy(() => import('@/pages/ContactPage'));
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
+const AdminPage = lazy(() => import('@/pages/AdminPage'));
 
 function PageLoader() {
   return (
@@ -43,6 +44,7 @@ export default function App() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
     </Suspense>
   );

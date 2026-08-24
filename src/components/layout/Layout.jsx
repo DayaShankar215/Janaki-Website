@@ -1,10 +1,22 @@
 import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
 import { ArrowUp } from 'lucide-react';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 import { ScrollToTop } from '@/hooks/ScrollToTop';
+
+function ScrollProgress() {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 28, restDelta: 0.001 });
+  return (
+    <motion.div
+      style={{ scaleX }}
+      aria-hidden="true"
+      className="fixed inset-x-0 top-0 z-[70] h-[3px] origin-left bg-gradient-to-r from-navy-600 via-accent-500 to-accent-400"
+    />
+  );
+}
 
 function BackToTop() {
   const [visible, setVisible] = useState(false);
@@ -44,6 +56,7 @@ export function Layout() {
         Skip to main content
       </a>
       <ScrollToTop />
+      <ScrollProgress />
       <Navbar />
       <main id="main-content" className="flex-1">
         <Outlet />

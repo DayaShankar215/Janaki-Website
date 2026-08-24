@@ -1,10 +1,11 @@
-import { methodologySteps } from '@/data/misc';
+﻿import { useContent } from '@/content/ContentContext';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Reveal } from '@/components/ui/Reveal';
 import { DynamicIcon } from '@/components/ui/DynamicIcon';
 
 /** The 5-step training methodology: Learn → Practice → Build → Improve → Prepare. */
 export function MethodologySection() {
+  const { methodologySteps } = useContent();
   return (
     <section className="bg-slate-50 py-16 dark:bg-white/[0.02] sm:py-24">
       <div className="container-x">
@@ -41,3 +42,4 @@ export function MethodologySection() {
     </section>
   );
 }
+

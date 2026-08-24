@@ -1,5 +1,5 @@
-import { ArrowRight } from 'lucide-react';
-import { courses } from '@/data/courses';
+﻿import { ArrowRight } from 'lucide-react';
+import { useContent } from '@/content/ContentContext';
 import { CourseCard } from '@/components/cards/CourseCard';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Reveal } from '@/components/ui/Reveal';
@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button';
 
 /** Featured (currently enrolling) courses on the homepage. */
 export function FeaturedCourses() {
+  const { courses } = useContent();
   const active = courses.filter((c) => c.active).slice(0, 6);
   const featured = active.length > 0 ? active : courses.slice(0, 6);
 
@@ -37,3 +38,4 @@ export function FeaturedCourses() {
     </section>
   );
 }
+

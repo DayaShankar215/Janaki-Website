@@ -1,17 +1,17 @@
-import { Target, Eye, Info } from 'lucide-react';
+﻿import { Target, Eye, Info } from 'lucide-react';
 import { useSeo } from '@/hooks/useSeo';
 import { PageHero } from '@/components/layout/PageHero';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Reveal } from '@/components/ui/Reveal';
 import { Button } from '@/components/ui/Button';
 import { DynamicIcon } from '@/components/ui/DynamicIcon';
-import { values, whyChooseUs } from '@/data/misc';
-import { siteConfig } from '@/config/siteConfig';
+import { useContent } from '@/content/ContentContext';
 
 const IMG =
   'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1100&q=72';
 
 export default function AboutPage() {
+  const { values, whyChooseUs, siteConfig } = useContent();
   useSeo(
     'About Us',
     'Learn about Janaki Technical Training Center Pvt. Ltd. — our mission, vision and values as a practical technical and vocational training institution.'
@@ -184,3 +184,5 @@ export default function AboutPage() {
     </>
   );
 }
+
+

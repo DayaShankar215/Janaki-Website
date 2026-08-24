@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+﻿import { Link, useParams } from 'react-router-dom';
 import {
   ArrowLeft,
   ArrowRight,
@@ -20,8 +20,8 @@ import { Button } from '@/components/ui/Button';
 import { Reveal } from '@/components/ui/Reveal';
 import { CourseCard } from '@/components/cards/CourseCard';
 import NotFoundPage from './NotFoundPage';
-import { getCourseBySlug, getRelatedCourses } from '@/data/courses';
-import { getCategoryLabel } from '@/data/categories';
+import { useContent } from '@/content/ContentContext';
+
 
 function DetailBlock({ icon: Icon, title, children }) {
   return (
@@ -38,6 +38,7 @@ function DetailBlock({ icon: Icon, title, children }) {
 }
 
 export default function CourseDetailsPage() {
+  const { getCourseBySlug, getRelatedCourses, getCategoryLabel } = useContent();
   const { slug } = useParams();
   const course = getCourseBySlug(slug);
 
@@ -274,3 +275,4 @@ function SectionHeadingSmall() {
     </div>
   );
 }
+

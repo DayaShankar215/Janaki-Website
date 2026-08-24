@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
+﻿import { useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { MapPin, Phone, Mail, Clock, ExternalLink } from 'lucide-react';
 import { useSeo } from '@/hooks/useSeo';
 import { PageHero } from '@/components/layout/PageHero';
 import { ContactForm } from '@/components/forms/ContactForm';
 import { Reveal } from '@/components/ui/Reveal';
-import { siteConfig } from '@/config/siteConfig';
+import { useContent } from '@/content/ContentContext';
 
 function InfoCard({ icon: Icon, title, children, action }) {
   return (
@@ -23,6 +23,7 @@ function InfoCard({ icon: Icon, title, children, action }) {
 }
 
 export default function ContactPage() {
+  const { siteConfig } = useContent();
   useSeo(
     'Contact Us',
     'Contact Janaki Technical Training Center — phone, email, address and inquiry form for training program questions and enrollment.'
@@ -40,6 +41,18 @@ export default function ContactPage() {
   }, [presetCourse]);
 
   const socialEntries = Object.entries(siteConfig.socialLinks).filter(([, url]) => url);
+
+  // Map source: custom embed URL → auto OSM embed from coordinates → placeholder
+  const lat = parseFloat(siteConfig.mapLat);
+  const lng = parseFloat(siteConfig.mapLng);
+  const hasCoords = Number.isFinite(lat) && Number.isFinite(lng);
+  let mapSrc = siteConfig.mapEmbedUrl;
+  if (!mapSrc && hasCoords) {
+    const d = 0.012;
+    mapSrc = `https://www.openstreetmap.org/export/embed.html?bbox=${(lng - d).toFixed(5)}%2C${(lat - d).toFixed(5)}%2C${(lng + d).toFixed(5)}%2C${(lat + d).toFixed(5)}&layer=mapnik&marker=${lat}%2C${lng}`;
+  }
+  const directionsUrl =
+    siteConfig.mapLinkUrl || (hasCoords ? `https://www.google.com/maps?q=${lat},${lng}` : '');
 
   return (
     <>
@@ -133,9 +146,9 @@ export default function ContactPage() {
 
           <Reveal delay={0.08}>
             <div className="mt-8 overflow-hidden rounded-3xl border border-slate-200 shadow-card dark:border-white/10">
-              {siteConfig.mapEmbedUrl ? (
+              {mapSrc ? (
                 <iframe
-                  src={siteConfig.mapEmbedUrl}
+                  src={mapSrc}
                   title={`Map — ${siteConfig.name}`}
                   loading="lazy"
                   allowFullScreen
@@ -152,30 +165,33 @@ export default function ContactPage() {
                     Map location coming soon.
                     <br />
                     <span className="mt-1 block text-xs font-normal text-slate-400">
-                      Owner: paste your Google Maps embed URL into
-                      <code className="mx-1 rounded bg-white/10 px-1.5 py-0.5 font-mono">src/config/siteConfig.js</code>
-                      → <code className="rounded bg-white/10 px-1.5 py-0.5 font-mono">mapEmbedUrl</code>
-                      to display the live map here.
+                      Set your location in the Admin Panel → Site Settings → Map location,
+                      and the interactive map will appear here automatically.
                     </span>
                   </p>
-                  {siteConfig.mapLinkUrl && (
-                    <a
-                      href={siteConfig.mapLinkUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="relative inline-flex items-center gap-1.5 text-sm font-bold text-accent-400 hover:underline"
-                    >
-                      Open directions in Google Maps <ExternalLink className="h-4 w-4" />
-                    </a>
-                  )}
                 </div>
               )}
             </div>
+            {directionsUrl && (
+              <div className="mt-4 flex justify-center">
+                <a
+                  href={directionsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full bg-navy-800 px-5 py-2.5 text-sm font-bold text-white shadow-card transition hover:bg-navy-700 dark:bg-accent-500 dark:text-navy-950 dark:hover:bg-accent-400"
+                >
+                  <MapPin className="h-4 w-4" /> Get Directions on Google Maps
+                </a>
+              </div>
+            )}
           </Reveal>
 
           <p className="mt-4 text-center text-xs text-slate-500 dark:text-slate-400">
-            Address shown across the site is a placeholder — update it in{' '}
-            <code className="rounded bg-slate-100 px-1.5 py-0.5 font-mono dark:bg-white/10">src/config/siteConfig.js</code>. See also{' '}
+            Update address &amp; location anytime in{' '}
+            <Link to="/admin" className="font-semibold underline-offset-2 hover:underline">
+              the admin panel
+            </Link>{' '}
+            — see also{' '}
             <Link to="/admission" className="font-semibold underline-offset-2 hover:underline">
               admission info
             </Link>{' '}
@@ -186,3 +202,4 @@ export default function ContactPage() {
     </>
   );
 }
+

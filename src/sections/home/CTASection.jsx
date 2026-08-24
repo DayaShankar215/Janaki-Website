@@ -1,10 +1,11 @@
-import { Phone, ArrowRight, Send } from 'lucide-react';
-import { siteConfig } from '@/config/siteConfig';
+﻿import { Phone, ArrowRight, Send } from 'lucide-react';
+import { useContent } from '@/content/ContentContext';
 import { Button } from '@/components/ui/Button';
 import { Reveal } from '@/components/ui/Reveal';
 
 /** Final call-to-action band. */
 export function CTASection() {
+  const { siteConfig } = useContent();
   return (
     <section className="relative overflow-hidden bg-navy-900 py-16 sm:py-20">
       <div className="absolute inset-0 hero-grid bg-grid opacity-40" aria-hidden="true" />
@@ -42,3 +43,4 @@ export function CTASection() {
     </section>
   );
 }
+

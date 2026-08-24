@@ -1,7 +1,6 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { Zap, MapPin, Phone, Mail, Clock, Facebook, Instagram, Youtube, Linkedin } from 'lucide-react';
-import { siteConfig } from '@/config/siteConfig';
-import { categories } from '@/data/categories';
+import { useContent } from '@/content/ContentContext';
 
 const quickLinks = [
   { to: '/', label: 'Home' },
@@ -31,6 +30,7 @@ const socials = [
 ];
 
 export function Footer() {
+  const { siteConfig } = useContent();
   const year = new Date().getFullYear();
   const activeSocials = socials.filter((s) => siteConfig.socialLinks[s.key]);
 
@@ -144,9 +144,15 @@ export function Footer() {
       <div className="border-t border-white/10">
         <div className="container-x flex flex-col items-center justify-between gap-2 py-5 text-xs text-slate-500 sm:flex-row">
           <p>© {year} {siteConfig.name}. All rights reserved.</p>
-          <p>Practical skills for real opportunities.</p>
+          <p className="flex items-center gap-3">
+            Practical skills for real opportunities.
+            <Link to="/admin" className="transition-colors hover:text-accent-400" title="Website admin panel">
+              Admin
+            </Link>
+          </p>
         </div>
       </div>
     </footer>
   );
 }
+

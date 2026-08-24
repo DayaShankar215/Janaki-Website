@@ -1,14 +1,15 @@
-import { MessageCircleQuestion } from 'lucide-react';
+﻿import { MessageCircleQuestion } from 'lucide-react';
 import { useSeo } from '@/hooks/useSeo';
 import { PageHero } from '@/components/layout/PageHero';
 import { FaqAccordion } from '@/components/FaqAccordion';
 import { Reveal } from '@/components/ui/Reveal';
 import { Button } from '@/components/ui/Button';
-import { faqs } from '@/data/faqs';
+import { useContent } from '@/content/ContentContext';
 
 const categoryOrder = ['General', 'Courses', 'Admission'];
 
 export default function FaqPage() {
+  const { faqs } = useContent();
   useSeo(
     'Frequently Asked Questions',
     'Answers about training programs, eligibility, durations, practical training, enrollment and contacting Janaki Technical Training Center.'
@@ -57,3 +58,4 @@ export default function FaqPage() {
     </>
   );
 }
+

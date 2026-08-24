@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { Megaphone, CalendarDays, ArrowRight } from 'lucide-react';
-import { announcements } from '@/data/announcements';
+import { useContent } from '@/content/ContentContext';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Reveal } from '@/components/ui/Reveal';
 import { Badge } from '@/components/ui/Badge';
@@ -22,6 +22,7 @@ function formatDate(iso) {
 
 /** Notice board — renders only when announcements exist. */
 export function AnnouncementsSection() {
+  const { announcements } = useContent();
   if (announcements.length === 0) return null;
   const sorted = [...announcements].sort(
     (a, b) => Number(Boolean(b.pinned)) - Number(Boolean(a.pinned)) || b.date.localeCompare(a.date)
@@ -70,3 +71,4 @@ export function AnnouncementsSection() {
     </section>
   );
 }
+

@@ -1,14 +1,14 @@
-import { FileText, Phone } from 'lucide-react';
+﻿import { FileText, Phone } from 'lucide-react';
 import { useSeo } from '@/hooks/useSeo';
 import { PageHero } from '@/components/layout/PageHero';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Reveal } from '@/components/ui/Reveal';
 import { DynamicIcon } from '@/components/ui/DynamicIcon';
 import { ContactForm } from '@/components/forms/ContactForm';
-import { admissionSteps, admissionDocuments } from '@/data/misc';
-import { siteConfig } from '@/config/siteConfig';
+import { useContent } from '@/content/ContentContext';
 
 export default function AdmissionPage() {
+  const { admissionSteps, admissionDocuments, siteConfig } = useContent();
   useSeo(
     'Admission & Enrollment',
     'How to enroll at Janaki Technical Training Center — choose a program, check eligibility, and submit your inquiry in five simple steps.'
@@ -129,3 +129,5 @@ export default function AdmissionPage() {
     </>
   );
 }
+
+

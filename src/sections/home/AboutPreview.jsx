@@ -1,7 +1,6 @@
 ﻿import { Link } from 'react-router-dom';
 import { ArrowRight, Target, Eye, CheckCircle2 } from 'lucide-react';
-import { values } from '@/data/misc';
-import { siteConfig } from '@/config/siteConfig';
+import { useContent } from '@/content/ContentContext';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Reveal } from '@/components/ui/Reveal';
 import { Button } from '@/components/ui/Button';
@@ -20,6 +19,7 @@ const IMG_SMALL =
   'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=700&q=70';
 
 export function AboutPreview() {
+  const { values, siteConfig } = useContent();
   return (
     <section className="bg-white py-16 dark:bg-navy-950 sm:py-24">
       <div className="container-x grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
@@ -106,4 +106,5 @@ export function AboutPreview() {
     </section>
   );
 }
+
 

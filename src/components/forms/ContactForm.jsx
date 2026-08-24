@@ -1,7 +1,6 @@
-import { useMemo, useRef, useState } from 'react';
+﻿import { useMemo, useRef, useState } from 'react';
 import { Send, Loader2, CheckCircle2, AlertTriangle, ShieldCheck } from 'lucide-react';
-import { courses } from '@/data/courses';
-import { educationLevels, preferredTimings } from '@/data/misc';
+import { useContent } from '@/content/ContentContext';
 import { isNotEmpty, isValidEmail, isValidPhone } from '@/utils/validate';
 import { sendInquiry } from '@/utils/sendInquiry';
 import { cn } from '@/utils/cn';
@@ -44,6 +43,7 @@ function Field({ label, htmlFor, required, error, children }) {
 }
 
 export function ContactForm({ defaultCourse = '', compact = false }) {
+  const { courses, educationLevels, preferredTimings } = useContent();
   const [form, setForm] = useState({
     ...initialForm,
     course: courses.some((c) => c.slug === defaultCourse) ? defaultCourse : '',
@@ -296,3 +296,5 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
     </form>
   );
 }
+
+

@@ -1,12 +1,13 @@
-import { useMemo, useState } from 'react';
+﻿import { useMemo, useState } from 'react';
 import { useSeo } from '@/hooks/useSeo';
 import { PageHero } from '@/components/layout/PageHero';
 import { Lightbox } from '@/components/Lightbox';
 import { Reveal } from '@/components/ui/Reveal';
-import { galleryItems, galleryCategories } from '@/data/gallery';
+import { useContent } from '@/content/ContentContext';
 import { cn } from '@/utils/cn';
 
 export default function GalleryPage() {
+  const { galleryItems, galleryCategories } = useContent();
   useSeo(
     'Gallery',
     'Photos from training sessions, workshops and student activities at Janaki Technical Training Center.'
@@ -94,3 +95,4 @@ export default function GalleryPage() {
     </>
   );
 }
+

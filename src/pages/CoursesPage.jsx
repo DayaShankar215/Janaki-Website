@@ -1,12 +1,11 @@
-import { useMemo, useState } from 'react';
+﻿import { useMemo, useState } from 'react';
 import { Search, SlidersHorizontal, RotateCcw, SearchX } from 'lucide-react';
 import { useSeo } from '@/hooks/useSeo';
 import { PageHero } from '@/components/layout/PageHero';
 import { CourseCard } from '@/components/cards/CourseCard';
 import { Reveal } from '@/components/ui/Reveal';
 import { Button } from '@/components/ui/Button';
-import { courses, courseCountForCategory } from '@/data/courses';
-import { categories, getCategoryLabel } from '@/data/categories';
+import { useContent } from '@/content/ContentContext';
 import { cn } from '@/utils/cn';
 
 const sortOptions = [
@@ -17,6 +16,7 @@ const sortOptions = [
 ];
 
 export default function CoursesPage() {
+  const { courses, courseCountForCategory, categories, getCategoryLabel } = useContent();
   useSeo(
     'Courses & Training Programs',
     'Browse vocational training programs at Janaki Technical Training Center — electrical, plumbing, construction, welding, computer skills, hospitality, agriculture and tailoring.'
@@ -184,3 +184,5 @@ export default function CoursesPage() {
     </>
   );
 }
+
+

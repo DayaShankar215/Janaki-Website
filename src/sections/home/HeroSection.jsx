@@ -1,8 +1,7 @@
-﻿import { motion } from 'framer-motion';
+﻿import { useEffect, useRef, useState } from 'react';
+import { animate, motion, useInView } from 'framer-motion';
 import { ArrowRight, Send, ChevronDown, CheckCircle2 } from 'lucide-react';
-import { siteConfig } from '@/config/siteConfig';
-import { getActiveCourses, courses } from '@/data/courses';
-import { categories } from '@/data/categories';
+import { useContent } from '@/content/ContentContext';
 import { Button } from '@/components/ui/Button';
 
 const HERO_IMAGE =
@@ -15,7 +14,32 @@ const fadeUp = {
   animate: { opacity: 1, y: 0 },
 };
 
+/** Counts up to `end` when scrolled into view. */
+function StatCounter({ end, suffix = '' }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '-40px' });
+  const [val, setVal] = useState(0);
+
+  useEffect(() => {
+    if (!inView) return undefined;
+    const controls = animate(0, end, {
+      duration: 1.4,
+      ease: 'easeOut',
+      onUpdate: (v) => setVal(Math.round(v)),
+    });
+    return () => controls.stop();
+  }, [inView, end]);
+
+  return (
+    <p ref={ref} className="font-display text-2xl font-extrabold text-accent-400 sm:text-3xl">
+      {val}
+      {suffix}
+    </p>
+  );
+}
+
 export function HeroSection() {
+  const { siteConfig, courses, categories, getActiveCourses } = useContent();
   const activeCount = getActiveCourses().length;
 
   return (
@@ -113,15 +137,15 @@ export function HeroSection() {
           className="mt-14 grid max-w-2xl grid-cols-3 gap-3 sm:gap-4"
         >
           {[
-            { value: `${activeCount > 0 ? activeCount : courses.length}+`, label: 'Training programs' },
-            { value: `${categories.length}`, label: 'Skill categories' },
-            { value: '100%', label: 'Practical-first learning' },
+            { end: activeCount > 0 ? activeCount : courses.length, suffix: '+', label: 'Training programs' },
+            { end: categories.length, suffix: '', label: 'Skill categories' },
+            { end: 100, suffix: '%', label: 'Practical-first learning' },
           ].map((stat) => (
             <div
               key={stat.label}
-              className="rounded-2xl border border-white/15 bg-white/[0.06] p-4 backdrop-blur-md sm:p-5"
+              className="rounded-2xl border border-white/15 bg-white/[0.06] p-4 backdrop-blur-md transition-colors hover:border-accent-500/40 sm:p-5"
             >
-              <p className="font-display text-2xl font-extrabold text-accent-400 sm:text-3xl">{stat.value}</p>
+              <StatCounter end={stat.end} suffix={stat.suffix} />
               <p className="mt-1 text-xs font-medium leading-snug text-slate-300 sm:text-sm">{stat.label}</p>
             </div>
           ))}
@@ -139,4 +163,5 @@ export function HeroSection() {
     </section>
   );
 }
+
 
