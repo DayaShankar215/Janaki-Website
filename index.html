@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- ── SEO ─────────────────────────────────────────────────── -->
+    <title>Janaki Technical Training Center Pvt. Ltd. | Technical &amp; Vocational Training</title>
+    <meta
+      name="description"
+      content="Janaki Technical Training Center Pvt. Ltd. offers practical, career-oriented technical and vocational training — electrician, plumbing, welding, construction, computer skills and more. Learn by doing."
+    />
+    <meta name="theme-color" content="#0A1730" />
+    <!-- After deploying, replace YOUR-DOMAIN.com below with the real domain:
+    <link rel="canonical" href="https://www.YOUR-DOMAIN.com/" />
+    -->
+
+    <!-- ── Open Graph / social sharing ─────────────────────────── -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Janaki Technical Training Center Pvt. Ltd." />
+    <meta property="og:title" content="Janaki Technical Training Center Pvt. Ltd. | Technical &amp; Vocational Training" />
+    <meta
+      property="og:description"
+      content="Practical technical and vocational training designed to equip learners with industry-relevant, hands-on skills."
+    />
+    <meta property="og:image" content="/favicon.svg" />
+    <meta name="twitter:card" content="summary" />
+
+    <!-- ── Favicon ─────────────────────────────────────────────── -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- ── Fonts ───────────────────────────────────────────────── -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Apply saved theme before paint to avoid a flash of the wrong theme -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('jttc-theme');
+          if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          if (t === 'dark') document.documentElement.classList.add('dark');
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
