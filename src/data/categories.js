@@ -1,5 +1,4 @@
-import type { Category } from '@/types';
-
+﻿
 // Training categories. Courses reference these by `categoryId`.
 // To add a category: add an object here and give it a unique id.
 export const categories: Category[] = [
@@ -21,3 +20,4 @@ export function getCategoryLabel(id: string): string {
 export function getCategoryIcon(id: string): string {
   return categories.find((c) => c.id === id)?.icon ?? 'book-open';
 }
+

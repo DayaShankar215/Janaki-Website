@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { siteConfig } from '@/config/siteConfig';
 
-function setMeta(name: string, content: string) {
-  let el = document.querySelector<HTMLMetaElement>(`meta[name="${name}"]`);
+function setMeta(name, content) {
+  let el = document.querySelector(`meta[name="${name}"]`);
   if (!el) {
     el = document.createElement('meta');
     el.name = name;
@@ -11,10 +11,8 @@ function setMeta(name: string, content: string) {
   el.content = content;
 }
 
-/**
- * Lightweight per-page SEO: updates <title> + meta description.
- */
-export function useSeo(title?: string, description?: string) {
+/** Lightweight per-page SEO: updates <title> + meta description. */
+export function useSeo(title, description) {
   useEffect(() => {
     const prev = document.title;
 
@@ -33,6 +31,5 @@ export function useSeo(title?: string, description?: string) {
     return () => {
       document.title = prev;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [title, description]);
 }

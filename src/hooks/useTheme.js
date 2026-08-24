@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 
-type Theme = 'light' | 'dark';
 const STORAGE_KEY = 'jttc-theme';
 
-function initialTheme(): Theme {
+function initialTheme() {
   if (typeof window === 'undefined') return 'light';
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -15,7 +14,7 @@ function initialTheme(): Theme {
 }
 
 export function useTheme() {
-  const [theme, setTheme] = useState<Theme>(initialTheme);
+  const [theme, setTheme] = useState(initialTheme);
 
   useEffect(() => {
     const root = document.documentElement;

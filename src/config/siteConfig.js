@@ -46,21 +46,19 @@ export const siteConfig = {
 
   // ── Accreditation / affiliation ───────────────────────────────
   // ONLY add verified claims here (e.g. CTEVT registration details).
-  // Each entry renders as a badge in the About page & footer.
+  // Each entry renders as a badge on the About page.
   // While this array is empty, the website makes NO official claims.
-  affiliations: [] as Array<{ label: string; detail: string }>,
+  affiliations: [],
 
   // ── Multilingual readiness ──────────────────────────────────
   // The site ships in English. Content lives in data files so a
   // Nepali translation layer can be added later without redesign.
   i18n: {
     defaultLanguage: 'en',
-    availableLanguages: ['en', 'ne'] as string[],
+    availableLanguages: ['en', 'ne'],
     enabled: false,
   },
 
-  // ── Internal (no need to touch) ─────────────────────────────
+  // ── Internal ────────────────────────────────────────────────
   defaultTitle: 'Janaki Technical Training Center Pvt. Ltd. | Technical & Vocational Training',
-} as const;
-
-export type SiteConfig = typeof siteConfig;
+};

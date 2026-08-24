@@ -1,11 +1,10 @@
-import type { Facility } from '@/types';
-
-// ═══════════════════════════════════════════════════════════════
-//  FACILITIES DATA — EDITABLE CONTENT
-//  ⚠️ Only keep entries for facilities that actually exist at the
+﻿
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+//  FACILITIES DATA â€” EDITABLE CONTENT
+//  âš ï¸ Only keep entries for facilities that actually exist at the
 //  center. Delete or edit anything that does not apply, and
 //  replace the sample images with real photos of your workshops.
-// ═══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const U = (id: string) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=900&q=70`;
 
@@ -65,3 +64,4 @@ export const facilities: Facility[] = [
     features: ['Whiteboards & displays', 'Training materials', 'Group seating'],
   },
 ];
+

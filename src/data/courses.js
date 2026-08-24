@@ -1,21 +1,20 @@
-import type { Course } from '@/types';
-
-// ═══════════════════════════════════════════════════════════════
-//  COURSE DATA — EDITABLE CONTENT
+﻿
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+//  COURSE DATA â€” EDITABLE CONTENT
 //
-//  ⚠️  All durations, descriptions, skills and eligibility notes
+//  âš ï¸  All durations, descriptions, skills and eligibility notes
 //  below are SAMPLE content based on common vocational curricula.
 //  Verify and adjust every field to match the center's real,
 //  current programs before going live.
 //
-//  `active: true`  → course is currently open for enrollment.
-//  `active: false` → program is listed but NOT currently running.
-// ═══════════════════════════════════════════════════════════════
+//  `active: true`  â†’ course is currently open for enrollment.
+//  `active: false` â†’ program is listed but NOT currently running.
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const U = (id: string) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=900&q=70`;
 
 export const courses: Course[] = [
-  // ─── ELECTRICAL ──────────────────────────────────────────────
+  // â”€â”€â”€ ELECTRICAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     slug: 'building-electrician',
     title: 'Building Electrician',
@@ -24,10 +23,10 @@ export const courses: Course[] = [
       'Learn residential and building electrical wiring, installation, safety practices, and troubleshooting from the ground up.',
     overview: [
       'The Building Electrician training prepares learners to install, maintain, and repair electrical systems in residential and commercial buildings. Trainees work with real wiring boards, tools, and materials under instructor guidance.',
-      'Emphasis is placed on safe working habits, correct installation techniques, circuit fundamentals, and systematic fault-finding — the core abilities employers expect from an entry-level electrician.',
+      'Emphasis is placed on safe working habits, correct installation techniques, circuit fundamentals, and systematic fault-finding â€” the core abilities employers expect from an entry-level electrician.',
     ],
     image: U('photo-1621905251189-08b45d6a269e'),
-    durationLabel: '8–12 weeks (sample)',
+    durationLabel: '8â€“12 weeks (sample)',
     durationWeeks: 10,
     level: 'Beginner',
     practicalFocus: true,
@@ -50,7 +49,7 @@ export const courses: Course[] = [
     eligibility: [
       'Minimum age as per center policy (typically 16+)',
       'Ability to read and write (basic literacy)',
-      'Interest in hands-on technical work — no prior experience required',
+      'Interest in hands-on technical work â€” no prior experience required',
     ],
     tools: ['Screwdriver set', 'Wire stripper & pliers', 'Multimeter', 'Test pen', 'Insulation tape', 'Safety gloves'],
     careers: [
@@ -69,10 +68,10 @@ export const courses: Course[] = [
       'Develop skills for industrial environments: motor control panels, three-phase systems, and equipment maintenance.',
     overview: [
       'Industrial Electrician training focuses on the electrical systems used in factories and workshops. Learners practice on control panels, motors, and industrial-grade components.',
-      'The training builds toward maintaining and troubleshooting production machinery safely — a skill set in steady demand across manufacturing and processing industries.',
+      'The training builds toward maintaining and troubleshooting production machinery safely â€” a skill set in steady demand across manufacturing and processing industries.',
     ],
     image: U('photo-1621905252507-b35492cc74b4'),
-    durationLabel: '10–13 weeks (sample)',
+    durationLabel: '10â€“13 weeks (sample)',
     durationWeeks: 12,
     level: 'Intermediate',
     practicalFocus: true,
@@ -112,10 +111,10 @@ export const courses: Course[] = [
       'Specialized training in rewinding and repairing single-phase and three-phase electric motors.',
     overview: [
       'Motor Rewinding is a classic technical trade. Trainees learn to dismantle faulty motors, record winding data, rewind stators, and reassemble and test working machines.',
-      'Graduates can serve local workshops, pumps, fans, and small industries — a trade with consistent local demand for repair services.',
+      'Graduates can serve local workshops, pumps, fans, and small industries â€” a trade with consistent local demand for repair services.',
     ],
     image: U('photo-1537462715879-360eeb61a0ad'),
-    durationLabel: '6–10 weeks (sample)',
+    durationLabel: '6â€“10 weeks (sample)',
     durationWeeks: 8,
     level: 'All Levels',
     practicalFocus: true,
@@ -158,7 +157,7 @@ export const courses: Course[] = [
       'Hands-on sessions include disassembly, diagnosis, brazing, vacuuming, and gas charging under instructor supervision.',
     ],
     image: U('photo-1581092918056-0c4c3acd3789'),
-    durationLabel: '8–12 weeks (sample)',
+    durationLabel: '8â€“12 weeks (sample)',
     durationWeeks: 10,
     level: 'Beginner',
     practicalFocus: true,
@@ -192,19 +191,19 @@ export const courses: Course[] = [
     ],
   },
 
-  // ─── PLUMBING ────────────────────────────────────────────────
+  // â”€â”€â”€ PLUMBING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     slug: 'plumber',
     title: 'Plumber',
     categoryId: 'plumbing',
     shortDescription:
-      'Water supply, drainage systems, pipe fitting, sanitary installation, and repair — taught with hands-on practice.',
+      'Water supply, drainage systems, pipe fitting, sanitary installation, and repair â€” taught with hands-on practice.',
     overview: [
       'Plumbing training teaches learners to install and maintain water supply and drainage systems for homes and buildings. Practice covers cutting, joining, and fitting pipes, installing taps and sanitary ware, and finding leaks.',
-      'Good plumbers are needed in nearly every construction project and household — this course builds dependable, employable skills quickly.',
+      'Good plumbers are needed in nearly every construction project and household â€” this course builds dependable, employable skills quickly.',
     ],
     image: U('photo-1607472586893-edb57bdc0e39'),
-    durationLabel: '6–10 weeks (sample)',
+    durationLabel: '6â€“10 weeks (sample)',
     durationWeeks: 8,
     level: 'Beginner',
     practicalFocus: true,
@@ -239,19 +238,19 @@ export const courses: Course[] = [
     ],
   },
 
-  // ─── CONSTRUCTION ────────────────────────────────────────────
+  // â”€â”€â”€ CONSTRUCTION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     slug: 'mason',
     title: 'Mason',
     categoryId: 'construction',
     shortDescription:
-      'Brickwork, plastering, concrete work, leveling, and finishing — the essential building trades skill.',
+      'Brickwork, plastering, concrete work, leveling, and finishing â€” the essential building trades skill.',
     overview: [
       'Masonry training develops the core skills of a builder: laying bricks to line and level, preparing mortar and concrete mixes, plastering walls, and curing work properly.',
       'Trainees practice on live-scale structures at the practice yard so that speed and accuracy grow together.',
     ],
     image: U('photo-1541888946425-d81bb19240f5'),
-    durationLabel: '6–8 weeks (sample)',
+    durationLabel: '6â€“8 weeks (sample)',
     durationWeeks: 7,
     level: 'Beginner',
     practicalFocus: true,
@@ -285,7 +284,7 @@ export const courses: Course[] = [
       'Because scaffold mistakes cause serious accidents, safety rules are drilled into every session.',
     ],
     image: U('photo-1503387762-592deb58ef4e'),
-    durationLabel: '4–6 weeks (sample)',
+    durationLabel: '4â€“6 weeks (sample)',
     durationWeeks: 5,
     level: 'Beginner',
     practicalFocus: true,
@@ -317,13 +316,13 @@ export const courses: Course[] = [
     title: 'Shuttering Carpenter',
     categoryId: 'construction',
     shortDescription:
-      'Formwork carpentry for columns, beams and slabs — measurement, cutting, assembly and striking times.',
+      'Formwork carpentry for columns, beams and slabs â€” measurement, cutting, assembly and striking times.',
     overview: [
       'Shuttering (formwork) carpenters shape the molds that hold fresh concrete. This course covers reading simple drawings, measuring and cutting timber/plywood, assembling column and beam forms, and removing them at the right time.',
       'It suits learners who want a construction trade with strong demand on reinforced-concrete projects.',
     ],
     image: U('photo-1503387762-592deb58ef4e'),
-    durationLabel: '6–8 weeks (sample)',
+    durationLabel: '6â€“8 weeks (sample)',
     durationWeeks: 7,
     level: 'Beginner',
     practicalFocus: true,
@@ -354,10 +353,10 @@ export const courses: Course[] = [
       'Cutting, bending, and fixing reinforcement steel bars accurately according to structural drawings.',
     overview: [
       'Reinforcement work gives concrete its strength. Trainees learn bar schedules, cutting lengths, hook and stirrup bending, spacing, tying wire technique, and cover blocks.',
-      'Accuracy is emphasized — correct steel placement is critical to every RCC structure.',
+      'Accuracy is emphasized â€” correct steel placement is critical to every RCC structure.',
     ],
     image: U('photo-1541888946425-d81bb19240f5'),
-    durationLabel: '4–6 weeks (sample)',
+    durationLabel: '4â€“6 weeks (sample)',
     durationWeeks: 5,
     level: 'Beginner',
     practicalFocus: true,
@@ -381,7 +380,7 @@ export const courses: Course[] = [
     careers: ['RCC building sites', 'Bridge & culvert works', 'Steel fixing gangs', 'Infrastructure contractors'],
   },
 
-  // ─── MECHANICAL ──────────────────────────────────────────────
+  // â”€â”€â”€ MECHANICAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     slug: 'welder',
     title: 'Welder (Arc & Gas)',
@@ -389,11 +388,11 @@ export const courses: Course[] = [
     shortDescription:
       'Arc welding, gas welding and cutting, joint types, electrode selection, and weld quality checks.',
     overview: [
-      'Welding joins metal permanently — it is the backbone of fabrication and construction. Training starts with safety gear and machine setup, then progresses through bead running, butt and fillet joints in flat, horizontal, and vertical positions.',
+      'Welding joins metal permanently â€” it is the backbone of fabrication and construction. Training starts with safety gear and machine setup, then progresses through bead running, butt and fillet joints in flat, horizontal, and vertical positions.',
       'Gas welding/cutting and basic weld inspection round out the skill set.',
     ],
     image: U('photo-1504328345606-18bbc8c9d7d1'),
-    durationLabel: '6–10 weeks (sample)',
+    durationLabel: '6â€“10 weeks (sample)',
     durationWeeks: 8,
     level: 'Beginner',
     practicalFocus: true,
@@ -431,7 +430,7 @@ export const courses: Course[] = [
       'The course balances hardware repairs with customer-facing service skills.',
     ],
     image: U('photo-1580910051074-3eb694886505'),
-    durationLabel: '6–8 weeks (sample)',
+    durationLabel: '6â€“8 weeks (sample)',
     durationWeeks: 7,
     level: 'Beginner',
     practicalFocus: true,
@@ -466,7 +465,7 @@ export const courses: Course[] = [
       'Printer servicing and preventive maintenance make graduates useful to offices, schools, and service shops.',
     ],
     image: U('photo-1461749280684-dccba630e2f6'),
-    durationLabel: '8–12 weeks (sample)',
+    durationLabel: '8â€“12 weeks (sample)',
     durationWeeks: 10,
     level: 'Beginner',
     practicalFocus: true,
@@ -488,7 +487,7 @@ export const courses: Course[] = [
     ],
     eligibility: ['Basic literacy; computer interest', 'Minimum age per center policy', 'No prior IT study required'],
     tools: ['Screwdriver kits', 'POST cards', 'Thermal paste', 'Anti-static wrist strap', 'Diagnostic USB sticks'],
-    careers: ['Computer sales & service shops', 'School/office IT support', 'Cyber café management', 'Freelance PC technician'],
+    careers: ['Computer sales & service shops', 'School/office IT support', 'Cyber cafÃ© management', 'Freelance PC technician'],
   },
   {
     slug: 'computer-operator',
@@ -501,7 +500,7 @@ export const courses: Course[] = [
       'Digital records, email etiquette, printing, and file management complete the curriculum.',
     ],
     image: U('photo-1522202176988-66273c2fd55f'),
-    durationLabel: '8–12 weeks (sample)',
+    durationLabel: '8â€“12 weeks (sample)',
     durationWeeks: 10,
     level: 'Beginner',
     practicalFocus: true,
@@ -536,7 +535,7 @@ export const courses: Course[] = [
       'Note: This program is listed for information. Confirm availability with the center.',
     ],
     image: U('photo-1621905252507-b35492cc74b4'),
-    durationLabel: '8–12 weeks (sample)',
+    durationLabel: '8â€“12 weeks (sample)',
     durationWeeks: 10,
     level: 'Intermediate',
     practicalFocus: true,
@@ -560,7 +559,7 @@ export const courses: Course[] = [
     careers: ['ISP field teams', 'Telecom contractors', 'Network cabling services', 'FTTH rollout projects'],
   },
 
-  // ─── HOSPITALITY ─────────────────────────────────────────────
+  // â”€â”€â”€ HOSPITALITY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     slug: 'general-cook',
     title: 'General Cook',
@@ -568,11 +567,11 @@ export const courses: Course[] = [
     shortDescription:
       'Kitchen fundamentals: hygiene, knife skills, cooking methods, menu items, and professional kitchen discipline.',
     overview: [
-      'General Cook training prepares learners for commercial kitchens — hotels, restaurants, cafés, and catering. Starting from kitchen hygiene and safety, trainees progress through knife skills, stocks and sauces, and popular menu preparations.',
+      'General Cook training prepares learners for commercial kitchens â€” hotels, restaurants, cafÃ©s, and catering. Starting from kitchen hygiene and safety, trainees progress through knife skills, stocks and sauces, and popular menu preparations.',
       'Team coordination and timing under service pressure are practiced throughout.',
     ],
     image: U('photo-1556910103-1c02745aae4d'),
-    durationLabel: '8–12 weeks (sample)',
+    durationLabel: '8â€“12 weeks (sample)',
     durationWeeks: 10,
     level: 'Beginner',
     practicalFocus: true,
@@ -580,7 +579,7 @@ export const courses: Course[] = [
     skills: [
       'Kitchen hygiene & food safety',
       'Knife cuts & preparation',
-      'Cooking methods (boil/fry/sauté/bake)',
+      'Cooking methods (boil/fry/sautÃ©/bake)',
       'Stocks, sauces & gravies',
       'Local & popular continental dishes',
       'Kitchen equipment use & care',
@@ -594,7 +593,7 @@ export const courses: Course[] = [
     ],
     eligibility: ['Minimum age per center policy', 'Medical fitness for food handling', 'Passion for cooking'],
     tools: ['Chef knife & paring knife', 'Cutting boards', 'Pots, pans & ladles', 'Uniform & apron'],
-    careers: ['Hotels & restaurants', 'Catering services', 'Bakeries & cafés', 'Mess/canteen kitchens', 'Own food outlet'],
+    careers: ['Hotels & restaurants', 'Catering services', 'Bakeries & cafÃ©s', 'Mess/canteen kitchens', 'Own food outlet'],
   },
   {
     slug: 'waiter-waitress',
@@ -607,7 +606,7 @@ export const courses: Course[] = [
       'Practical mock-services simulate real restaurant shifts.',
     ],
     image: U('photo-1577219491135-ce391730fb2c'),
-    durationLabel: '6–8 weeks (sample)',
+    durationLabel: '6â€“8 weeks (sample)',
     durationWeeks: 7,
     level: 'Beginner',
     practicalFocus: true,
@@ -629,10 +628,10 @@ export const courses: Course[] = [
     ],
     eligibility: ['Minimum age per center policy', 'Well-groomed appearance commitment', 'Friendly communication attitude'],
     tools: ['Trays & service trolleys', 'Cutlery sets', 'Order pads/POS demo', 'Uniform'],
-    careers: ['Restaurants & hotels', 'Banquets & events', 'Cafés & resorts', 'Airline/industrial catering'],
+    careers: ['Restaurants & hotels', 'Banquets & events', 'CafÃ©s & resorts', 'Airline/industrial catering'],
   },
 
-  // ─── BEAUTY ──────────────────────────────────────────────────
+  // â”€â”€â”€ BEAUTY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     slug: 'assistant-beautician',
     title: 'Assistant Beautician',
@@ -644,7 +643,7 @@ export const courses: Course[] = [
       'Client comfort, sanitation, and product knowledge are treated as seriously as technique.',
     ],
     image: U('photo-1560066984-138dadb4c035'),
-    durationLabel: '6–10 weeks (sample)',
+    durationLabel: '6â€“10 weeks (sample)',
     durationWeeks: 8,
     level: 'Beginner',
     practicalFocus: true,
@@ -669,7 +668,7 @@ export const courses: Course[] = [
     careers: ['Beauty salons', 'Bridal makeup assistance', 'Hotel spa support', 'Home service beautician'],
   },
 
-  // ─── AGRICULTURE ─────────────────────────────────────────────
+  // â”€â”€â”€ AGRICULTURE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     slug: 'poultry-farm-worker',
     title: 'Poultry Farm Worker',
@@ -681,7 +680,7 @@ export const courses: Course[] = [
       'Record keeping and cost awareness prepare learners to run their own small farms too.',
     ],
     image: U('photo-1516467508483-a7212febe31a'),
-    durationLabel: '4–6 weeks (sample)',
+    durationLabel: '4â€“6 weeks (sample)',
     durationWeeks: 5,
     level: 'Beginner',
     practicalFocus: true,
@@ -713,10 +712,10 @@ export const courses: Course[] = [
       'Grow vegetables out of season using tunnels and improved techniques for better market prices.',
     overview: [
       'Off-season vegetable production teaches protected cultivation: plastic tunnel setup, nursery raising, transplanting, fertigation basics, pest management, and harvest/post-harvest handling.',
-      'The goal is income-oriented farming — producing high-value vegetables when market prices are best.',
+      'The goal is income-oriented farming â€” producing high-value vegetables when market prices are best.',
     ],
     image: U('photo-1416879595882-3373a0480b5b'),
-    durationLabel: '4–6 weeks (sample)',
+    durationLabel: '4â€“6 weeks (sample)',
     durationWeeks: 5,
     level: 'Beginner',
     practicalFocus: true,
@@ -741,7 +740,7 @@ export const courses: Course[] = [
     careers: ['Commercial vegetable farming', 'Cooperative farming groups', 'Agro-input dealers support', 'Collection centers'],
   },
 
-  // ─── TAILORING ───────────────────────────────────────────────
+  // â”€â”€â”€ TAILORING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     slug: 'tailor-master',
     title: 'Tailor Master',
@@ -753,7 +752,7 @@ export const courses: Course[] = [
       'Practice progresses from simple items to full garments including traditional and modern styles.',
     ],
     image: U('photo-1558769132-cb1aea458c5e'),
-    durationLabel: '10–13 weeks (sample)',
+    durationLabel: '10â€“13 weeks (sample)',
     durationWeeks: 12,
     level: 'All Levels',
     practicalFocus: true,
@@ -796,3 +795,4 @@ export function getRelatedCourses(course: Course, max = 3): Course[] {
 export function courseCountForCategory(categoryId: string): number {
   return courses.filter((c) => c.categoryId === categoryId).length;
 }
+
