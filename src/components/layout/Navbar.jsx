@@ -1,7 +1,7 @@
 ﻿import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Menu, X, Sun, Moon, Zap, ChevronDown, Mail, Phone } from 'lucide-react';
+import { Menu, X, Sun, Moon, Zap, ChevronDown, Mail, Phone, Search } from 'lucide-react';
 import { useContent } from '@/content/ContentContext';
 import { useTheme } from '@/hooks/useTheme';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
@@ -41,7 +41,7 @@ function Logo() {
   );
 }
 
-export function Navbar() {
+export function Navbar({ onOpenSearch }) {
   const { siteConfig } = useContent();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -161,7 +161,17 @@ export function Navbar() {
             </li>
           </ul>
 
-          <div className="flex items-center gap-2">
+<div className="flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={onOpenSearch}
+              aria-label="Search courses (Ctrl+K)"
+              title="Search courses (Ctrl+K)"
+              className="hidden h-9 w-9 items-center justify-center rounded-lg text-slate-600 transition-colors hover:bg-navy-100/70 dark:text-slate-300 dark:hover:bg-white/10 md:flex"
+            >
+              <Search className="h-5 w-5" />
+            </button>
+
             <button
               type="button"
               onClick={toggle}

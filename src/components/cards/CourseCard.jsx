@@ -2,12 +2,16 @@
 import { Clock, Gauge, ArrowRight, Send } from 'lucide-react';
 import { SmartImage } from '@/components/ui/SmartImage';
 import { Badge } from '@/components/ui/Badge';
+import { BookmarkButton } from '@/components/ui/BookmarkButton';
 import { useContent } from '@/content/ContentContext';
+import { useBookmarks } from '@/hooks/useBookmarks';
 
 export function CourseCard({ course }) {
   const { getCategoryLabel } = useContent();
+  const { isBookmarked, toggle } = useBookmarks();
+  const on = isBookmarked(course.slug);
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover dark:border-white/10 dark:bg-white/[0.04]">
+    <article className="group glow-card border-anim flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover dark:border-white/10 dark:bg-white/[0.04]">
       <div className="relative">
         <SmartImage
           src={course.image}
@@ -20,6 +24,9 @@ export function CourseCard({ course }) {
           <span className="rounded-full bg-navy-950/80 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-accent-400 backdrop-blur-sm">
             {getCategoryLabel(course.categoryId)}
           </span>
+        </div>
+        <div className="absolute right-3 top-3">
+          <BookmarkButton slug={course.slug} isOn={on} onToggle={toggle} />
         </div>
         {!course.active && (
           <div className="absolute inset-0 flex items-end justify-start bg-navy-950/40 p-3">

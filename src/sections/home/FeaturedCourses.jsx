@@ -12,8 +12,9 @@ export function FeaturedCourses() {
   const featured = active.length > 0 ? active : courses.slice(0, 6);
 
   return (
-    <section className="bg-slate-50 py-16 dark:bg-white/[0.02] sm:py-24">
-      <div className="container-x">
+    <section className="relative overflow-hidden bg-slate-50 py-16 dark:bg-white/[0.02] sm:py-24">
+      <div className="bg-dots absolute inset-0 opacity-60" aria-hidden="true" />
+      <div className="container-x relative">
         <SectionHeading
           eyebrow="Training Programs"
           title="Popular Vocational Courses"

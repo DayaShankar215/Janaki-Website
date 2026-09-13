@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
 import { ArrowUp } from 'lucide-react';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 import { ScrollToTop } from '@/hooks/ScrollToTop';
+import { CourseSearchModal } from '@/components/ui/CourseSearchModal';
+import { WhatsAppButton } from '@/components/ui/WhatsAppButton';
 
 function ScrollProgress() {
   const { scrollYProgress } = useScroll();
@@ -46,7 +48,30 @@ function BackToTop() {
   );
 }
 
+/** Global Ctrl/Cmd + K shortcut to open quick course search. */
+export function useGlobalSearch() {
+  const [searchOpen, setSearchOpen] = useState(false);
+  useEffect(() => {
+    const onKey = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setSearchOpen((o) => !o);
+      }
+      if (e.key === '/' && !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)) {
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+  return { searchOpen, setSearchOpen };
+}
+
 export function Layout() {
+  const location = useLocation();
+  const { searchOpen, setSearchOpen } = useGlobalSearch();
+
   return (
     <div className="flex min-h-screen flex-col bg-white text-slate-700 dark:bg-navy-950 dark:text-slate-300">
       <a
@@ -57,12 +82,24 @@ export function Layout() {
       </a>
       <ScrollToTop />
       <ScrollProgress />
-      <Navbar />
+      <Navbar onOpenSearch={() => setSearchOpen(true)} />
       <main id="main-content" className="flex-1">
-        <Outlet />
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={location.pathname}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.28, ease: 'easeOut' }}
+          >
+            <Outlet />
+          </motion.div>
+        </AnimatePresence>
       </main>
       <BackToTop />
+      <WhatsAppButton />
       <Footer />
+      <CourseSearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
     </div>
   );
 }

@@ -9,6 +9,7 @@ import { MethodologySection } from '@/sections/home/MethodologySection';
 import { CareersTeaser } from '@/sections/home/CareersTeaser';
 import { TestimonialsSection } from '@/sections/home/TestimonialsSection';
 import { CTASection } from '@/sections/home/CTASection';
+import { RecentlyViewedCourses } from '@/components/ui/RecentlyViewed';
 
 export default function HomePage() {
   useSeo(
@@ -27,6 +28,7 @@ export default function HomePage() {
       <MethodologySection />
       <CareersTeaser />
       <TestimonialsSection />
+      <RecentlyViewedCourses />
       <CTASection />
     </>
   );

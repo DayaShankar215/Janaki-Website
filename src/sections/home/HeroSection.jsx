@@ -41,9 +41,19 @@ function StatCounter({ end, suffix = '' }) {
 export function HeroSection() {
   const { siteConfig, courses, categories, getActiveCourses } = useContent();
   const activeCount = getActiveCourses().length;
+  const glowRef = useRef(null);
+
+  const handleMouseMove = (e) => {
+    const el = glowRef.current;
+    if (!el) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    el.style.left = `${e.clientX - rect.left - 210}px`;
+    el.style.top = `${e.clientY - rect.top - 210}px`;
+    el.style.opacity = '1';
+  };
 
   return (
-    <section className="relative overflow-hidden bg-navy-950">
+    <section className="relative overflow-hidden bg-navy-950" onMouseMove={handleMouseMove}>
       {/* Background image + overlays */}
       <div className="absolute inset-0" aria-hidden="true">
         <img
@@ -58,6 +68,20 @@ export function HeroSection() {
         <div className="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-950/85 to-navy-900/60" />
         <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-transparent to-navy-950/40" />
         <div className="absolute inset-0 hero-grid bg-grid opacity-50" />
+
+        {/* Futuristic aurora blobs */}
+        <div className="aurora">
+          <div className="aurora-blob h-72 w-72 bg-accent-500/30 sm:h-96 sm:w-96" style={{ top: '-8%', left: '-5%', animation: 'aurora-drift-1 22s ease-in-out infinite' }} />
+          <div className="aurora-blob h-80 w-80 bg-sky-500/25 sm:h-[28rem] sm:w-[28rem]" style={{ bottom: '-12%', right: '-6%', animation: 'aurora-drift-2 26s ease-in-out infinite' }} />
+          <div className="aurora-blob h-56 w-56 bg-emerald-500/20" style={{ top: '45%', left: '55%', animation: 'aurora-pulse 12s ease-in-out infinite' }} />
+        </div>
+
+        {/* Cursor glow */}
+        <div
+          ref={glowRef}
+          className="pointer-events-none absolute h-[420px] w-[420px] rounded-full opacity-0 blur-3xl transition-opacity duration-500"
+          style={{ background: 'radial-gradient(circle, rgba(251,191,36,0.18), transparent 60%)', left: -9999, top: -9999 }}
+        />
       </div>
 
       <div className="container-x relative flex min-h-[calc(100vh-6rem)] max-h-[820px] flex-col justify-center py-16 sm:min-h-[640px]">

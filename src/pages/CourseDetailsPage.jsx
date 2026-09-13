@@ -1,4 +1,5 @@
 ﻿import { Link, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
 import {
   ArrowLeft,
   ArrowRight,
@@ -11,6 +12,7 @@ import {
   GraduationCap,
   CheckCircle2,
   CircleAlert,
+  Printer,
 } from 'lucide-react';
 import { useSeo } from '@/hooks/useSeo';
 import { PageHero } from '@/components/layout/PageHero';
@@ -19,8 +21,13 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Reveal } from '@/components/ui/Reveal';
 import { CourseCard } from '@/components/cards/CourseCard';
+import { ShareButtons } from '@/components/ui/ShareButtons';
+import { BookmarkButton } from '@/components/ui/BookmarkButton';
+import { RecentStrip } from '@/components/ui/RecentlyViewed';
 import NotFoundPage from './NotFoundPage';
 import { useContent } from '@/content/ContentContext';
+import { useBookmarks } from '@/hooks/useBookmarks';
+import { trackCourseView } from '@/hooks/useRecentlyViewed';
 
 
 function DetailBlock({ icon: Icon, title, children }) {
@@ -41,6 +48,12 @@ export default function CourseDetailsPage() {
   const { getCourseBySlug, getRelatedCourses, getCategoryLabel } = useContent();
   const { slug } = useParams();
   const course = getCourseBySlug(slug);
+  const { isBookmarked, toggle } = useBookmarks();
+
+  // Record the visit so the homepage can offer "recently viewed" courses.
+  useEffect(() => {
+    if (course) trackCourseView(course.slug);
+  }, [course]);
 
   // Hooks must run unconditionally — call useSeo with computed values
   useSeo(
@@ -52,8 +65,12 @@ export default function CourseDetailsPage() {
 
   const related = getRelatedCourses(course);
 
-  return (
+  const onPrint = () => window.print();
+
+return (
     <>
+      <RecentStrip currentSlug={course.slug} />
+
       {/* Hero */}
       <section className="relative overflow-hidden bg-navy-950">
         <div className="absolute inset-0 hero-grid bg-grid opacity-40" aria-hidden="true" />
@@ -90,11 +107,35 @@ export default function CourseDetailsPage() {
                 <span className="inline-flex items-center gap-2">
                   <Gauge className="h-4 w-4 text-accent-400" /> {course.level}
                 </span>
-                {course.practicalFocus && (
+{course.practicalFocus && (
                   <span className="inline-flex items-center gap-2">
                     <Wrench className="h-4 w-4 text-accent-400" /> Hands-on practical training
                   </span>
                 )}
+              </div>
+
+              <div className="mt-6 flex flex-wrap items-center gap-3">
+                <Button to={`/contact?course=${course.slug}`} variant="accent">
+                  <Send className="h-4 w-4" /> Enquire about this course
+                </Button>
+                <BookmarkButton
+                  slug={course.slug}
+                  isOn={isBookmarked(course.slug)}
+                  onToggle={toggle}
+                  className="h-10 w-10 bg-white/10 text-white ring-1 ring-white/20 hover:bg-accent-500"
+                />
+                <button
+                  onClick={onPrint}
+                  aria-label="Print this page"
+                  title="Print / save as PDF"
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white ring-1 ring-white/20 transition hover:bg-white/20"
+                >
+                  <Printer className="h-4 w-4" />
+                </button>
+              </div>
+
+              <div className="mt-5">
+                <ShareButtons title={course.title} compact />
               </div>
             </div>
 

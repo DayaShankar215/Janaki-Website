@@ -1,11 +1,12 @@
 ﻿import { useMemo, useState } from 'react';
-import { Search, SlidersHorizontal, RotateCcw, SearchX } from 'lucide-react';
+import { Search, SlidersHorizontal, RotateCcw, SearchX, Heart } from 'lucide-react';
 import { useSeo } from '@/hooks/useSeo';
 import { PageHero } from '@/components/layout/PageHero';
 import { CourseCard } from '@/components/cards/CourseCard';
 import { Reveal } from '@/components/ui/Reveal';
 import { Button } from '@/components/ui/Button';
 import { useContent } from '@/content/ContentContext';
+import { useBookmarks } from '@/hooks/useBookmarks';
 import { cn } from '@/utils/cn';
 
 const sortOptions = [
@@ -25,6 +26,8 @@ export default function CoursesPage() {
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('all');
   const [sort, setSort] = useState('featured');
+  const [savedOnly, setSavedOnly] = useState(false);
+  const { bookmarks, toggle } = useBookmarks();
 
   const availableCategories = useMemo(() => categories.filter((c) => courseCountForCategory(c.id) > 0), []);
 
@@ -34,6 +37,7 @@ export default function CoursesPage() {
     let list = courses.filter((course) => {
       const matchesCategory = category === 'all' || course.categoryId === category;
       if (!matchesCategory) return false;
+      if (savedOnly && !bookmarks.includes(course.slug)) return false;
       if (!q) return true;
       return (
         course.title.toLowerCase().includes(q) ||
@@ -58,12 +62,13 @@ export default function CoursesPage() {
         list = [...list].sort((a, b) => Number(Boolean(b.active)) - Number(Boolean(a.active)));
     }
     return list;
-  }, [query, category, sort]);
+  }, [query, category, sort, savedOnly, bookmarks]);
 
   const resetFilters = () => {
     setQuery('');
     setCategory('all');
     setSort('featured');
+    setSavedOnly(false);
   };
 
   const selectClass =
@@ -115,7 +120,7 @@ export default function CoursesPage() {
           </div>
 
           {/* Category filter chips */}
-          <div className="mt-5 flex flex-wrap gap-2" role="group" aria-label="Filter by category">
+          <div className="mt-5 flex flex-wrap items-center gap-2" role="group" aria-label="Filter courses">
             <button
               type="button"
               onClick={() => setCategory('all')}
@@ -145,6 +150,21 @@ export default function CoursesPage() {
                 {c.label} ({courseCountForCategory(c.id)})
               </button>
             ))}
+
+            <button
+              type="button"
+              onClick={() => setSavedOnly((s) => !s)}
+              aria-pressed={savedOnly}
+              className={cn(
+                'ml-auto inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-semibold transition-colors',
+                savedOnly
+                  ? 'border-accent-500 bg-accent-500 text-navy-950 shadow-soft'
+                  : 'border-slate-300 bg-white text-slate-600 hover:border-accent-400 hover:text-accent-700 dark:border-white/15 dark:bg-white/[0.05] dark:text-slate-300'
+              )}
+            >
+              <Heart className={cn('h-4 w-4', savedOnly && 'fill-current')} />
+              My List {bookmarks.length > 0 && `(${bookmarks.length})`}
+            </button>
           </div>
 
           <p className="mt-6 text-sm font-medium text-slate-500 dark:text-slate-400" role="status" aria-live="polite">
