@@ -34,9 +34,9 @@ export function AnnouncementsSection() {
     <section className="bg-slate-50 py-16 dark:bg-white/[0.02] sm:py-20">
       <div className="container-x">
         <SectionHeading
-          eyebrow="Notice Board"
-          title="News & Announcements"
-          description="Admission notices, schedules and events from the training center."
+          eyebrow={t('home.announcementsEyebrow')}
+          title={t('home.announcementsTitle')}
+          description={t('home.announcementsDesc')}
         />
 
         <div className="mt-10 grid gap-5 md:grid-cols-3">
