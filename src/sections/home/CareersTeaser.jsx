@@ -1,18 +1,20 @@
 ﻿import { useContent } from '@/content/ContentContext';
+import { useLanguage } from '@/i18n/LanguageContext';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Reveal } from '@/components/ui/Reveal';
 import { DynamicIcon } from '@/components/ui/DynamicIcon';
 
 /** "Where can these skills take you?" — informational, no guarantees. */
 export function CareersTeaser() {
+  const { t } = useLanguage();
   const { careerPathways, careerExamples } = useContent();
   return (
     <section className="bg-slate-50 py-16 dark:bg-white/[0.02] sm:py-24">
       <div className="container-x">
         <SectionHeading
-          eyebrow="Career Opportunities"
-          title="Where Can These Skills Take You?"
-          description="Vocational skills create multiple pathways. Where they lead depends on your effort, your trade, and your local market."
+          eyebrow={t('home.careersEyebrow')}
+          title={t('home.careersTitle')}
+          description={t('home.careersDesc')}
         />
 
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -55,8 +57,7 @@ export function CareersTeaser() {
         </Reveal>
 
         <p className="mt-6 text-center text-xs leading-relaxed text-slate-500 dark:text-slate-400">
-          These are common possibilities shared for guidance only — the center does not guarantee employment or income
-          outcomes.
+          {t('home.careersNote')}
         </p>
       </div>
     </section>

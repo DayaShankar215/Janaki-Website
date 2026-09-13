@@ -1,11 +1,13 @@
 ﻿import { useState } from 'react';
 import { Phone, ArrowRight, Send, CheckCircle2, BellRing } from 'lucide-react';
 import { useContent } from '@/content/ContentContext';
+import { useLanguage } from '@/i18n/LanguageContext';
 import { Button } from '@/components/ui/Button';
 import { Reveal } from '@/components/ui/Reveal';
 
 /** Final call-to-action band with a "batch alerts" mini form. */
 export function CTASection() {
+  const { t } = useLanguage();
   const { siteConfig } = useContent();
   const [email, setEmail] = useState('');
   const [done, setDone] = useState(false);

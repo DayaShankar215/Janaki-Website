@@ -1,14 +1,15 @@
 ﻿import { Link } from 'react-router-dom';
 import { Zap, MapPin, Phone, Mail, Clock, Facebook, Instagram, Youtube, Linkedin } from 'lucide-react';
 import { useContent } from '@/content/ContentContext';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 const quickLinks = [
-  { to: '/', label: 'Home' },
-  { to: '/about', label: 'About Us' },
-  { to: '/courses', label: 'Courses' },
-  { to: '/admission', label: 'Admission' },
-  { to: '/gallery', label: 'Gallery' },
-  { to: '/contact', label: 'Contact' },
+  { to: '/', labelKey: 'nav.home' },
+  { to: '/about', labelKey: 'nav.about' },
+  { to: '/courses', labelKey: 'nav.courses' },
+  { to: '/admission', labelKey: 'nav.admission' },
+  { to: '/gallery', labelKey: 'nav.gallery' },
+  { to: '/contact', labelKey: 'footer.contactInfo' },
 ];
 
 const trainingAreas = [
@@ -31,6 +32,7 @@ const socials = [
 
 export function Footer() {
   const { siteConfig } = useContent();
+  const { t } = useLanguage();
   const year = new Date().getFullYear();
   const activeSocials = socials.filter((s) => siteConfig.socialLinks[s.key]);
 
@@ -42,14 +44,14 @@ export function Footer() {
       <div className="container-x grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
         {/* About */}
         <div>
-          <Link to="/" className="flex items-center gap-2.5" aria-label={`${siteConfig.name} — Home`}>
+          <Link to="/" className="flex items-center gap-2.5" aria-label={`${siteConfig.name} — ${t('nav.home')}`}>
             <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
               <Zap className="h-5 w-5 text-accent-400" fill="currentColor" />
             </span>
             <span className="leading-tight">
               <span className="block font-display text-[15px] font-bold text-white">Janaki Technical</span>
               <span className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400">
-                Training Center
+                {t('nav.tagline')}
               </span>
             </span>
           </Link>
@@ -59,8 +61,8 @@ export function Footer() {
         </div>
 
         {/* Quick links */}
-        <nav aria-label="Quick links">
-          <h3 className="font-display text-sm font-bold uppercase tracking-[0.14em] text-white">Quick Links</h3>
+        <nav aria-label={t('footer.quickLinks')}>
+          <h3 className="font-display text-sm font-bold uppercase tracking-[0.14em] text-white">{t('footer.quickLinks')}</h3>
           <ul className="mt-4 space-y-2.5">
             {quickLinks.map((l) => (
               <li key={l.to}>
@@ -69,7 +71,7 @@ export function Footer() {
                   className="group inline-flex items-center gap-2 text-sm text-slate-400 transition-colors hover:text-accent-400"
                 >
                   <span className="h-px w-3 bg-slate-600 transition-all group-hover:w-5 group-hover:bg-accent-400" aria-hidden="true" />
-                  {l.label}
+                  {t(l.labelKey)}
                 </Link>
               </li>
             ))}
@@ -77,8 +79,8 @@ export function Footer() {
         </nav>
 
         {/* Training areas */}
-        <nav aria-label="Training areas">
-          <h3 className="font-display text-sm font-bold uppercase tracking-[0.14em] text-white">Training Areas</h3>
+        <nav aria-label={t('footer.trainingAreas')}>
+          <h3 className="font-display text-sm font-bold uppercase tracking-[0.14em] text-white">{t('footer.trainingAreas')}</h3>
           <ul className="mt-4 space-y-2.5">
             {trainingAreas.map((a) => (
               <li key={a.id}>
@@ -87,7 +89,7 @@ export function Footer() {
                   className="group inline-flex items-center gap-2 text-sm text-slate-400 transition-colors hover:text-accent-400"
                 >
                   <span className="h-px w-3 bg-slate-600 transition-all group-hover:w-5 group-hover:bg-accent-400" aria-hidden="true" />
-                  {a.label}
+                  {t(`footer.trainingAreaLabels.${a.id}`)}
                 </Link>
               </li>
             ))}
@@ -96,7 +98,7 @@ export function Footer() {
 
         {/* Contact */}
         <div>
-          <h3 className="font-display text-sm font-bold uppercase tracking-[0.14em] text-white">Contact</h3>
+          <h3 className="font-display text-sm font-bold uppercase tracking-[0.14em] text-white">{t('footer.contactInfo')}</h3>
           <ul className="mt-4 space-y-3.5 text-sm text-slate-400">
             <li className="flex items-start gap-2.5">
               <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-accent-400" />
@@ -143,11 +145,11 @@ export function Footer() {
 
       <div className="border-t border-white/10">
         <div className="container-x flex flex-col items-center justify-between gap-2 py-5 text-xs text-slate-500 sm:flex-row">
-          <p>© {year} {siteConfig.name}. All rights reserved.</p>
+          <p>© {year} {siteConfig.name}. {t('footer.rights')}</p>
           <p className="flex items-center gap-3">
-            Practical skills for real opportunities.
+            {t('footer.tagline')}
             <Link to="/admin" className="transition-colors hover:text-accent-400" title="Website admin panel">
-              Admin
+              {t('footer.admin')}
             </Link>
           </p>
         </div>

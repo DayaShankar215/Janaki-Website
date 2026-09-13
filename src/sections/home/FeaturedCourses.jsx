@@ -1,5 +1,6 @@
 ﻿import { ArrowRight } from 'lucide-react';
 import { useContent } from '@/content/ContentContext';
+import { useLanguage } from '@/i18n/LanguageContext';
 import { CourseCard } from '@/components/cards/CourseCard';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Reveal } from '@/components/ui/Reveal';
@@ -7,6 +8,7 @@ import { Button } from '@/components/ui/Button';
 
 /** Featured (currently enrolling) courses on the homepage. */
 export function FeaturedCourses() {
+  const { t } = useLanguage();
   const { courses } = useContent();
   const active = courses.filter((c) => c.active).slice(0, 6);
   const featured = active.length > 0 ? active : courses.slice(0, 6);
@@ -16,9 +18,9 @@ export function FeaturedCourses() {
       <div className="bg-dots absolute inset-0 opacity-60" aria-hidden="true" />
       <div className="container-x relative">
         <SectionHeading
-          eyebrow="Training Programs"
-          title="Popular Vocational Courses"
-          description="Practical, career-focused training programs taught in workshop environments by experienced instructors."
+          eyebrow={t('home.featuredEyebrow')}
+          title={t('home.featuredTitle')}
+          description={t('home.featuredDesc')}
         />
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -31,7 +33,7 @@ export function FeaturedCourses() {
 
         <div className="mt-12 text-center">
           <Button to="/courses" variant="primary" size="lg" className="group">
-            View All Courses
+            {t('home.featuredViewAll')}
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Button>
         </div>

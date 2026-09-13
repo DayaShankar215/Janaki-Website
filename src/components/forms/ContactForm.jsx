@@ -1,6 +1,7 @@
 ﻿import { useMemo, useRef, useState } from 'react';
 import { Send, Loader2, CheckCircle2, AlertTriangle, ShieldCheck } from 'lucide-react';
 import { useContent } from '@/content/ContentContext';
+import { useLanguage } from '@/i18n/LanguageContext';
 import { isNotEmpty, isValidEmail, isValidPhone } from '@/utils/validate';
 import { sendInquiry } from '@/utils/sendInquiry';
 import { cn } from '@/utils/cn';
@@ -26,7 +27,7 @@ function Field({ label, htmlFor, required, error, children }) {
     <div>
       <label htmlFor={htmlFor} className="mb-1.5 block text-sm font-semibold text-navy-900 dark:text-slate-200">
         {label}
-        {required && (
+        {required && !label.endsWith('*') && (
           <span className="text-red-500" aria-hidden="true">
             {' '}*
           </span>
@@ -44,6 +45,7 @@ function Field({ label, htmlFor, required, error, children }) {
 
 export function ContactForm({ defaultCourse = '', compact = false }) {
   const { courses, educationLevels, preferredTimings } = useContent();
+  const { t } = useLanguage();
   const [form, setForm] = useState({
     ...initialForm,
     course: courses.some((c) => c.slug === defaultCourse) ? defaultCourse : '',
@@ -62,13 +64,13 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
 
   const validate = () => {
     const next = {};
-    if (!isNotEmpty(form.name)) next.name = 'Please enter your full name.';
-    if (!isNotEmpty(form.email)) next.email = 'Please enter your email address.';
-    else if (!isValidEmail(form.email)) next.email = 'Please enter a valid email address.';
-    if (!isNotEmpty(form.phone)) next.phone = 'Please enter your phone number.';
-    else if (!isValidPhone(form.phone)) next.phone = 'Please enter a valid phone number.';
-    if (!form.course) next.course = 'Please choose the course you are interested in.';
-    if (!isNotEmpty(form.message)) next.message = 'Please write a short message.';
+    if (!isNotEmpty(form.name)) next.name = t('form.nameError');
+    if (!isNotEmpty(form.email)) next.email = t('form.emailError');
+    else if (!isValidEmail(form.email)) next.email = t('form.emailError');
+    if (!isNotEmpty(form.phone)) next.phone = t('form.phoneError');
+    else if (!isValidPhone(form.phone)) next.phone = t('form.phoneError');
+    if (!form.course) next.course = t('form.courseSelectHint');
+    if (!isNotEmpty(form.message)) next.message = t('form.messageError');
     return next;
   };
 
@@ -113,14 +115,14 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
           <CheckCircle2 className="h-7 w-7" />
         </span>
         <h3 className="mt-4 font-display text-xl font-bold text-emerald-900 dark:text-emerald-200">
-          Thank you for your inquiry.
+          {t('form.successTitle')}
         </h3>
         <p className="mt-2 max-w-sm text-sm leading-relaxed text-emerald-800 dark:text-emerald-300">
-          Our team will contact you soon.
+          {t('form.successDesc')}
         </p>
         {demoMode && (
           <p className="mt-3 rounded-lg bg-emerald-100 px-3 py-1.5 text-xs font-semibold text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300">
-            Demo mode: EmailJS is not configured yet — no email was actually sent.
+            {t('form.demoNote')}
           </p>
         )}
         <button
@@ -128,14 +130,14 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
           onClick={() => setStatus('idle')}
           className="mt-5 text-sm font-bold text-emerald-700 underline-offset-4 hover:underline dark:text-emerald-300"
         >
-          Send another inquiry
+          {t('form.sendAnother')}
         </button>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className={cn('space-y-4', !compact && '')} aria-label="Training inquiry form">
+    <form onSubmit={handleSubmit} noValidate className={cn('space-y-4', !compact && '')} aria-label={t('form.ariaLabel')}>
       {/* honeypot */}
       <input
         type="text"
@@ -149,7 +151,7 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
       />
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Full Name" htmlFor="cf-name" required error={errors.name}>
+        <Field label={t('form.name')} htmlFor="cf-name" required error={errors.name}>
           <input
             id="cf-name"
             type="text"
@@ -158,11 +160,11 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
             onChange={update('name')}
             aria-invalid={Boolean(errors.name)}
             className={inputClass}
-            placeholder="e.g. Ram Kumar Sharma"
+            placeholder={t('form.namePlaceholder')}
           />
         </Field>
 
-        <Field label="Email" htmlFor="cf-email" required error={errors.email}>
+        <Field label={t('form.email')} htmlFor="cf-email" required error={errors.email}>
           <input
             id="cf-email"
             type="email"
@@ -171,11 +173,11 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
             onChange={update('email')}
             aria-invalid={Boolean(errors.email)}
             className={inputClass}
-            placeholder="you@example.com"
+            placeholder={t('form.emailPlaceholder')}
           />
         </Field>
 
-        <Field label="Phone Number" htmlFor="cf-phone" required error={errors.phone}>
+        <Field label={t('form.phone')} htmlFor="cf-phone" required error={errors.phone}>
           <input
             id="cf-phone"
             type="tel"
@@ -184,11 +186,11 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
             onChange={update('phone')}
             aria-invalid={Boolean(errors.phone)}
             className={inputClass}
-            placeholder="Your mobile / contact number"
+            placeholder={t('form.phonePlaceholder')}
           />
         </Field>
 
-        <Field label="Address" htmlFor="cf-address">
+        <Field label={t('form.address')} htmlFor="cf-address">
           <input
             id="cf-address"
             type="text"
@@ -196,11 +198,11 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
             value={form.address}
             onChange={update('address')}
             className={inputClass}
-            placeholder="City / district"
+            placeholder={t('form.addressPlaceholder')}
           />
         </Field>
 
-        <Field label="Course Interested In" htmlFor="cf-course" required error={errors.course}>
+        <Field label={t('form.course')} htmlFor="cf-course" required error={errors.course}>
           <select
             id="cf-course"
             value={form.course}
@@ -208,7 +210,7 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
             aria-invalid={Boolean(errors.course)}
             className={cn(inputClass, !form.course && 'text-slate-400 dark:text-slate-500')}
           >
-            <option value="">Select a course…</option>
+            <option value="">{t('form.courseSelect')}</option>
             {activeCourses.map((c) => (
               <option key={c.slug} value={c.slug}>
                 {c.title}
@@ -217,9 +219,9 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
           </select>
         </Field>
 
-        <Field label="Education Level" htmlFor="cf-education">
+        <Field label={t('form.education')} htmlFor="cf-education">
           <select id="cf-education" value={form.education} onChange={update('education')} className={inputClass}>
-            <option value="">Select education level…</option>
+            <option value="">{t('form.educationSelect')}</option>
             {educationLevels.map((lvl) => (
               <option key={lvl} value={lvl}>
                 {lvl}
@@ -229,8 +231,8 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
         </Field>
       </div>
 
-      <Field label="Preferred Training Time" htmlFor="cf-timing">
-        <div id="cf-timing" className="flex flex-wrap gap-2" role="group" aria-label="Preferred training time">
+      <Field label={t('form.time')} htmlFor="cf-timing">
+        <div id="cf-timing" className="flex flex-wrap gap-2" role="group" aria-label={t('form.time')}>
           {preferredTimings.map((t) => (
             <button
               key={t}
@@ -250,7 +252,7 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
         </div>
       </Field>
 
-      <Field label="Message" htmlFor="cf-message" required error={errors.message}>
+      <Field label={t('form.message')} htmlFor="cf-message" required error={errors.message}>
         <textarea
           id="cf-message"
           rows={4}
@@ -258,7 +260,7 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
           onChange={update('message')}
           aria-invalid={Boolean(errors.message)}
           className={cn(inputClass, 'resize-y')}
-          placeholder="Tell us briefly about yourself or ask any questions…"
+          placeholder={t('form.messagePlaceholder')}
         />
       </Field>
 
@@ -268,14 +270,14 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
           className="flex items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300"
         >
           <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0" />
-          We couldn't send your inquiry right now. Please try again or contact us directly by phone or email.
+          {t('form.sendError')}
         </div>
       )}
 
       <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
         <p className="inline-flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
           <ShieldCheck className="h-4 w-4 text-emerald-500" />
-          Your details are only used to respond to your inquiry.
+          {t('form.privacyNote')}
         </p>
         <button
           type="submit"
@@ -284,11 +286,11 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
         >
           {status === 'sending' ? (
             <>
-              <Loader2 className="h-4 w-4 animate-spin" /> Sending…
+              <Loader2 className="h-4 w-4 animate-spin" /> {t('form.sending')}
             </>
           ) : (
             <>
-              <Send className="h-4 w-4" /> Submit Inquiry
+              <Send className="h-4 w-4" /> {t('form.submit')}
             </>
           )}
         </button>

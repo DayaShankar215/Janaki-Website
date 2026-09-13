@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Search, X, CornerDownLeft, SearchX, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useContent } from '@/content/ContentContext';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 /**
  * Global quick-search modal triggered with Ctrl/Cmd + K (or the
@@ -11,6 +12,7 @@ import { useContent } from '@/content/ContentContext';
  */
 export function CourseSearchModal({ open, onClose }) {
   const { courses, getCategoryLabel } = useContent();
+  const { t } = useLanguage();
   const [q, setQ] = useState('');
   const [idx, setIdx] = useState(0);
 
@@ -80,12 +82,12 @@ export function CourseSearchModal({ open, onClose }) {
                 id="course-search-input"
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="Search courses… (training, welding, wiring…)"
+                placeholder={t('search.placeholder')}
                 className="h-14 w-full bg-transparent text-base text-navy-900 outline-none placeholder:text-slate-400 dark:text-white"
               />
               <button
                 onClick={onClose}
-                aria-label="Close search"
+                aria-label={t('search.ariaClose')}
                 className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 dark:hover:bg-white/10"
               >
                 <X className="h-5 w-5" />
@@ -96,7 +98,7 @@ export function CourseSearchModal({ open, onClose }) {
               {results.length === 0 ? (
                 <div className="flex flex-col items-center gap-2 py-10 text-slate-400">
                   <SearchX className="h-8 w-8" />
-                  <p className="text-sm">No courses match “{q}”.</p>
+                  <p className="text-sm">{t('search.noResults')} “{q}”.</p>
                 </div>
               ) : (
                 results.map((c, i) => (
@@ -123,9 +125,9 @@ export function CourseSearchModal({ open, onClose }) {
             </div>
 
             <div className="flex items-center gap-4 border-t border-slate-100 px-4 py-2.5 text-[11px] text-slate-400 dark:border-white/10">
-              <span className="flex items-center gap-1"><kbd className="rounded bg-slate-100 px-1.5 py-0.5 font-mono dark:bg-white/10">↑</kbd><kbd className="rounded bg-slate-100 px-1.5 py-0.5 font-mono dark:bg-white/10">↓</kbd> navigate</span>
-              <span className="flex items-center gap-1"><kbd className="rounded bg-slate-100 px-1.5 py-0.5 font-mono dark:bg-white/10">↵</kbd> open</span>
-              <span className="flex items-center gap-1"><kbd className="rounded bg-slate-100 px-1.5 py-0.5 font-mono dark:bg-white/10">esc</kbd> close</span>
+              <span className="flex items-center gap-1"><kbd className="rounded bg-slate-100 px-1.5 py-0.5 font-mono dark:bg-white/10">↑</kbd><kbd className="rounded bg-slate-100 px-1.5 py-0.5 font-mono dark:bg-white/10">↓</kbd> {t('search.navigate')}</span>
+              <span className="flex items-center gap-1"><kbd className="rounded bg-slate-100 px-1.5 py-0.5 font-mono dark:bg-white/10">↵</kbd> {t('search.open')}</span>
+              <span className="flex items-center gap-1"><kbd className="rounded bg-slate-100 px-1.5 py-0.5 font-mono dark:bg-white/10">esc</kbd> {t('search.close')}</span>
             </div>
           </motion.div>
         </motion.div>

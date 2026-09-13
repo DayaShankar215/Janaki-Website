@@ -131,12 +131,12 @@ export function HeroSection() {
             className="mt-9 flex flex-wrap items-center gap-3.5"
           >
             <Button to="/courses" variant="accent" size="lg" className="group">
-              Explore Courses
+              {t('hero.explore')}
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Button>
             <Button to="/contact" variant="white-outline" size="lg">
               <Send className="h-4 w-4" />
-              Enquire Now
+              {t('common.enquireNow')}
             </Button>
           </motion.div>
 
@@ -162,9 +162,9 @@ export function HeroSection() {
           className="mt-14 grid max-w-2xl grid-cols-3 gap-3 sm:gap-4"
         >
           {[
-            { end: activeCount > 0 ? activeCount : courses.length, suffix: '+', label: 'Training programs' },
-            { end: categories.length, suffix: '', label: 'Skill categories' },
-            { end: 100, suffix: '%', label: 'Practical-first learning' },
+            { end: activeCount > 0 ? activeCount : courses.length, suffix: '+', label: t('hero.statPrograms') },
+            { end: categories.length, suffix: '', label: t('hero.statCategories') },
+            { end: 100, suffix: '%', label: t('hero.statPractical') },
           ].map((stat) => (
             <div
               key={stat.label}
@@ -180,7 +180,7 @@ export function HeroSection() {
       {/* Scroll cue */}
       <a
         href="#quick-info"
-        aria-label="Scroll to learn more"
+        aria-label={t('hero.scrollMore')}
         className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 animate-bounce text-slate-400 hover:text-white md:block"
       >
         <ChevronDown className="h-7 w-7" />

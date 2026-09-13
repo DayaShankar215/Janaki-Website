@@ -1,6 +1,7 @@
 ﻿import { Link } from 'react-router-dom';
 import { Megaphone, CalendarDays, ArrowRight } from 'lucide-react';
 import { useContent } from '@/content/ContentContext';
+import { useLanguage } from '@/i18n/LanguageContext';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Reveal } from '@/components/ui/Reveal';
 import { Badge } from '@/components/ui/Badge';
@@ -22,6 +23,7 @@ function formatDate(iso) {
 
 /** Notice board — renders only when announcements exist. */
 export function AnnouncementsSection() {
+  const { t } = useLanguage();
   const { announcements } = useContent();
   if (announcements.length === 0) return null;
   const sorted = [...announcements].sort(

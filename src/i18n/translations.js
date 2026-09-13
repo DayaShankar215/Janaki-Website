@@ -25,6 +25,7 @@ export const translations = {
       handsOn: 'Hands-on practical',
       download: 'Download',
       save: 'Save',
+      saved: 'Saved',
       cancel: 'Cancel',
       delete: 'Delete',
       search: 'Search',
@@ -169,6 +170,16 @@ export const translations = {
       tagline: 'Practical skills for real opportunities.',
       admin: 'Admin',
       followUs: 'Follow us',
+      trainingAreaLabels: {
+        electrical: 'Electrical',
+        plumbing: 'Plumbing',
+        construction: 'Construction',
+        computer: 'Computer & Technology',
+        mechanical: 'Mechanical / Welding',
+        hospitality: 'Hospitality',
+        agriculture: 'Agriculture',
+        tailoring: 'Tailoring & Garment',
+      },
     },
 
     /* ── Search modal ───────────────────────────────────────── */
@@ -205,6 +216,7 @@ export const translations = {
       viewDetails: 'View Details',
       durationLabel: 'Duration',
       levelLabel: 'Level',
+      filterAria: 'Filter courses',
     },
 
     /* ── Course details ─────────────────────────────────────── */
@@ -228,6 +240,19 @@ export const translations = {
       backToCourses: 'Back to Courses',
       inThisSection: 'In this course',
       recentlyViewed: 'Recently viewed',
+      category: 'Category',
+      format: 'Format',
+      formatValue: 'Workshop-based practical training',
+      status: 'Status',
+      openForEnrollment: 'Open for enrollment',
+      notRunning: 'Not currently running',
+      inactiveNotice:
+        'This program is listed for information only and is not currently open for enrollment. Contact us to ask about upcoming batches.',
+      careersNote:
+        'Career examples are informational — they describe common pathways in this trade, not guaranteed placements.',
+      summary: 'Course Summary',
+      admissionProcess: 'See Admission Process',
+      viewAll: 'View all courses',
     },
 
     /* ── About page ─────────────────────────────────────────── */
@@ -244,6 +269,28 @@ export const translations = {
       whyTitle: 'What Makes Us Different',
       whyDesc: 'Practical-first, instructor-guided, career-focused training.',
       ctevNote: 'Accreditation and affiliation details appear here when confirmed.',
+      heroImageAlt: 'Technical instructor demonstrating equipment',
+      badgeSkills: 'Skills +',
+      badgeOpportunity: 'Opportunity',
+      storyEyebrow: 'Who We Are',
+      storyIntro: 'is a technical and vocational training institution dedicated to hands-on skill development.',
+      storyTrades:
+        'We offer training across trades such as electrical work, plumbing, construction, welding, computer skills, hospitality, agriculture and tailoring.',
+      storyP2:
+        'Every program is designed around workshop practice — trainees handle the tools, materials and equipment of their trade under the guidance of experienced instructors. The goal is simple: graduates who can do the work, not just describe it.',
+      recognitionTitle: 'Recognition & Affiliation',
+      directionEyebrow: 'Direction',
+      missionVisionTitle: 'Our Mission & Vision',
+      ourMission: 'Our Mission',
+      ourVision: 'Our Vision',
+      missionItem1: 'Deliver practical, employment-oriented technical training',
+      missionItem2: 'Develop technical competence and workplace discipline',
+      missionItem3: 'Support career development and self-employment pathways',
+      missionItem4: 'Make quality vocational education accessible to all learners',
+      visionP1:
+        'To be a trusted center of vocational excellence — producing skilled, capable human resources who strengthen their families, communities and the industries they serve.',
+      visionP2:
+        'We envision every graduate leaving with more than a certificate: a trade they can practice with pride and confidence.',
     },
 
     /* ── Facilities ─────────────────────────────────────────── */
@@ -252,6 +299,50 @@ export const translations = {
       heroDesc: 'Dedicated workshops and practice areas that simulate real working conditions.',
       features: 'Features',
       explore: 'Explore',
+      learningEyebrow: 'Learning Spaces',
+      learningTitle: 'Where Practical Training Happens',
+      learningDesc:
+        'Each facility supports hands-on learning for specific trades under instructor supervision.',
+      sampleBefore: 'Facility details shown here are editable sample content. The center should update',
+      sampleAfter: 'to reflect the actual workshops and equipment available.',
+      trainingApproach: 'See Our Training Approach',
+    },
+
+    /* ── Practical training page ────────────────────────────── */
+    practicalTraining: {
+      heroDesc:
+        'At our center, learning means doing. Here is how workshop-based training builds real, workplace-ready skills.',
+      imageAlt: 'Trainee practicing with technical equipment under supervision',
+      approachEyebrow: 'Our Approach',
+      approachTitle: 'Skills Are Built in the Workshop, Not Just the Classroom',
+      approachDesc:
+        'Reading about wiring is not the same as wiring a board. Watching a weld is not the same as striking an arc. That is why every one of our programs is built around supervised practice with the actual tools and materials of the trade.',
+      principle1: 'Every concept is demonstrated before it is practiced',
+      principle2: 'Trainees repeat tasks until movements become confident habits',
+      principle3: 'Instructors correct technique early, before errors become routine',
+      principle4: 'Safety rules are practiced as seriously as the skills themselves',
+      areasEyebrow: 'Practice Areas',
+      areasTitle: 'Dedicated Spaces for Every Trade',
+      areasDesc: 'Each area is set up for safe, repeated practice of core trade skills.',
+      areaElectrical: 'Electrical Practice',
+      areaElectricalDesc:
+        'Wiring boards, installation panels and measuring instruments for safe, repeated hands-on practice.',
+      areaPlumbing: 'Plumbing Practice',
+      areaPlumbingDesc:
+        'Water supply and drainage demo lines where trainees cut, join and test real pipework.',
+      areaWelding: 'Welding Bays',
+      areaWeldingDesc:
+        'Individual bays with machines, ventilation and full protective equipment for arc and gas work.',
+      areaConstruction: 'Construction Yard',
+      areaConstructionDesc:
+        'Masonry walls, bar-bending stations and formwork assembly at working scale.',
+      areaComputer: 'Computer Laboratory',
+      areaComputerDesc:
+        'Practice systems for hardware assembly, OS installation and office applications.',
+      areaKitchen: 'Kitchen & Service Practice',
+      areaKitchenDesc:
+        'Food production and service training that mirrors the pace of commercial hospitality.',
+      photoButton: 'See Training Photos',
     },
 
     /* ── Gallery ────────────────────────────────────────────── */
@@ -259,6 +350,9 @@ export const translations = {
       heroTitle: 'Photo Gallery',
       heroDesc: 'Training sessions, workshops, students and events at the center.',
       viewLarger: 'View larger',
+      filterAria: 'Filter gallery by category',
+      sampleBefore:
+        'Sample photos shown for design purposes — replace with real photos of the center in',
       categories: {
         All: 'All',
         Training: 'Training',
@@ -275,6 +369,12 @@ export const translations = {
       heroDesc: 'Experienced instructors guide trainees step by step through every trade.',
       expertise: 'Expertise',
       sampleNote: 'These are sample profiles — real trainer details will appear here.',
+      noteBefore:
+        'Trainer profiles below are clearly-marked samples for design purposes. Real instructor profiles should replace them in',
+      noteAfter: 'before launch.',
+      joinTitle: 'Are you an experienced tradesperson?',
+      joinDesc:
+        'We are always interested in hearing from skilled professionals who enjoy teaching the next generation of technicians.',
     },
 
     /* ── Admission ──────────────────────────────────────────── */
@@ -287,6 +387,19 @@ export const translations = {
       documentsDesc: 'Typical requirements — please confirm with the center when you apply.',
       contactLine: 'Questions about admission? Call us, message us, or send an inquiry.',
       noticeNote: 'Admission information shown is a general guide — confirm current details with the center.',
+      stepsEyebrow: 'The Process',
+      applyEyebrow: 'Apply / Enquire',
+      inquiryFormTitle: 'Training Inquiry Form',
+      formDesc: 'Fill this in and we will get back to you about your chosen program.',
+      helpTitle: 'Need help deciding?',
+      helpDesc:
+        'Talk to us before choosing — we will happily explain what each trade involves and which course fits your goals.',
+      nextTitle: 'What happens next?',
+      next1: 'Our team reviews your inquiry.',
+      next2: 'We contact you with course details and upcoming batch dates.',
+      next3: 'You visit the center (optional but welcome).',
+      next4: 'Complete enrollment and start training.',
+      startInquiry: 'Start Below — Submit Your Inquiry',
     },
 
     /* ── FAQ ────────────────────────────────────────────────── */
@@ -341,6 +454,16 @@ export const translations = {
       successDesc: 'Thank you — we will get back to you within one to two working days.',
       demoNote: 'Demo mode: message will not actually be sent until EmailJS is configured in the .env file.',
       required: 'Required',
+      address: 'Address',
+      addressPlaceholder: 'City / district',
+      educationSelect: 'Select education level…',
+      emailError: 'Please enter a valid email address.',
+      messageError: 'Please write a short message.',
+      sendAnother: 'Send another inquiry',
+      sendError:
+        "We couldn't send your inquiry right now. Please try again or contact us directly by phone or email.",
+      privacyNote: 'Your details are only used to respond to your inquiry.',
+      ariaLabel: 'Training inquiry form',
     },
 
     /* ── WhatsApp ───────────────────────────────────────────── */
@@ -392,6 +515,7 @@ export const translations = {
       handsOn: 'प्रयोगात्मक तालिम',
       download: 'डाउनलोड',
       save: 'सुरक्षित गर्नुहोस्',
+      saved: 'सुरक्षित गरियो',
       cancel: 'रद्द गर्नुहोस्',
       delete: 'मेट्नुहोस्',
       search: 'खोज्नुहोस्',
@@ -534,6 +658,16 @@ export const translations = {
       tagline: 'वास्तविक अवसरका लागि व्यावहारिक सीप।',
       admin: 'एडमिन',
       followUs: 'पछ्याउनुहोस्',
+      trainingAreaLabels: {
+        electrical: 'इलेक्ट्रिकल',
+        plumbing: 'प्लम्बिङ',
+        construction: 'निर्माण',
+        computer: 'कम्प्युटर र प्रविधि',
+        mechanical: 'मेकानिकल / वेल्डिङ',
+        hospitality: 'होटल व्यवस्थापन',
+        agriculture: 'कृषि',
+        tailoring: 'सिलाई तथा गार्मेन्ट',
+      },
     },
 
     /* ── Search modal ───────────────────────────────────────── */
@@ -707,6 +841,16 @@ export const translations = {
       successDesc: 'धन्यवाद — हामी १–२ कार्यदिनभित्र सम्पर्क गर्नेछौं।',
       demoNote: 'डेमो मोड: .env फाइलमा EmailJS कन्फिगर नभएसम्म सन्देश वास्तवमा पठाइने छैन।',
       required: 'अनिवार्य',
+      address: 'ठेगाना',
+      addressPlaceholder: 'शहर / जिल्ला',
+      educationSelect: 'शैक्षिक स्तर छान्नुहोस्…',
+      emailError: 'कृपया मान्य इमेल ठेगाना लेख्नुहोस्।',
+      messageError: 'कृपया छोटो सन्देश लेख्नुहोस्।',
+      sendAnother: 'अर्को सोधपुछ पठाउनुहोस्',
+      sendError:
+        'अहिले तपाईंको सोधपुछ पठाउन सकिएन। कृपया फेरि प्रयास गर्नुहोस् वा फोन वा इमेलबाट सिधै सम्पर्क गर्नुहोस्।',
+      privacyNote: 'तपाईंको विवरण केवल तपाईंको सोधपुछको जवाफ दिन मात्र प्रयोग गरिन्छ।',
+      ariaLabel: 'तालिम सोधपुछ फारम',
     },
 
     /* ── WhatsApp ───────────────────────────────────────────── */

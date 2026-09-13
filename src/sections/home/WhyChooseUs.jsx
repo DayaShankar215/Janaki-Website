@@ -1,9 +1,11 @@
 ﻿import { useContent } from '@/content/ContentContext';
+import { useLanguage } from '@/i18n/LanguageContext';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Reveal } from '@/components/ui/Reveal';
 import { DynamicIcon } from '@/components/ui/DynamicIcon';
 
 export function WhyChooseUs() {
+  const { t } = useLanguage();
   const { whyChooseUs } = useContent();
   return (
     <section className="relative overflow-hidden bg-navy-950 py-16 sm:py-24">
@@ -17,9 +19,9 @@ export function WhyChooseUs() {
       <div className="container-x relative">
         <SectionHeading
           dark
-          eyebrow="Why Choose Us"
-          title="Training That Puts Skills First"
-          description="Everything we do is designed around one idea: learners master a trade by practicing it."
+          eyebrow={t('home.whyEyebrow')}
+          title={t('home.whyTitle')}
+          description={t('home.whyDesc')}
         />
 
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

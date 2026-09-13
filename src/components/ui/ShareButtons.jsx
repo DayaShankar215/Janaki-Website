@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Share2, Link2, MessageCircle, Check, Facebook } from 'lucide-react';
+import { useLanguage } from '@/i18n/LanguageContext';
 import { cn } from '@/utils/cn';
 
 export function copyToClipboard(text) {
@@ -9,6 +10,7 @@ export function copyToClipboard(text) {
 
 /** Share buttons for course details: copy link, WhatsApp, Facebook. */
 export function ShareButtons({ title, compact = false }) {
+  const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
   const url = typeof window !== 'undefined' ? window.location.href : '';
 
@@ -33,11 +35,11 @@ export function ShareButtons({ title, compact = false }) {
   return (
     <div className="flex flex-wrap items-center gap-2">
       <span className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-slate-400">
-        <Share2 className="h-3.5 w-3.5" /> Share
+        <Share2 className="h-3.5 w-3.5" /> {t('courseDetails.share')}
       </span>
       <button onClick={doCopy} className={cn(cls, copied ? 'border-emerald-400 text-emerald-600 dark:text-emerald-300' : 'hover:bg-slate-50 dark:hover:bg-white/5')}>
         {copied ? <Check className="h-3.5 w-3.5" /> : <Link2 className="h-3.5 w-3.5" />}
-        {copied ? 'Copied!' : 'Copy link'}
+        {copied ? t('courseDetails.copied') : t('courseDetails.copyLink')}
       </button>
       <a href={wa} target="_blank" rel="noopener noreferrer" className={cn(cls, 'hover:bg-[#25D366]/10 hover:text-[#128C7E]')}>
         <MessageCircle className="h-3.5 w-3.5" /> WhatsApp
