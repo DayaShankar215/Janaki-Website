@@ -36,7 +36,7 @@ function Group({ title, icon: Icon, children }) {
 }
 
 export default function SiteSettingsTab({ notify, guard }) {
-  const content = useContent();
+  const content = useContent(true);
   const [draft, setDraft] = useState(() => JSON.parse(JSON.stringify(content.siteConfig)));
 
   const set = (key) => (v) => setDraft((d) => ({ ...d, [key]: v }));

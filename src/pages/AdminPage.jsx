@@ -19,7 +19,7 @@ function Toast({ toast }) {
 }
 
 export default function AdminPage() {
-  const content = useContent();
+  const content = useContent(true);
   const [authed, setAuthed] = useState(() => sessionStorage.getItem('jttc-admin') === '1');
   const [tab, setTab] = useState('settings');
   const [toast, setToast] = useState(null);

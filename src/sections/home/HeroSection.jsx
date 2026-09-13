@@ -2,12 +2,11 @@
 import { animate, motion, useInView } from 'framer-motion';
 import { ArrowRight, Send, ChevronDown, CheckCircle2 } from 'lucide-react';
 import { useContent } from '@/content/ContentContext';
+import { useLanguage } from '@/i18n/LanguageContext';
 import { Button } from '@/components/ui/Button';
 
 const HERO_IMAGE =
   'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1600&q=75';
-
-const trustPoints = ['Hands-on workshop training', 'Instructor-guided learning', 'Short, focused programs'];
 
 const fadeUp = {
   initial: { opacity: 0, y: 26 },
@@ -39,9 +38,11 @@ function StatCounter({ end, suffix = '' }) {
 }
 
 export function HeroSection() {
+  const { t } = useLanguage();
   const { siteConfig, courses, categories, getActiveCourses } = useContent();
   const activeCount = getActiveCourses().length;
   const glowRef = useRef(null);
+  const trustPoints = [t('hero.trust.0'), t('hero.trust.1'), t('hero.trust.2')];
 
   const handleMouseMove = (e) => {
     const el = glowRef.current;
@@ -92,7 +93,7 @@ export function HeroSection() {
             className="inline-flex items-center gap-2 rounded-full border border-accent-500/40 bg-accent-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-accent-400 backdrop-blur-sm"
           >
             <span className="h-1.5 w-1.5 rounded-full bg-accent-400" aria-hidden="true" />
-            Technical &amp; Vocational Training Institute
+            {t('hero.badge')}
           </motion.p>
 
           <motion.h1
@@ -100,11 +101,11 @@ export function HeroSection() {
             transition={{ duration: 0.55, delay: 0.12 }}
             className="mt-6 font-display text-4xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl"
           >
-            Building Skills.
+            {t('hero.title1')}
             <br />
-            Creating{' '}
+            {t('hero.title2')}{' '}
             <span className="relative inline-block text-transparent [background-clip:text] [-webkit-background-clip:text] [background-image:linear-gradient(120deg,#FBBF24,#F59E0B)]">
-              Opportunities.
+              {t('hero.title3')}
               <svg
                 className="absolute -bottom-2 left-0 w-full text-accent-500/70"
                 viewBox="0 0 220 12"
