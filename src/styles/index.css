@@ -34,6 +34,174 @@
   .container-x {
     @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
   }
+
+  /* ── Glassmorphism surfaces ─────────────────────────────── */
+  .glass {
+    @apply border border-white/20 bg-white/10 backdrop-blur-xl;
+  }
+  .glass-dark {
+    @apply border border-white/10 bg-navy-900/40 backdrop-blur-xl;
+  }
+  .glass-card {
+    @apply rounded-2xl border border-white/15 bg-white/10 backdrop-blur-xl;
+  }
+
+  /* ── Animated gradient text (shimmer) ───────────────────── */
+  .text-gradient {
+    background-image: linear-gradient(120deg, #fbbf24, #f59e0b 40%, #6ee7b7 80%, #67e8f9);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    background-size: 200% auto;
+    animation: gradient-shift 6s linear infinite;
+  }
+
+  /* ── Moving aurora blob backgrounds ─────────────────────── */
+  .aurora {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .aurora-blob {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(70px);
+    opacity: 0.55;
+    will-change: transform;
+  }
+
+  /* ── Card glow that follows the cursor ──────────────────── */
+  .glow-card {
+    position: relative;
+    overflow: hidden;
+  }
+  .glow-card::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: radial-gradient(320px circle at var(--gx, 50%) var(--gy, 50%), rgba(251, 191, 36, 0.25), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .glow-card:hover::before {
+    opacity: 1;
+  }
+
+  /* ── Animated rainbow border ────────────────────────────── */
+  .border-anim {
+    position: relative;
+  }
+  .border-anim::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: linear-gradient(120deg, rgba(245, 166, 35, 0.9), rgba(251, 191, 36, 0.35), rgba(110, 231, 183, 0.55), rgba(103, 232, 249, 0.5), rgba(245, 166, 35, 0.9));
+    background-size: 300% 300%;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: border-flow 5s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .border-anim:hover::after,
+  .border-anim.active::after {
+    opacity: 1;
+  }
+
+  /* ── Soft dot grid (light sections) ─────────────────────── */
+  .bg-dots {
+    background-image: radial-gradient(rgba(30, 58, 138, 0.14) 1.1px, transparent 1.1px);
+    background-size: 22px 22px;
+  }
+  .dark .bg-dots {
+    background-image: radial-gradient(rgba(148, 163, 184, 0.12) 1.1px, transparent 1.1px);
+  }
+
+  /* ── Subtle grid lines for dark sections ────────────────── */
+  .bg-grid-lines {
+    background-image: linear-gradient(rgba(148, 163, 184, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(148, 163, 184, 0.07) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+
+  /* ── Shine sweep on hover ───────────────────────────────── */
+  .shine {
+    position: relative;
+    overflow: hidden;
+  }
+  .shine::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.7s ease;
+  }
+  .shine:hover::after {
+    left: 125%;
+  }
+}
+
+/* ── Keyframes ──────────────────────────────────────────────── */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes border-flow {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 300% 0%;
+  }
+}
+
+@keyframes aurora-drift-1 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(60px, -45px) scale(1.15);
+  }
+  66% {
+    transform: translate(-40px, 35px) scale(0.95);
+  }
+}
+
+@keyframes aurora-drift-2 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-70px, 40px) scale(1.12);
+  }
+}
+
+@keyframes aurora-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.8;
+  }
 }
 
 /* Respect users who prefer reduced motion */
@@ -50,19 +218,28 @@
   }
 }
 
-/* Subtle scrollbar (WebKit) */
+/* Fancy scrollbar (WebKit) */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 11px;
+  height: 11px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(100, 116, 139, 0.4);
+  background: linear-gradient(180deg, rgba(43, 79, 151, 0.55), rgba(43, 79, 151, 0.3));
   border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(100, 116, 139, 0.6);
+  background: linear-gradient(180deg, rgba(43, 79, 151, 0.8), rgba(43, 79, 151, 0.45));
+  background-clip: padding-box;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(148, 163, 184, 0.5), rgba(148, 163, 184, 0.25));
+  border: 2px solid transparent;
+  background-clip: padding-box;
 }
 
 /* Remove number input spinners for cleaner forms on some browsers */
