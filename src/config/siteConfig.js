@@ -59,15 +59,6 @@ export const siteConfig = {
   // While this array is empty, the website makes NO official claims.
   affiliations: [],
 
-  // ── Multilingual readiness ──────────────────────────────────
-  // The site ships in English. Content lives in data files so a
-  // Nepali translation layer can be added later without redesign.
-  i18n: {
-    defaultLanguage: 'en',
-    availableLanguages: ['en', 'ne'],
-    enabled: false,
-  },
-
   // ── Internal ────────────────────────────────────────────────
   defaultTitle: 'Janaki Technical Training Center Pvt. Ltd. | Technical & Vocational Training',
 };

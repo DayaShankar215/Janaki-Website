@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { MessageCircle, X } from 'lucide-react';
 import { useContent } from '@/content/ContentContext';
-import { useLanguage } from '@/i18n/LanguageContext';
 
 /**
  * Floating WhatsApp chat button (bottom-left, so it doesn't clash
@@ -11,7 +10,6 @@ import { useLanguage } from '@/i18n/LanguageContext';
  */
 export function WhatsAppButton() {
   const { siteConfig } = useContent();
-  const { t } = useLanguage();
   const [open, setOpen] = useState(false);
 
   const digits = (siteConfig.phone || '').replace(/\D/g, '');
@@ -22,7 +20,7 @@ export function WhatsAppButton() {
   // without '+' or leading '0'.
   const waLink = `https://wa.me/977${digits.replace(/^0/, '')}`;
 
-  const message = encodeURIComponent(t('whatsapp.greeting'));
+  const message = encodeURIComponent('Hello Janaki TTC! I found your website and I would like to ask about your training programs.');
 
   return (
     <div className="fixed bottom-6 left-6 z-40 flex flex-col items-start gap-3">
@@ -35,9 +33,9 @@ export function WhatsAppButton() {
             transition={{ duration: 0.2 }}
             className="w-64 rounded-2xl border border-slate-200 bg-white p-4 shadow-card-hover dark:border-white/10 dark:bg-navy-900"
           >
-            <p className="text-sm font-bold text-navy-900 dark:text-white">{t('whatsapp.title')}</p>
+            <p className="text-sm font-bold text-navy-900 dark:text-white">Chat with us on WhatsApp</p>
             <p className="mt-1 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
-              {t('whatsapp.desc')}
+              Ask about courses, schedules, fees or enrollment — we usually reply quickly during office hours.
             </p>
             <a
               href={`${waLink}?text=${message}`}
@@ -45,7 +43,7 @@ export function WhatsAppButton() {
               rel="noopener noreferrer"
               className="mt-3 flex items-center justify-center gap-1.5 rounded-xl bg-[#25D366] px-4 py-2.5 text-sm font-bold text-white transition hover:brightness-110"
             >
-              <MessageCircle className="h-4 w-4" /> {t('whatsapp.start')}
+              <MessageCircle className="h-4 w-4" /> Start a chat
             </a>
             <p className="mt-2 text-center text-[11px] text-slate-400">{siteConfig.phone}</p>
           </motion.div>
@@ -57,7 +55,7 @@ export function WhatsAppButton() {
         onClick={() => setOpen((o) => !o)}
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.94 }}
-        aria-label={open ? t('whatsapp.close') : t('whatsapp.open')}
+        aria-label={open ? 'Close WhatsApp chat' : 'Chat with us on WhatsApp'}
         className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-card-hover"
       >
         {open ? (

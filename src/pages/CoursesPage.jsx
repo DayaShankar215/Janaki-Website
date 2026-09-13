@@ -9,19 +9,19 @@ import { useContent } from '@/content/ContentContext';
 import { useBookmarks } from '@/hooks/useBookmarks';
 import { cn } from '@/utils/cn';
 
-const sortOptions = [
-  { value: 'featured', label: 'Sort: Featured' },
-  { value: 'name', label: 'Name (A–Z)' },
-  { value: 'duration-asc', label: 'Duration: Short → Long' },
-  { value: 'duration-desc', label: 'Duration: Long → Short' },
-];
-
 export default function CoursesPage() {
   const { courses, courseCountForCategory, categories, getCategoryLabel } = useContent();
   useSeo(
     'Courses & Training Programs',
     'Browse vocational training programs at Janaki Technical Training Center — electrical, plumbing, construction, welding, computer skills, hospitality, agriculture and tailoring.'
   );
+
+  const sortOptions = [
+    { value: 'featured', label: 'Sort: Featured' },
+    { value: 'name', label: 'Name (A–Z)' },
+    { value: 'duration-asc', label: 'Duration: Short → Long' },
+    { value: 'duration-desc', label: 'Duration: Long → Short' },
+  ];
 
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('all');
@@ -196,13 +196,10 @@ export default function CoursesPage() {
           )}
 
           <p className="mt-10 rounded-xl border border-accent-200 bg-accent-50 p-4 text-xs leading-relaxed text-accent-900 dark:border-accent-500/30 dark:bg-accent-500/10 dark:text-accent-200">
-            Note: Program availability changes between batches. Durations shown are typical samples — contact the
-            center for current schedules and confirmed details.
+            Note: Program availability changes between batches. Durations shown are typical samples — contact the center for current schedules and confirmed details.
           </p>
         </div>
       </section>
     </>
   );
 }
-
-

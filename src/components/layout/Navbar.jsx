@@ -1,19 +1,31 @@
 ﻿import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Menu, X, Sun, Moon, Zap, ChevronDown, Mail, Phone, Search, Globe } from 'lucide-react';
+import { Menu, X, Sun, Moon, Zap, ChevronDown, Mail, Phone, Search } from 'lucide-react';
 import { useContent } from '@/content/ContentContext';
-import { useLanguage } from '@/i18n/LanguageContext';
 import { useTheme } from '@/hooks/useTheme';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 import { cn } from '@/utils/cn';
 
+const primaryLinks = [
+  { to: '/', label: 'Home' },
+  { to: '/about', label: 'About' },
+  { to: '/courses', label: 'Courses' },
+  { to: '/practical-training', label: 'Practical Training' },
+  { to: '/facilities', label: 'Facilities' },
+  { to: '/gallery', label: 'Gallery' },
+];
+
+const moreLinks = [
+  { to: '/trainers', label: 'Trainers' },
+  { to: '/faq', label: 'FAQ' },
+  { to: '/admission', label: 'Admission' },
+];
+
 function Logo() {
   const { siteConfig } = useContent();
-  const { t } = useLanguage();
-  const taglineKey = 'nav.tagline';
   return (
-    <Link to="/" className="flex items-center gap-2.5 group" aria-label={`${siteConfig.name} — ${t('nav.tagline')}`}>
+    <Link to="/" className="flex items-center gap-2.5 group" aria-label={`${siteConfig.name} — Training Center`}>
       <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-navy-600 to-navy-900 shadow-card transition-transform group-hover:scale-105 dark:from-navy-500 dark:to-navy-800">
         <Zap className="h-5 w-5 text-accent-400" fill="currentColor" aria-hidden="true" />
       </span>
@@ -22,7 +34,7 @@ function Logo() {
           Janaki Technical
         </span>
         <span className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-navy-500 dark:text-navy-300">
-          {t('nav.tagline')}
+          Training Center
         </span>
       </span>
     </Link>
@@ -31,28 +43,11 @@ function Logo() {
 
 export function Navbar({ onOpenSearch }) {
   const { siteConfig } = useContent();
-  const { t, lang, setLang } = useLanguage();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const { theme, toggle } = useTheme();
-  const location = useLocation();
-
-  const primaryLinks = [
-    { to: '/', label: t('nav.home') },
-    { to: '/about', label: t('nav.about') },
-    { to: '/courses', label: t('nav.courses') },
-    { to: '/practical-training', label: t('nav.practicalTraining') },
-    { to: '/facilities', label: t('nav.facilities') },
-    { to: '/gallery', label: t('nav.gallery') },
-  ];
-
-  const moreLinks = [
-    { to: '/trainers', label: t('nav.trainers') },
-    { to: '/faq', label: t('nav.faq') },
-    { to: '/admission', label: t('nav.admission') },
-  ];
-
+const location = useLocation();
   useBodyScrollLock(open);
 
   useEffect(() => {
@@ -130,7 +125,7 @@ export function Navbar({ onOpenSearch }) {
                     : 'text-slate-700 hover:text-navy-700 hover:bg-navy-50 dark:text-slate-200 dark:hover:text-white dark:hover:bg-white/10'
                 )}
               >
-                {t('nav.institute')}
+                Institute
                 <ChevronDown className={cn('h-4 w-4 transition-transform', moreOpen && 'rotate-180')} aria-hidden="true" />
               </button>
               <AnimatePresence>
@@ -169,22 +164,11 @@ export function Navbar({ onOpenSearch }) {
             <button
               type="button"
               onClick={onOpenSearch}
-              aria-label={`${t('common.search')} (${t('nav.searchShortcut')})`}
-              title={`${t('common.search')} (${t('nav.searchShortcut')})`}
+              aria-label="Search courses (Ctrl+K)"
+              title="Search courses (Ctrl+K)"
               className="hidden h-9 w-9 items-center justify-center rounded-lg text-slate-600 transition-colors hover:bg-navy-100/70 dark:text-slate-300 dark:hover:bg-white/10 md:flex"
             >
               <Search className="h-5 w-5" />
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setLang(lang === 'en' ? 'ne' : 'en')}
-              aria-label="Toggle language"
-              title="Toggle language"
-              className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-600 transition-colors hover:bg-navy-100/70 dark:text-slate-300 dark:hover:bg-white/10"
-            >
-              <Globe className="h-5 w-5" />
-              <span className="sr-only">{lang === 'en' ? 'नेपाली' : 'English'}</span>
             </button>
 
             <button
@@ -200,7 +184,7 @@ export function Navbar({ onOpenSearch }) {
               to="/admission"
               className="hidden rounded-lg bg-accent-500 px-4 py-2 text-sm font-bold text-navy-950 shadow-soft transition-all hover:bg-accent-400 sm:inline-flex"
             >
-              {t('nav.applyNow')}
+              Apply Now
             </Link>
 
             <button
@@ -250,7 +234,7 @@ export function Navbar({ onOpenSearch }) {
                     to="/admission"
                     className="block rounded-xl bg-accent-500 px-4 py-3 text-center text-base font-bold text-navy-950"
                   >
-                    {t('nav.applyNow')}
+                    Apply Now — Enroll in a Course
                   </Link>
                 </li>
               </ul>

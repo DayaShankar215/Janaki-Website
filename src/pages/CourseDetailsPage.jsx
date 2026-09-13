@@ -77,7 +77,7 @@ return (
         <div className="container-x relative py-12 sm:py-16">
           <nav aria-label="Breadcrumb" className="mb-6">
             <ol className="flex flex-wrap items-center gap-1.5 text-sm text-slate-400">
-              <li><Link to="/" className="hover:text-accent-400">Home</Link></li>
+<li><Link to="/" className="hover:text-accent-400">Home</Link></li>
               <li aria-hidden="true"><ArrowRight className="inline h-3.5 w-3.5" /></li>
               <li><Link to="/courses" className="hover:text-accent-400">Courses</Link></li>
               <li aria-hidden="true"><ArrowRight className="inline h-3.5 w-3.5" /></li>
@@ -89,7 +89,7 @@ return (
             <div>
               <div className="flex flex-wrap items-center gap-2">
                 <Badge tone="amber">{getCategoryLabel(course.categoryId)}</Badge>
-                {course.active ? (
+{course.active ? (
                   <Badge tone="green">Currently enrolling</Badge>
                 ) : (
                   <Badge tone="gray">Not currently enrolling</Badge>
@@ -109,7 +109,7 @@ return (
                 </span>
 {course.practicalFocus && (
                   <span className="inline-flex items-center gap-2">
-                    <Wrench className="h-4 w-4 text-accent-400" /> Hands-on practical training
+                    <Wrench className="h-4 w-4 text-accent-400" /> Hands-on practical
                   </span>
                 )}
               </div>
@@ -152,10 +152,9 @@ return (
 
       {!course.active && (
         <div className="container-x pt-6">
-          <p className="flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm font-medium text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200">
+<p className="flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm font-medium text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200">
             <CircleAlert className="h-5 w-5 shrink-0" />
-            This program is listed for information only and is not currently open for enrollment. Contact us to ask
-            about upcoming batches.
+            This program is listed for information only and is not currently open for enrollment. Contact us to ask about upcoming batches.
           </p>
         </div>
       )}
@@ -165,7 +164,7 @@ return (
         <div className="container-x grid items-start gap-10 lg:grid-cols-[1fr_340px] lg:gap-14">
           {/* Main content */}
           <article>
-            <DetailBlock icon={GraduationCap} title="Overview">
+            <DetailBlock icon={GraduationCap} title="Course Overview">
               <div className="space-y-4 text-base leading-relaxed text-slate-600 dark:text-slate-300">
                 {course.overview.map((para) => (
                   <p key={para.slice(0, 32)}>{para}</p>
@@ -173,7 +172,7 @@ return (
               </div>
             </DetailBlock>
 
-            <DetailBlock icon={CheckCircle2} title="What You Will Learn">
+            <DetailBlock icon={CheckCircle2} title="Skills Covered">
               <ul className="grid gap-2.5 sm:grid-cols-2">
                 {course.skills.map((s) => (
                   <li
@@ -187,7 +186,7 @@ return (
               </ul>
             </DetailBlock>
 
-            <DetailBlock icon={Wrench} title="Practical Skills You Practice">
+            <DetailBlock icon={Wrench} title="Practical Skills">
               <ul className="space-y-2.5">
                 {course.practicalSkills.map((s) => (
                   <li key={s} className="flex items-start gap-3 text-sm leading-relaxed text-slate-700 dark:text-slate-200">
@@ -209,7 +208,7 @@ return (
               </ul>
             </DetailBlock>
 
-            <DetailBlock icon={Wrench} title="Tools & Equipment You Will Use">
+            <DetailBlock icon={Wrench} title="Tools & Equipment">
               <div className="flex flex-wrap gap-2">
                 {course.tools.map((t) => (
                   <span
@@ -234,9 +233,8 @@ return (
                   </li>
                 ))}
               </ul>
-              <p className="mt-4 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
-                Career examples are informational — they describe common pathways in this trade, not guaranteed
-                placements.
+<p className="mt-4 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+                Career examples are informational — they describe common pathways in this trade, not guaranteed placements.
               </p>
             </DetailBlock>
           </article>
@@ -244,12 +242,12 @@ return (
           {/* Sticky sidebar */}
           <aside className="lg:sticky lg:top-24">
             <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 shadow-card dark:border-white/10 dark:bg-white/[0.04]">
-              <h2 className="font-display text-lg font-bold text-navy-900 dark:text-white">Course Summary</h2>
+<h2 className="font-display text-lg font-bold text-navy-900 dark:text-white">Course Summary</h2>
               <dl className="mt-4 space-y-3 text-sm">
                 {[
                   ['Category', getCategoryLabel(course.categoryId)],
                   ['Duration', course.durationLabel],
-                  ['Skill level', course.level],
+                  ['Level', course.level],
                   ['Format', 'Workshop-based practical training'],
                   ['Status', course.active ? 'Open for enrollment' : 'Not currently running'],
                 ].map(([label, value]) => (
@@ -266,8 +264,8 @@ return (
                 size="lg"
                 className="mt-5 w-full group"
               >
-                <Send className="h-4 w-4" />
-                Enquire About This Course
+<Send className="h-4 w-4" />
+                Enquire about this course
               </Button>
               <Button to="/admission" variant="outline" size="md" className="mt-3 w-full">
                 See Admission Process
@@ -278,7 +276,7 @@ return (
               to="/courses"
               className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-navy-700 hover:text-accent-600 dark:text-accent-400 dark:hover:text-accent-300"
             >
-              <ArrowLeft className="h-4 w-4" /> Back to all courses
+<ArrowLeft className="h-4 w-4" /> Back to Courses
             </Link>
           </aside>
         </div>
@@ -307,7 +305,7 @@ function SectionHeadingSmall() {
   return (
     <div className="flex flex-wrap items-end justify-between gap-4">
       <h2 className="font-display text-2xl font-bold tracking-tight text-navy-900 dark:text-white sm:text-3xl">
-        Related Training Programs
+        Related Courses
       </h2>
       <Link to="/courses" className="group inline-flex items-center gap-1.5 text-sm font-bold text-navy-700 hover:text-accent-600 dark:text-accent-400">
         View all courses
@@ -316,4 +314,3 @@ function SectionHeadingSmall() {
     </div>
   );
 }
-

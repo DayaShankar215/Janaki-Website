@@ -1,7 +1,6 @@
 ﻿import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { useContent } from '@/content/ContentContext';
-import { useLanguage } from '@/i18n/LanguageContext';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Reveal } from '@/components/ui/Reveal';
 import { Button } from '@/components/ui/Button';
@@ -11,7 +10,6 @@ const IMG_B = 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto
 
 /** "Learn by Doing" — practical training teaser. */
 export function PracticalBand() {
-  const { t } = useLanguage();
   const { facilities } = useContent();
   return (
     <section className="bg-white py-16 dark:bg-navy-950 sm:py-24">
@@ -20,13 +18,13 @@ export function PracticalBand() {
         <div className="order-2 lg:order-1">
           <SectionHeading
             align="left"
-            eyebrow={t('home.practicalEyebrow')}
+            eyebrow="Our Facilities"
             title={
               <>
-                {t('home.practicalTitle')}
+                Real Training, <span className="text-accent-500">Real Facilities</span>
               </>
             }
-            description={t('home.practicalDesc')}
+            description="Our dedicated training areas give you hands-on experience with the tools and materials used in real workplaces."
             className="[&>p]:mt-4"
           />
 
@@ -40,7 +38,7 @@ export function PracticalBand() {
           </ul>
 
           <Button to="/practical-training" variant="primary" size="lg" className="group mt-8">
-            {t('home.practicalButton')}
+            {'Explore Our Facilities'}
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Button>
         </div>
@@ -49,7 +47,7 @@ export function PracticalBand() {
         <Reveal className="relative order-1 mx-auto w-full max-w-lg lg:order-2 lg:max-w-none">
           <img
             src={IMG_A}
-            alt={t('home.practicalImgAlt1')}
+            alt="Welding training with protective equipment"
             loading="lazy"
             className="aspect-[4/3] w-full rounded-3xl object-cover shadow-card-hover"
             onError={(e) => {
@@ -58,7 +56,7 @@ export function PracticalBand() {
           />
           <img
             src={IMG_B}
-            alt={t('home.practicalImgAlt2')}
+            alt="Construction practice at the training yard"
             loading="lazy"
             className="absolute -bottom-10 -left-4 hidden w-52 rounded-2xl object-cover shadow-card-hover ring-8 ring-white dark:ring-navy-950 sm:block aspect-[5/4]"
             onError={(e) => {

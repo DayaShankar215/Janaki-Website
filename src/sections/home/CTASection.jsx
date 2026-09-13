@@ -1,13 +1,11 @@
 ﻿import { useState } from 'react';
 import { Phone, ArrowRight, Send, CheckCircle2, BellRing } from 'lucide-react';
 import { useContent } from '@/content/ContentContext';
-import { useLanguage } from '@/i18n/LanguageContext';
 import { Button } from '@/components/ui/Button';
 import { Reveal } from '@/components/ui/Reveal';
 
 /** Final call-to-action band with a "batch alerts" mini form. */
 export function CTASection() {
-  const { t } = useLanguage();
   const { siteConfig } = useContent();
   const [email, setEmail] = useState('');
   const [done, setDone] = useState(false);
@@ -17,7 +15,7 @@ export function CTASection() {
     e.preventDefault();
     const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
     if (!ok) {
-      setError(t('cta.alertError'));
+      setError('Please enter a valid email address.');
       return;
     }
     setError('');
@@ -29,7 +27,7 @@ export function CTASection() {
       localStorage.setItem(KEY, JSON.stringify(list));
       setDone(true);
     } catch {
-      setError(t('cta.alertSaveError'));
+      setError('Could not save your email right now. Please try again.');
     }
   };
 
@@ -46,19 +44,19 @@ export function CTASection() {
         <Reveal>
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-              {t('cta.title')}
+              {'Ready to Build Your Future?'}
             </h2>
             <p className="mt-4 text-lg leading-relaxed text-slate-300">
-              {t('cta.desc')}
+              {'Choose a trade, learn it practically, and step confidently toward work you can be proud of.'}
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3.5">
               <Button to="/admission" variant="accent" size="lg" className="group shine">
-                {t('cta.applyNow')}
+                {'Apply Now'}
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Button>
               <Button to="/contact" variant="white-outline" size="lg">
                 <Send className="h-4 w-4" />
-                {t('cta.contact')}
+                {'Contact Us'}
               </Button>
             </div>
             <a
@@ -66,14 +64,14 @@ export function CTASection() {
               className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-slate-300 transition-colors hover:text-accent-400"
             >
               <Phone className="h-4 w-4" />
-              {t('cta.callUs')} {siteConfig.phone}
+              {'Call us:'} {siteConfig.phone}
             </a>
 
             {/* Batch alert signup */}
             <div className="mx-auto mt-8 max-w-md">
               {done ? (
                 <p className="flex items-center justify-center gap-2 rounded-2xl border border-emerald-400/30 bg-emerald-500/10 px-4 py-3 text-sm font-medium text-emerald-300">
-                  <CheckCircle2 className="h-5 w-5" /> {t('cta.alertSuccess')}
+                  <CheckCircle2 className="h-5 w-5" /> {"You're on the list! We'll email you when a new batch opens."}
                 </p>
               ) : (
                 <form onSubmit={subscribe} noValidate className="flex flex-col gap-2 sm:flex-row">
@@ -86,8 +84,8 @@ export function CTASection() {
                         setEmail(e.target.value);
                         setError('');
                       }}
-                      placeholder={t('cta.alertPlaceholder')}
-                      aria-label={t('cta.alertPlaceholder')}
+                      placeholder="Your email for new-batch alerts"
+                      aria-label="Your email for new-batch alerts"
                       className="w-full rounded-xl border border-white/20 bg-white/10 py-3 pl-10 pr-4 text-sm text-white placeholder:text-slate-400 backdrop-blur focus:border-accent-400 focus:outline-none focus:ring-2 focus:ring-accent-400/40"
                     />
                   </div>
@@ -95,13 +93,13 @@ export function CTASection() {
                     type="submit"
                     className="rounded-xl bg-accent-500 px-5 py-3 text-sm font-bold text-navy-950 transition hover:bg-accent-400"
                   >
-                    {t('cta.alertButton')}
+                    {'Notify me'}
                   </button>
                 </form>
               )}
               {error && <p className="mt-2 text-xs text-red-400">{error}</p>}
               <p className="mt-2 text-[11px] text-slate-500">
-                {t('cta.alertPrivacy')}
+                {'We only use your email to notify you about admissions & batch openings.'}
               </p>
             </div>
           </div>

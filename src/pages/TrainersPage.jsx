@@ -17,7 +17,7 @@ export default function TrainersPage() {
     <>
       <PageHero
         title="Our Trainers"
-        description="Instructor-guided practice is at the heart of our training. Meet the team that demonstrates, corrects and coaches."
+        description="Experienced instructors guide trainees step by step through every trade."
         breadcrumb={[{ label: 'Trainers' }]}
       />
 
@@ -25,9 +25,8 @@ export default function TrainersPage() {
         <div className="container-x">
           <p className="mx-auto flex max-w-2xl items-start gap-2.5 rounded-xl border border-accent-200 bg-accent-50 p-4 text-xs leading-relaxed text-accent-900 dark:border-accent-500/30 dark:bg-accent-500/10 dark:text-accent-200">
             <Info className="mt-0.5 h-4 w-4 shrink-0" />
-            Trainer profiles below are clearly-marked samples for design purposes. Real instructor profiles should
-            replace them in
-            <code className="mx-1 rounded bg-white/60 px-1.5 py-0.5 font-mono dark:bg-white/10">src/data/trainers.js</code>
+            Trainer profiles below are clearly-marked samples for design purposes. Real instructor profiles should replace them in{' '}
+            <code className="mx-1 rounded bg-white/60 px-1.5 py-0.5 font-mono dark:bg-white/10">src/data/trainers.js</code>{' '}
             before launch.
           </p>
 
@@ -43,17 +42,16 @@ export default function TrainersPage() {
           <Reveal delay={0.15}>
             <div className="mt-14 flex flex-col items-center justify-between gap-5 rounded-3xl border border-slate-200 bg-white p-8 shadow-card dark:border-white/10 dark:bg-white/[0.04] sm:flex-row">
               <div>
-                <h2 className="font-display text-xl font-bold text-navy-900 dark:text-white">
+<h2 className="font-display text-xl font-bold text-navy-900 dark:text-white">
                   Are you an experienced tradesperson?
                 </h2>
                 <p className="mt-1.5 max-w-md text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-                  We are always interested in hearing from skilled professionals who enjoy teaching the next
-                  generation of technicians.
+                  We are always interested in hearing from skilled professionals who enjoy teaching the next generation of technicians.
                 </p>
               </div>
               <Button to="/contact" variant="accent" size="lg" className="shrink-0 group">
                 <Mail className="h-4 w-4" />
-                Get in Touch
+                Contact us
               </Button>
             </div>
           </Reveal>
@@ -62,4 +60,3 @@ export default function TrainersPage() {
     </>
   );
 }
-

@@ -24,8 +24,8 @@ export default function GalleryPage() {
   return (
     <>
       <PageHero
-        title="Gallery"
-        description="A look inside our training sessions, workshops and student activities."
+        title="Photo Gallery"
+        description="Training sessions, workshops, students and events at the center."
         breadcrumb={[{ label: 'Gallery' }]}
       />
 
@@ -84,8 +84,8 @@ export default function GalleryPage() {
             ))}
           </div>
 
-          <p className="mt-8 text-center text-xs leading-relaxed text-slate-500 dark:text-slate-400">
-            Sample photos shown for design purposes — replace with real photos of the center in
+<p className="mt-8 text-center text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+            Sample photos shown for design purposes — replace with real photos of the center in{' '}
             <code className="mx-1 rounded bg-slate-100 px-1.5 py-0.5 font-mono dark:bg-white/10">src/data/gallery.js</code>.
           </p>
         </div>
@@ -95,4 +95,3 @@ export default function GalleryPage() {
     </>
   );
 }
-

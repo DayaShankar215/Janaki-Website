@@ -5,11 +5,9 @@ import { Badge } from '@/components/ui/Badge';
 import { BookmarkButton } from '@/components/ui/BookmarkButton';
 import { useContent } from '@/content/ContentContext';
 import { useBookmarks } from '@/hooks/useBookmarks';
-import { useLanguage } from '@/i18n/LanguageContext';
 
 export function CourseCard({ course }) {
   const { getCategoryLabel } = useContent();
-  const { t } = useLanguage();
   const { isBookmarked, toggle } = useBookmarks();
   const on = isBookmarked(course.slug);
   return (
@@ -33,7 +31,7 @@ export function CourseCard({ course }) {
         {!course.active && (
           <div className="absolute inset-0 flex items-end justify-start bg-navy-950/40 p-3">
             <Badge tone="gray" className="bg-navy-950/85 text-slate-200 backdrop-blur-sm">
-              {t('common.notEnrolling')}
+              {'Not currently enrolling'}
             </Badge>
           </div>
         )}
@@ -60,7 +58,7 @@ export function CourseCard({ course }) {
           </span>
           {course.practicalFocus && (
             <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2 py-0.5 font-semibold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">
-              {t('common.handsOn')}
+              {'Hands-on practical'}
             </span>
           )}
         </div>
@@ -70,16 +68,16 @@ export function CourseCard({ course }) {
             to={`/courses/${course.slug}`}
             className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-navy-200 px-3 py-2 text-sm font-semibold text-navy-800 transition-colors hover:border-navy-500 hover:bg-navy-50 dark:border-white/20 dark:text-white dark:hover:bg-white/10"
           >
-{t('courses.viewDetails')}
+{'View Details'}
             <ArrowRight className="h-4 w-4" />
           </Link>
           <Link
             to={`/contact?course=${course.slug}`}
-            aria-label={`${t('common.enquire')} ${course.title}`}
+            aria-label={`Enquire ${course.title}`}
             className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-navy-700 px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-navy-600 dark:bg-navy-500 dark:hover:bg-navy-400"
           >
 <Send className="h-4 w-4" />
-            {t('common.enquire')}
+            {'Enquire'}
           </Link>
         </div>
       </div>

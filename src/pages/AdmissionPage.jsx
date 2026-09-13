@@ -18,7 +18,7 @@ export default function AdmissionPage() {
     <>
       <PageHero
         title="Admission & Enrollment"
-        description="Five simple steps between you and your first day of practical training."
+        description="A simple, friendly process to join one of our training programs."
         breadcrumb={[{ label: 'Admission' }]}
       />
 
@@ -27,8 +27,8 @@ export default function AdmissionPage() {
         <div className="container-x">
           <SectionHeading
             eyebrow="The Process"
-            title="How to Enroll"
-            description="Follow these steps — or simply send an inquiry and our team will guide you through everything."
+            title="How to Apply"
+            description="Follow these simple steps to secure your seat."
           />
 
           <ol className="relative mx-auto mt-14 max-w-3xl space-y-8 before:absolute before:bottom-6 before:left-[1.4rem] before:top-6 before:w-0.5 before:bg-gradient-to-b before:from-navy-300 before:via-navy-200 before:to-accent-400 dark:before:from-white/20 dark:before:via-white/10 dark:before:to-accent-500/60 sm:before:left-6">
@@ -55,7 +55,7 @@ export default function AdmissionPage() {
             <div className="mx-auto mt-14 max-w-3xl rounded-2xl border border-slate-200 bg-white p-6 shadow-card dark:border-white/10 dark:bg-white/[0.04] sm:p-8">
               <h2 className="flex items-center gap-2.5 font-display text-xl font-bold text-navy-900 dark:text-white">
                 <FileText className="h-5 w-5 text-accent-600 dark:text-accent-400" />
-                Documents Typically Required
+                Documents to Prepare
               </h2>
               <ul className="mt-4 grid gap-2.5 sm:grid-cols-2">
                 {admissionDocuments.map((d) => (
@@ -66,8 +66,7 @@ export default function AdmissionPage() {
                 ))}
               </ul>
               <p className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
-                Please confirm the exact document list with our office when enrolling — requirements can vary by
-                program.
+                Typical requirements — please confirm with the center when you apply.
               </p>
             </div>
           </Reveal>
@@ -103,14 +102,13 @@ export default function AdmissionPage() {
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-card dark:border-white/10 dark:bg-white/[0.04]">
               <h3 className="font-display text-base font-bold text-navy-900 dark:text-white">Need help deciding?</h3>
               <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-                Talk to us before choosing — we will happily explain what each trade involves and which course fits
-                your goals.
+                Talk to us before choosing — we will happily explain what each trade involves and which course fits your goals.
               </p>
               <a
                 href={`tel:${siteConfig.phone}`}
                 className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-navy-700 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-navy-600 dark:bg-navy-500 dark:hover:bg-navy-400"
               >
-                <Phone className="h-4 w-4" /> Call {siteConfig.phone}
+                <Phone className="h-4 w-4" /> Call us: {siteConfig.phone}
               </a>
             </div>
 
@@ -129,5 +127,3 @@ export default function AdmissionPage() {
     </>
   );
 }
-
-

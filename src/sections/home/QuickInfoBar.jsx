@@ -1,31 +1,15 @@
 import { GraduationCap, Hammer, Users, Briefcase } from 'lucide-react';
 import { Reveal } from '@/components/ui/Reveal';
 
-const items = [
-  {
-    icon: GraduationCap,
-    title: 'Technical & Vocational Training',
-    text: 'Skill-focused programs across essential trades.',
-  },
-  {
-    icon: Hammer,
-    title: 'Practical Learning',
-    text: 'Trainees work directly with tools and materials.',
-  },
-  {
-    icon: Users,
-    title: 'Experienced Trainers',
-    text: 'Instructor-guided sessions with real demonstrations.',
-  },
-  {
-    icon: Briefcase,
-    title: 'Career-Oriented Skills',
-    text: 'Abilities designed for workplaces and self-employment.',
-  },
-];
-
 /** Quick information bar overlapping the hero. */
 export function QuickInfoBar() {
+  const items = [
+    { icon: GraduationCap, title: 'Structured Programs', text: 'Defined hours and learning stages for every trade.' },
+    { icon: Hammer, title: 'Comprehensive Training', text: 'Guided practice with real tools and materials.' },
+    { icon: Users, title: 'Flexible Schedules', text: 'Regular, morning and evening batch options.' },
+    { icon: Briefcase, title: 'Beginner Friendly', text: 'No prior experience needed to start.' },
+  ];
+
   return (
     <section id="quick-info" className="relative z-10 bg-white dark:bg-navy-950">
       <div className="container-x">

@@ -5,14 +5,6 @@ import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Reveal } from '@/components/ui/Reveal';
 import { Button } from '@/components/ui/Button';
 
-const missionPoints = [
-  'Deliver practical, hands-on technical training',
-  'Build employable, industry-relevant skills',
-  'Develop technical competence and confidence',
-  'Support career development for every learner',
-  'Make quality vocational education accessible',
-];
-
 const IMG_MAIN =
   'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1000&q=72';
 const IMG_SMALL =
@@ -20,6 +12,13 @@ const IMG_SMALL =
 
 export function AboutPreview() {
   const { values, siteConfig } = useContent();
+  const missionPoints = [
+    'Deliver practical, hands-on technical training',
+    'Build employable, industry-relevant skills',
+    'Develop technical competence and confidence',
+    'Support career development for every learner',
+    'Make quality vocational education accessible',
+  ];
   return (
     <section className="bg-white py-16 dark:bg-navy-950 sm:py-24">
       <div className="container-x grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
@@ -56,28 +55,27 @@ export function AboutPreview() {
           />
           <div className="mt-5 space-y-4 text-base leading-relaxed text-slate-600 dark:text-slate-300">
             <p>
-              <strong className="font-semibold text-navy-900 dark:text-white">{siteConfig.name}</strong> is a
-              technical and vocational training institution focused on hands-on skill development. We prepare
-              learners for real work â€” in workshops, on sites, and in service businesses.
+              <strong className="font-semibold text-navy-900 dark:text-white">{siteConfig.name}</strong>{' '}
+              {'is a technical and vocational training institution focused on hands-on skill development. We prepare learners for real work — in workshops, on sites, and in service businesses.'}
             </p>
 
             <div className="grid gap-4 pt-2 sm:grid-cols-2">
               <div className="rounded-2xl border border-slate-200 bg-slate-50/60 p-5 dark:border-white/10 dark:bg-white/[0.04]">
                 <h3 className="flex items-center gap-2 font-display text-base font-bold text-navy-900 dark:text-white">
                   <Target className="h-5 w-5 text-accent-500" />
-                  Our Mission
+                  {'Our Mission'}
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-                  Equip learners with practical skills, technical competence, and the confidence to build careers.
+                  {'Equip learners with practical skills, technical competence, and the confidence to build careers.'}
                 </p>
               </div>
               <div className="rounded-2xl border border-slate-200 bg-slate-50/60 p-5 dark:border-white/10 dark:bg-white/[0.04]">
                 <h3 className="flex items-center gap-2 font-display text-base font-bold text-navy-900 dark:text-white">
                   <Eye className="h-5 w-5 text-accent-500" />
-                  Our Vision
+                  {'Our Vision'}
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-                  To produce skilled, capable human resources who strengthen communities and industries.
+                  {'To produce skilled, capable human resources who strengthen communities and industries.'}
                 </p>
               </div>
             </div>
@@ -92,13 +90,13 @@ export function AboutPreview() {
             </ul>
 
             <p className="text-sm text-slate-500 dark:text-slate-400">
-              <span className="font-semibold text-navy-800 dark:text-slate-200">Our values:</span>{' '}
-              {values.map((v) => v.title).join(' Â· ')}
+              <span className="font-semibold text-navy-800 dark:text-slate-200">{'Our values:'}</span>{' '}
+              {values.map((v) => v.title).join(' · ')}
             </p>
           </div>
 
           <Button to="/about" variant="primary" size="lg" className="group mt-7">
-            More About Us
+            {'More About Us'}
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Button>
         </div>

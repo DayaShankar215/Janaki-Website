@@ -56,7 +56,7 @@ export default function ContactPage() {
 
   return (
     <>
-      <PageHero
+<PageHero
         title="Contact Us"
         description="Questions about a course, schedules or enrollment? Reach us by phone, email, or the inquiry form below."
         breadcrumb={[{ label: 'Contact' }]}
@@ -67,7 +67,7 @@ export default function ContactPage() {
           {/* Form */}
           <Reveal>
             <div id="inquiry-form" className="scroll-mt-24 rounded-3xl border border-slate-200 bg-slate-50/70 p-6 shadow-card dark:border-white/10 dark:bg-white/[0.03] sm:p-9">
-              <h2 className="font-display text-2xl font-bold tracking-tight text-navy-900 dark:text-white">
+<h2 className="font-display text-2xl font-bold tracking-tight text-navy-900 dark:text-white">
                 Send an Inquiry
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
@@ -81,7 +81,7 @@ export default function ContactPage() {
 
           {/* Info column */}
           <div className="space-y-5 lg:sticky lg:top-24">
-            <InfoCard icon={MapPin} title="Visit Us">
+<InfoCard icon={MapPin} title="Visit Us">
               {siteConfig.address}
             </InfoCard>
 
@@ -139,7 +139,7 @@ export default function ContactPage() {
       <section className="border-t border-slate-100 bg-slate-50 py-14 dark:border-white/5 dark:bg-white/[0.02]">
         <div className="container-x">
           <Reveal>
-            <h2 className="text-center font-display text-2xl font-bold tracking-tight text-navy-900 dark:text-white sm:text-3xl">
+<h2 className="text-center font-display text-2xl font-bold tracking-tight text-navy-900 dark:text-white sm:text-3xl">
               Find Our Training Center
             </h2>
           </Reveal>
@@ -149,7 +149,7 @@ export default function ContactPage() {
               {mapSrc ? (
                 <iframe
                   src={mapSrc}
-                  title={`Map — ${siteConfig.name}`}
+                  title={`Find Our Training Center — ${siteConfig.name}`}
                   loading="lazy"
                   allowFullScreen
                   referrerPolicy="no-referrer-when-downgrade"
@@ -187,7 +187,7 @@ export default function ContactPage() {
           </Reveal>
 
           <p className="mt-4 text-center text-xs text-slate-500 dark:text-slate-400">
-            Update address &amp; location anytime in{' '}
+            Update address & location anytime in{' '}
             <Link to="/admin" className="font-semibold underline-offset-2 hover:underline">
               the admin panel
             </Link>{' '}
@@ -202,4 +202,3 @@ export default function ContactPage() {
     </>
   );
 }
-

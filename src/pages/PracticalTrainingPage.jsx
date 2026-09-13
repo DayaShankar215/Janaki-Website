@@ -8,59 +8,59 @@ import { DynamicIcon } from '@/components/ui/DynamicIcon';
 import { MethodologySection } from '@/sections/home/MethodologySection';
 import { CTASection } from '@/sections/home/CTASection';
 
-const practiceAreas = [
-  {
-    name: 'Electrical Practice',
-    description: 'Wiring boards, installation panels and measuring instruments for safe, repeated hands-on practice.',
-    icon: 'zap',
-    image:
-      'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=900&q=70',
-  },
-  {
-    name: 'Plumbing Practice',
-    description: 'Water supply and drainage demo lines where trainees cut, join and test real pipework.',
-    icon: 'droplets',
-    image:
-      'https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?auto=format&fit=crop&w=900&q=70',
-  },
-  {
-    name: 'Welding Bays',
-    description: 'Individual bays with machines, ventilation and full protective equipment for arc and gas work.',
-    icon: 'flame',
-    image:
-      'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=900&q=70',
-  },
-  {
-    name: 'Construction Yard',
-    description: 'Masonry walls, bar-bending stations and formwork assembly at working scale.',
-    icon: 'construction',
-    image:
-      'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=900&q=70',
-  },
-  {
-    name: 'Computer Laboratory',
-    description: 'Practice systems for hardware assembly, OS installation and office applications.',
-    icon: 'monitor',
-    image:
-      'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=70',
-  },
-  {
-    name: 'Kitchen & Service Practice',
-    description: 'Food production and service training that mirrors the pace of commercial hospitality.',
-    icon: 'chef-hat',
-    image:
-      'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=900&q=70',
-  },
-];
-
-const principles = [
-  'Every concept is demonstrated before it is practiced',
-  'Trainees repeat tasks until movements become confident habits',
-  'Instructors correct technique early, before errors become routine',
-  'Safety rules are practiced as seriously as the skills themselves',
-];
-
 export default function PracticalTrainingPage() {
+  const practiceAreas = [
+    {
+      name: 'Electrical Practice',
+      description: 'Wiring boards, installation panels and measuring instruments for safe, repeated hands-on practice.',
+      icon: 'zap',
+      image:
+        'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=900&q=70',
+    },
+    {
+      name: 'Plumbing Practice',
+      description: 'Water supply and drainage demo lines where trainees cut, join and test real pipework.',
+      icon: 'droplets',
+      image:
+        'https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?auto=format&fit=crop&w=900&q=70',
+    },
+    {
+      name: 'Welding Bays',
+      description: 'Individual bays with machines, ventilation and full protective equipment for arc and gas work.',
+      icon: 'flame',
+      image:
+        'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=900&q=70',
+    },
+    {
+      name: 'Construction Yard',
+      description: 'Masonry walls, bar-bending stations and formwork assembly at working scale.',
+      icon: 'construction',
+      image:
+        'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=900&q=70',
+    },
+    {
+      name: 'Computer Laboratory',
+      description: 'Practice systems for hardware assembly, OS installation and office applications.',
+      icon: 'monitor',
+      image:
+        'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=70',
+    },
+    {
+      name: 'Kitchen & Service Practice',
+      description: 'Food production and service training that mirrors the pace of commercial hospitality.',
+      icon: 'chef-hat',
+      image:
+        'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=900&q=70',
+    },
+  ];
+
+  const principles = [
+    'Every concept is demonstrated before it is practiced',
+    'Trainees repeat tasks until movements become confident habits',
+    'Instructors correct technique early, before errors become routine',
+    'Safety rules are practiced as seriously as the skills themselves',
+  ];
+
   useSeo(
     'Practical Training — Learn by Doing',
     'Hands-on vocational training at Janaki Technical Training Center: workshop practice in electrical, plumbing, welding, construction, computer and hospitality skills.'
@@ -84,9 +84,7 @@ export default function PracticalTrainingPage() {
               title="Skills Are Built in the Workshop, Not Just the Classroom"
             />
             <p className="mt-5 text-base leading-relaxed text-slate-600 dark:text-slate-300">
-              Reading about wiring is not the same as wiring a board. Watching a weld is not the same as striking an
-              arc. That is why every one of our programs is built around supervised practice with the actual tools
-              and materials of the trade.
+              Reading about wiring is not the same as wiring a board. Watching a weld is not the same as striking an arc. That is why every one of our programs is built around supervised practice with the actual tools and materials of the trade.
             </p>
             <ul className="mt-6 space-y-3">
               {principles.map((p) => (

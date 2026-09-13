@@ -1,11 +1,9 @@
 ﻿import { useContent } from '@/content/ContentContext';
-import { useLanguage } from '@/i18n/LanguageContext';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Reveal } from '@/components/ui/Reveal';
 import { DynamicIcon } from '@/components/ui/DynamicIcon';
 
 export function WhyChooseUs() {
-  const { t } = useLanguage();
   const { whyChooseUs } = useContent();
   return (
     <section className="relative overflow-hidden bg-navy-950 py-16 sm:py-24">
@@ -19,9 +17,9 @@ export function WhyChooseUs() {
       <div className="container-x relative">
         <SectionHeading
           dark
-          eyebrow={t('home.whyEyebrow')}
-          title={t('home.whyTitle')}
-          description={t('home.whyDesc')}
+          eyebrow="Why Janaki TTC"
+          title="Why Students Choose Us"
+          description="A practical-first approach to learning that prepares trainees for real work, real jobs and real opportunities."
         />
 
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

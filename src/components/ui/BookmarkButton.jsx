@@ -1,6 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
-import { useLanguage } from '@/i18n/LanguageContext';
 import { cn } from '@/utils/cn';
 
 /**
@@ -8,8 +7,7 @@ import { cn } from '@/utils/cn';
  * a link to the inquiry form when JS bookmarks are unavailable.
  */
 export function BookmarkButton({ slug, isOn, onToggle, className }) {
-  const { t } = useLanguage();
-  const label = isOn ? t('common.saved') : t('common.save');
+  const label = isOn ? 'Saved' : 'Save';
   return (
     <button
       type="button"

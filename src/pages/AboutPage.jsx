@@ -20,8 +20,8 @@ export default function AboutPage() {
   return (
     <>
       <PageHero
-        title="About Our Training Center"
-        description="A technical and vocational training institution built around one belief: real skills are learned by doing."
+        title="About Janaki TTC"
+        description="A technical and vocational training center committed to practical, employment-ready skills for every learner."
         breadcrumb={[{ label: 'About' }]}
       />
 
@@ -49,26 +49,24 @@ export default function AboutPage() {
           </Reveal>
 
           <div>
-            <SectionHeading align="left" eyebrow="Who We Are" title="Practical Training for Real Work" />
+            <SectionHeading
+              align="left"
+              eyebrow="Who We Are"
+              title="Our Story"
+            />
             <div className="mt-5 space-y-4 text-base leading-relaxed text-slate-600 dark:text-slate-300">
               <p>
-                <strong className="font-semibold text-navy-900 dark:text-white">{siteConfig.name}</strong> is a
-                technical and vocational training institution dedicated to hands-on skill development. We offer
-                training across trades such as electrical work, plumbing, construction, welding, computer skills,
-                hospitality, agriculture and tailoring.
+                <strong className="font-semibold text-navy-900 dark:text-white">{siteConfig.name}</strong>{' '}
+                is a technical and vocational training institution dedicated to hands-on skill development. We offer training across trades such as electrical work, plumbing, construction, welding, computer skills, hospitality, agriculture and tailoring.
               </p>
-              <p>
-                Every program is designed around workshop practice — trainees handle the tools, materials and
-                equipment of their trade under the guidance of experienced instructors. The goal is simple:
-                graduates who can do the work, not just describe it.
-              </p>
+              <p>Every program is designed around workshop practice — trainees handle the tools, materials and equipment of their trade under the guidance of experienced instructors. The goal is simple: graduates who can do the work, not just describe it.</p>
             </div>
 
             {/* Affiliation / accreditation — only shown if configured */}
             {siteConfig.affiliations.length > 0 ? (
               <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-5 dark:border-emerald-500/30 dark:bg-emerald-500/10">
                 <h3 className="flex items-center gap-2 font-display text-sm font-bold uppercase tracking-wide text-emerald-800 dark:text-emerald-300">
-                  <Info className="h-4 w-4" /> Recognition &amp; Affiliation
+                  <Info className="h-4 w-4" /> Recognition & Affiliation
                 </h3>
                 <ul className="mt-3 space-y-2">
                   {siteConfig.affiliations.map((a) => (
@@ -116,12 +114,10 @@ export default function AboutPage() {
                 </span>
                 <h3 className="mt-4 font-display text-xl font-bold text-navy-900 dark:text-white">Our Vision</h3>
                 <p className="mt-4 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-                  To be a trusted center of vocational excellence — producing skilled, capable human resources who
-                  strengthen their families, communities and the industries they serve.
+                  To be a trusted center of vocational excellence — producing skilled, capable human resources who strengthen their families, communities and the industries they serve.
                 </p>
                 <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-                  We envision every graduate leaving with more than a certificate: a trade they can practice with
-                  pride and confidence.
+                  We envision every graduate leaving with more than a certificate: a trade they can practice with pride and confidence.
                 </p>
               </article>
             </Reveal>
@@ -133,9 +129,9 @@ export default function AboutPage() {
       <section className="bg-white py-16 dark:bg-navy-950 sm:py-20">
         <div className="container-x">
           <SectionHeading
-            eyebrow="What Guides Us"
-            title="Our Core Values"
-            description="The principles behind every class, demonstration and assessment."
+            eyebrow="Our Values"
+            title="What We Stand For"
+            description="The principles behind everything we teach and the way we teach it."
           />
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {values.map((v, i) => (
@@ -157,9 +153,9 @@ export default function AboutPage() {
       <section className="bg-slate-50 py-16 dark:bg-white/[0.02] sm:py-20">
         <div className="container-x">
           <SectionHeading
-            eyebrow="The JTTC Way"
-            title="Why Trainees Choose Us"
-            description="Six reasons learners pick up a trade with us."
+            eyebrow="Why Janaki TTC"
+            title="What Makes Us Different"
+            description="Practical-first, instructor-guided, career-focused training."
           />
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {whyChooseUs.map((item, i) => (
@@ -176,7 +172,7 @@ export default function AboutPage() {
           </div>
           <div className="mt-12 text-center">
             <Button to="/courses" variant="accent" size="lg" className="group">
-              Explore Our Courses →
+              Explore Courses →
             </Button>
           </div>
         </div>
@@ -184,5 +180,3 @@ export default function AboutPage() {
     </>
   );
 }
-
-

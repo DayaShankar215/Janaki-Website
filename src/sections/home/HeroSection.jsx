@@ -2,7 +2,6 @@
 import { animate, motion, useInView } from 'framer-motion';
 import { ArrowRight, Send, ChevronDown, CheckCircle2 } from 'lucide-react';
 import { useContent } from '@/content/ContentContext';
-import { useLanguage } from '@/i18n/LanguageContext';
 import { Button } from '@/components/ui/Button';
 
 const HERO_IMAGE =
@@ -38,11 +37,10 @@ function StatCounter({ end, suffix = '' }) {
 }
 
 export function HeroSection() {
-  const { t } = useLanguage();
   const { siteConfig, courses, categories, getActiveCourses } = useContent();
   const activeCount = getActiveCourses().length;
   const glowRef = useRef(null);
-  const trustPoints = [t('hero.trust.0'), t('hero.trust.1'), t('hero.trust.2')];
+  const trustPoints = ['Hands-on workshop training', 'Instructor-guided learning', 'Short, focused programs'];
 
   const handleMouseMove = (e) => {
     const el = glowRef.current;
@@ -93,7 +91,7 @@ export function HeroSection() {
             className="inline-flex items-center gap-2 rounded-full border border-accent-500/40 bg-accent-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-accent-400 backdrop-blur-sm"
           >
             <span className="h-1.5 w-1.5 rounded-full bg-accent-400" aria-hidden="true" />
-            {t('hero.badge')}
+            {'Technical & Vocational Training Institute'}
           </motion.p>
 
           <motion.h1
@@ -101,11 +99,11 @@ export function HeroSection() {
             transition={{ duration: 0.55, delay: 0.12 }}
             className="mt-6 font-display text-4xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl"
           >
-            {t('hero.title1')}
+            {'Building Skills.'}
             <br />
-            {t('hero.title2')}{' '}
+            {'Creating'}{' '}
             <span className="relative inline-block text-transparent [background-clip:text] [-webkit-background-clip:text] [background-image:linear-gradient(120deg,#FBBF24,#F59E0B)]">
-              {t('hero.title3')}
+              {'Opportunities.'}
               <svg
                 className="absolute -bottom-2 left-0 w-full text-accent-500/70"
                 viewBox="0 0 220 12"
@@ -131,12 +129,12 @@ export function HeroSection() {
             className="mt-9 flex flex-wrap items-center gap-3.5"
           >
             <Button to="/courses" variant="accent" size="lg" className="group">
-              {t('hero.explore')}
+              {'Explore Courses'}
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Button>
             <Button to="/contact" variant="white-outline" size="lg">
               <Send className="h-4 w-4" />
-              {t('common.enquireNow')}
+              {'Enquire Now'}
             </Button>
           </motion.div>
 
@@ -162,9 +160,9 @@ export function HeroSection() {
           className="mt-14 grid max-w-2xl grid-cols-3 gap-3 sm:gap-4"
         >
           {[
-            { end: activeCount > 0 ? activeCount : courses.length, suffix: '+', label: t('hero.statPrograms') },
-            { end: categories.length, suffix: '', label: t('hero.statCategories') },
-            { end: 100, suffix: '%', label: t('hero.statPractical') },
+            { end: activeCount > 0 ? activeCount : courses.length, suffix: '+', label: 'Training programs' },
+            { end: categories.length, suffix: '', label: 'Skill categories' },
+            { end: 100, suffix: '%', label: 'Practical-first learning' },
           ].map((stat) => (
             <div
               key={stat.label}
@@ -180,7 +178,7 @@ export function HeroSection() {
       {/* Scroll cue */}
       <a
         href="#quick-info"
-        aria-label={t('hero.scrollMore')}
+        aria-label="Scroll to learn more"
         className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 animate-bounce text-slate-400 hover:text-white md:block"
       >
         <ChevronDown className="h-7 w-7" />

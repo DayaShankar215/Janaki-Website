@@ -23,7 +23,7 @@ export default function FaqPage() {
     <>
       <PageHero
         title="Frequently Asked Questions"
-        description="Quick answers about our programs, admissions and how to reach us."
+        description="Quick answers to the most common questions about courses and admission."
         breadcrumb={[{ label: 'FAQ' }]}
       />
 
@@ -32,7 +32,7 @@ export default function FaqPage() {
           {grouped.map((group, gi) => (
             <div key={group.cat} className={gi > 0 ? 'mt-12' : ''}>
               <h2 className="mb-5 flex items-center gap-2.5 font-display text-sm font-bold uppercase tracking-[0.16em] text-accent-600 dark:text-accent-400">
-                <MessageCircleQuestion className="h-4 w-4" />
+<MessageCircleQuestion className="h-4 w-4" />
                 {group.cat}
               </h2>
               <Reveal delay={gi * 0.06}>
@@ -44,12 +44,12 @@ export default function FaqPage() {
           {/* Still have questions */}
           <Reveal delay={0.1}>
             <div className="mt-14 rounded-3xl bg-gradient-to-br from-navy-800 to-navy-950 p-8 text-center shadow-card">
-              <h2 className="font-display text-xl font-bold text-white sm:text-2xl">Still have questions?</h2>
+<h2 className="font-display text-xl font-bold text-white sm:text-2xl">Still have questions?</h2>
               <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-slate-300">
-                Send us your question directly — we are happy to help you choose the right program.
+                Get in touch — we're happy to help.
               </p>
               <Button to="/contact" variant="accent" size="lg" className="mt-6">
-                Contact Us →
+                Contact us →
               </Button>
             </div>
           </Reveal>
@@ -58,4 +58,3 @@ export default function FaqPage() {
     </>
   );
 }
-
