@@ -13,6 +13,7 @@ function loadStored() {
     return typeof parsed === 'object' && parsed !== null ? parsed : null;
   } catch {
     return null;
+    
   }
 }
 
