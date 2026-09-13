@@ -12,8 +12,7 @@ function loadStored() {
     const parsed = JSON.parse(raw);
     return typeof parsed === 'object' && parsed !== null ? parsed : null;
   } catch {
-    return null;
-    
+    return null;  
   }
 }
 
