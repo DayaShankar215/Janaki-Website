@@ -127,8 +127,9 @@ Without these values the form runs in a clearly-labelled **demo mode**
 - Replace Unsplash sample photos with real photos of your center (see below).
 
 ### Step D — Domain / SEO
-- In `public/robots.txt` and `public/sitemap.xml`: find & replace `www.YOUR-DOMAIN.com`.
-- In `index.html`: uncomment the canonical link and add the domain.
+- Canonical URL, `og:url`, `og:image`, `robots.txt` and `sitemap.xml` already point at
+  **https://janakitechnical.com.np**. If the domain ever changes, update them in:
+  `public/robots.txt`, `public/sitemap.xml`, `index.html`, and `siteConfig.url`.
 
 ---
 
@@ -179,7 +180,9 @@ If a remote image ever fails to load, the UI shows a branded fallback panel inst
 
 ## 7. Deployment
 
-### Netlify
+Live domain: **https://janakitechnical.com.np**
+
+### Option A — Netlify
 1. Push this project to GitHub/GitLab.
 2. Netlify → *Add new site* → import the repo.
 3. Settings:
@@ -188,18 +191,38 @@ If a remote image ever fails to load, the UI shows a branded fallback panel inst
 4. Add environment variables (*Site settings → Environment variables*):
    `VITE_EMAILJS_SERVICE_ID`, `VITE_EMAILJS_TEMPLATE_ID`, `VITE_EMAILJS_PUBLIC_KEY`
 5. SPA routing already handled by `public/_redirects`. ✅
-6. Custom domain: *Domain settings → Add domain* → follow DNS instructions.
-7. Update `robots.txt` / `sitemap.xml` / canonical URL with the final domain, redeploy.
+6. Custom domain: *Domain settings → Add domain* → add `janakitechnical.com.np` and
+   follow the DNS wizard (CNAME `janakitechnical.com.np` → `your-site.netlify.app`,
+   then enable SSL). Canonical URL, `robots.txt` and `sitemap.xml` already point at the
+   live domain — no further code changes needed. ✅
 
-### Vercel
+### Option B — Vercel
 1. Push the repo, then *Add New Project* in Vercel.
 2. Framework preset: **Vite** (auto-detected).
    - Build command: `npm run build` · Output directory: `dist`
 3. Add the three `VITE_EMAILJS_*` environment variables under *Settings → Environment Variables*.
 4. SPA routing already handled by `vercel.json`. ✅
-5. Custom domain: *Project → Domains* → add and update DNS.
+5. Custom domain: *Project → Domains* → add `janakitechnical.com.np` and follow the DNS steps.
 
 > ⚠️ After adding/changing environment variables, trigger a fresh deploy so they take effect.
+
+### Option C — Traditional hosting (cPanel / shared hosting in Nepal)
+Many `.com.np` registrations come with a cPanel hosting account. To deploy there:
+1. Run `npm run build` locally → the built site is in the `dist/` folder.
+2. Upload **all contents of `dist/`** (including the hidden `.htaccess` file) into
+   `public_html` via File Manager or FTP.
+3. The build already generated `.htaccess` (Apache) with:
+   - automatic HTTPS redirect,
+   - React Router SPA fallback (all `/courses/...` paths load correctly),
+   - a 404 → `/index.html` rule,
+   - basic caching for CSS/JS/images.
+4. Set the domain to use the hosting server's nameservers (or an A record) in the
+   `.np` registry panel.
+
+### After deploying
+- Verify `https://janakitechnical.com.np` loads over HTTPS and that a deep link like
+  `https://janakitechnical.com.np/courses/building-electrician` works directly.
+- Submit the sitemap (`https://janakitechnical.com.np/sitemap.xml`) in Google Search Console.
 
 ---
 

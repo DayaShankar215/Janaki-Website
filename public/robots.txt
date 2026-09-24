@@ -4,5 +4,4 @@
 User-agent: *
 Allow: /
 
-# TODO: after deploying, replace YOUR-DOMAIN.com below with your real domain
-Sitemap: https://www.YOUR-DOMAIN.com/sitemap.xml
+Sitemap: https://janakitechnical.com.np/sitemap.xml

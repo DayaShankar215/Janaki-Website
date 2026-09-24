@@ -12,6 +12,9 @@ export const siteConfig = {
   /** Shorter name used in tight spaces (navbar, page titles) */
   shortName: 'Janaki TTC',
 
+  /** Live website URL (no trailing slash) — used for SEO/canonical links */
+  url: 'https://janakitechnical.com.np',
+
   tagline: 'Building Skills. Creating Opportunities.',
   description:
     'Practical technical and vocational training designed to equip learners with industry-relevant skills and real-world, hands-on experience.',
