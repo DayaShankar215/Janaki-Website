@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Search, X, CornerDownLeft, SearchX, Zap } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useContent } from '@/content/ContentContext';
 
 /**
@@ -11,6 +11,7 @@ import { useContent } from '@/content/ContentContext';
  */
 export function CourseSearchModal({ open, onClose }) {
   const { courses, getCategoryLabel } = useContent();
+  const navigate = useNavigate();
   const [q, setQ] = useState('');
   const [idx, setIdx] = useState(0);
 
@@ -31,7 +32,7 @@ export function CourseSearchModal({ open, onClose }) {
       (c) =>
         c.title.toLowerCase().includes(needle) ||
         c.shortDescription.toLowerCase().includes(needle) ||
-        c.skills.some((s) => s.toLowerCase().includes(needle))
+        c.skills?.some((s) => s.toLowerCase().includes(needle))
     );
   }, [q, courses]);
 
@@ -49,11 +50,15 @@ export function CourseSearchModal({ open, onClose }) {
         e.preventDefault();
         setIdx((i) => Math.max(i - 1, 0));
       }
-      if (e.key === 'Enter' && results[idx]) window.location.assign(`/courses/${results[idx].slug}`);
+      if (e.key === 'Enter' && results[idx]) {
+        e.preventDefault();
+        onClose();
+        navigate(`/courses/${results[idx].slug}`);
+      }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [open, results, idx, onClose]);
+  }, [open, results, idx, onClose, navigate]);
 
   return createPortal(
     <AnimatePresence>

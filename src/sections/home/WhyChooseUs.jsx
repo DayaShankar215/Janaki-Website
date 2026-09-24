@@ -7,7 +7,7 @@ export function WhyChooseUs() {
   const { whyChooseUs } = useContent();
   return (
     <section className="relative overflow-hidden bg-navy-950 py-16 sm:py-24">
-      <div className="absolute inset-0 hero-grid bg-grid opacity-40" aria-hidden="true" />
+      <div className="absolute inset-0 bg-hero-grid bg-grid opacity-40" aria-hidden="true" />
       <div
         className="absolute -left-24 top-1/3 h-96 w-96 rounded-full bg-navy-600/20 blur-3xl"
         aria-hidden="true"

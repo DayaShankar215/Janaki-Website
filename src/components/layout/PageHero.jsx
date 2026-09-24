@@ -6,7 +6,7 @@ export function PageHero({ title, description, breadcrumb }) {
   return (
     <section className="relative overflow-hidden bg-navy-950">
       {/* decorative layers */}
-      <div className="absolute inset-0 hero-grid bg-grid opacity-60" aria-hidden="true" />
+      <div className="absolute inset-0 bg-hero-grid bg-grid opacity-60" aria-hidden="true" />
       <div
         className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-accent-500/15 blur-3xl"
         aria-hidden="true"

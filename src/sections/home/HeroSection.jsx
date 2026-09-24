@@ -66,7 +66,7 @@ export function HeroSection() {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-950/85 to-navy-900/60" />
         <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-transparent to-navy-950/40" />
-        <div className="absolute inset-0 hero-grid bg-grid opacity-50" />
+        <div className="absolute inset-0 bg-hero-grid bg-grid opacity-50" />
 
         {/* Futuristic aurora blobs */}
         <div className="aurora">

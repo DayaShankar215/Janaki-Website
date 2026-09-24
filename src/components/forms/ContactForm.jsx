@@ -53,7 +53,7 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
   const [demoMode, setDemoMode] = useState(false);
   const sendingRef = useRef(false);
 
-  const activeCourses = useMemo(() => courses.filter((c) => c.active), []);
+  const activeCourses = useMemo(() => courses.filter((c) => c.active), [courses]);
 
   const update = (key) => (e) => {
     setForm((f) => ({ ...f, [key]: e.target.value }));

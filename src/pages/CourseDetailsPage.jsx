@@ -73,7 +73,7 @@ return (
 
       {/* Hero */}
       <section className="relative overflow-hidden bg-navy-950">
-        <div className="absolute inset-0 hero-grid bg-grid opacity-40" aria-hidden="true" />
+        <div className="absolute inset-0 bg-hero-grid bg-grid opacity-40" aria-hidden="true" />
         <div className="container-x relative py-12 sm:py-16">
           <nav aria-label="Breadcrumb" className="mb-6">
             <ol className="flex flex-wrap items-center gap-1.5 text-sm text-slate-400">

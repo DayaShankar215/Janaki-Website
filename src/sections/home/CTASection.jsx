@@ -33,7 +33,7 @@ export function CTASection() {
 
   return (
     <section className="relative overflow-hidden bg-navy-900 py-16 sm:py-20">
-      <div className="absolute inset-0 hero-grid bg-grid opacity-40" aria-hidden="true" />
+      <div className="absolute inset-0 bg-hero-grid bg-grid opacity-40" aria-hidden="true" />
       <div className="absolute -left-16 top-0 h-64 w-64 rounded-full bg-accent-500/15 blur-3xl" aria-hidden="true" />
       <div className="absolute -right-20 bottom-0 h-72 w-72 rounded-full bg-sky-500/10 blur-3xl" aria-hidden="true" />
       <div className="aurora">

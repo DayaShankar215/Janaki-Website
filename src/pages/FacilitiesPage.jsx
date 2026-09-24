@@ -40,9 +40,7 @@ export default function FacilitiesPage() {
 
 <p className="mx-auto mt-10 flex max-w-2xl items-start gap-2.5 rounded-xl border border-accent-200 bg-accent-50 p-4 text-xs leading-relaxed text-accent-900 dark:border-accent-500/30 dark:bg-accent-500/10 dark:text-accent-200">
             <Info className="mt-0.5 h-4 w-4 shrink-0" />
-            Facility details shown here are editable sample content. The center should update{' '}
-            <code className="mx-1 rounded bg-white/60 px-1.5 py-0.5 font-mono dark:bg-white/10">src/data/facilities.js</code>{' '}
-            to reflect the actual workshops and equipment available.
+            All practice is supervised by instructors. Space is shared across trades, and trainees must follow the safety rules posted in each workshop.
           </p>
 
           <div className="mt-12 text-center">

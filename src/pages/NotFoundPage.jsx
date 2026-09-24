@@ -4,7 +4,7 @@ import { ArrowLeft, HardHat } from 'lucide-react';
 export default function NotFoundPage() {
   return (
     <section className="relative flex min-h-[70vh] items-center justify-center overflow-hidden bg-navy-950">
-      <div className="absolute inset-0 hero-grid bg-grid opacity-40" aria-hidden="true" />
+      <div className="absolute inset-0 bg-hero-grid bg-grid opacity-40" aria-hidden="true" />
       <div className="container-x relative py-20 text-center">
         <span className="mx-auto flex h-16 w-16 animate-float items-center justify-center rounded-2xl bg-accent-500 text-navy-950 shadow-card-hover">
           <HardHat className="h-8 w-8" />

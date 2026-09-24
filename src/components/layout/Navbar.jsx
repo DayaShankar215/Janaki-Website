@@ -47,7 +47,7 @@ export function Navbar({ onOpenSearch }) {
   const [scrolled, setScrolled] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const { theme, toggle } = useTheme();
-const location = useLocation();
+  const location = useLocation();
   useBodyScrollLock(open);
 
   useEffect(() => {
@@ -73,8 +73,8 @@ const location = useLocation();
 
   return (
     <>
-      {/* ── Top information bar ── */}
-        <div className="hidden bg-navy-950 text-white md:block">
+{/* ── Top information bar ── */}
+      <div className="hidden bg-navy-950 text-white md:block">
         <div className="container-x flex h-9 items-center justify-between text-xs">
           <div className="flex items-center gap-5">
             <a href={`mailto:${siteConfig.email}`} className="flex items-center gap-1.5 text-slate-300 hover:text-white">

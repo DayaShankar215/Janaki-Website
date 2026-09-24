@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { siteConfig } from '@/config/siteConfig';
 
-function setMeta(name, content) {
-  let el = document.querySelector(`meta[name="${name}"]`);
+function setMeta(attr, tagName, content) {
+  let el = document.head.querySelector(`meta[${attr}="${tagName}"], meta[name="${tagName}"]`);
   if (!el) {
     el = document.createElement('meta');
-    el.name = name;
     document.head.appendChild(el);
   }
+  el.setAttribute(attr, tagName);
   el.content = content;
 }
 
@@ -18,14 +18,14 @@ export function useSeo(title, description) {
 
     if (title) {
       document.title = `${title} | ${siteConfig.shortName}`;
-      setMeta('og:title', `${title} | ${siteConfig.shortName}`);
+      setMeta('property', 'og:title', `${title} | ${siteConfig.shortName}`);
     } else {
       document.title = siteConfig.defaultTitle;
     }
 
     if (description) {
-      setMeta('description', description);
-      setMeta('og:description', description);
+      setMeta('name', 'description', description);
+      setMeta('property', 'og:description', description);
     }
 
     return () => {

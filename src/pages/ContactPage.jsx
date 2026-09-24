@@ -157,7 +157,7 @@ export default function ContactPage() {
                 />
               ) : (
                 <div className="relative flex h-[420px] flex-col items-center justify-center gap-4 bg-[radial-gradient(circle_at_30%_30%,rgba(74,123,208,0.25),transparent_55%),radial-gradient(circle_at_70%_65%,rgba(245,158,11,0.18),transparent_50%),linear-gradient(160deg,#101f3d_0%,#0A1730_100%)] text-center">
-                  <div className="absolute inset-0 hero-grid bg-grid opacity-40" aria-hidden="true" />
+                  <div className="absolute inset-0 bg-hero-grid bg-grid opacity-40" aria-hidden="true" />
                   <span className="relative flex h-16 w-16 animate-float items-center justify-center rounded-full bg-accent-500 text-navy-950 shadow-card-hover">
                     <MapPin className="h-8 w-8" />
                   </span>

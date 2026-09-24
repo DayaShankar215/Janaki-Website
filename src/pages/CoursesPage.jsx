@@ -29,7 +29,10 @@ export default function CoursesPage() {
   const [savedOnly, setSavedOnly] = useState(false);
   const { bookmarks, toggle } = useBookmarks();
 
-  const availableCategories = useMemo(() => categories.filter((c) => courseCountForCategory(c.id) > 0), []);
+  const availableCategories = useMemo(
+    () => categories.filter((c) => courseCountForCategory(c.id) > 0),
+    [categories, courses, courseCountForCategory]
+  );
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -43,7 +46,7 @@ export default function CoursesPage() {
         course.title.toLowerCase().includes(q) ||
         course.shortDescription.toLowerCase().includes(q) ||
         getCategoryLabel(course.categoryId).toLowerCase().includes(q) ||
-        course.skills.some((s) => s.toLowerCase().includes(q))
+        course.skills?.some((s) => s.toLowerCase().includes(q))
       );
     });
 

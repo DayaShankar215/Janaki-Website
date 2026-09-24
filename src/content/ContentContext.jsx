@@ -153,7 +153,7 @@ export function ContentProvider({ children }) {
   );
 
   const value = useMemo(() => {
-    const content = { ...defaults, ...(overrides || {}) };
+    const content = { ...defaults, ...sanitizeContent(overrides || {}) };
     const { courses, categories } = content;
 
     const labelMap = new Map(categories.map((c) => [c.id, c.label]));

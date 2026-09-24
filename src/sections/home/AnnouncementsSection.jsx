@@ -24,9 +24,10 @@ function formatDate(iso) {
 export function AnnouncementsSection() {
   const { announcements } = useContent();
   if (announcements.length === 0) return null;
-  const sorted = [...announcements].sort(
-    (a, b) => Number(Boolean(b.pinned)) - Number(Boolean(a.pinned)) || b.date.localeCompare(a.date)
-  );
+const sorted = [...announcements].sort(
+  (a, b) =>
+    Number(Boolean(b.pinned)) - Number(Boolean(a.pinned)) || String(b.date || '').localeCompare(String(a.date || ''))
+);
 
   return (
     <section className="bg-slate-50 py-16 dark:bg-white/[0.02] sm:py-20">
