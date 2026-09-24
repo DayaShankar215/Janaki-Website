@@ -3,6 +3,90 @@ import { defaults } from './defaults';
 
 const STORAGE_KEY = 'jttc-content-v1';
 
+// ── Shape metadata for every overridable collection in `defaults` ──
+// key         : identity field used to merge stale/partial items onto their
+//               default counterpart so missing fields are backfilled.
+// arrayFields : fields that must be arrays (guarded against old/broken data).
+// boolFields  : fields that must be real booleans (legacy admin data can
+//               store 'true' / 'false' strings that break filtering).
+const COLLECTION_META = {
+  courses: { key: 'slug', arrayFields: ['overview', 'skills', 'practicalSkills', 'eligibility', 'tools', 'careers'], boolFields: ['active', 'practicalFocus'] },
+  categories: { key: 'id', arrayFields: [], boolFields: [] },
+  trainers: { key: 'id', arrayFields: ['expertise'], boolFields: ['isSample'] },
+  testimonials: { key: 'id', arrayFields: [], boolFields: ['isSample'] },
+  facilities: { key: 'id', arrayFields: ['features'], boolFields: [] },
+  galleryItems: { key: 'id', arrayFields: [], boolFields: [] },
+  faqs: { key: 'question', arrayFields: [], boolFields: [] },
+  announcements: { key: 'id', arrayFields: [], boolFields: ['pinned', 'isSample'] },
+  whyChooseUs: { key: 'title', arrayFields: [], boolFields: [] },
+  values: { key: 'title', arrayFields: [], boolFields: [] },
+  methodologySteps: { key: 'title', arrayFields: [], boolFields: [] },
+  careerPathways: { key: 'title', arrayFields: [], boolFields: [] },
+  careerExamples: { key: 'course', arrayFields: ['roles'], boolFields: [] },
+  admissionSteps: { key: 'title', arrayFields: [], boolFields: [] },
+  admissionDocuments: { key: null, arrayFields: [], boolFields: [] },
+  educationLevels: { key: null, arrayFields: [], boolFields: [] },
+  preferredTimings: { key: null, arrayFields: [], boolFields: [] },
+};
+
+function isPlainObject(v) {
+  return typeof v === 'object' && v !== null && !Array.isArray(v);
+}
+
+function ensureArray(v) {
+  return Array.isArray(v) ? v : [];
+}
+
+function coerceBool(v) {
+  if (typeof v === 'boolean') return v;
+  if (v === 'true' || v === 1 || v === 'on') return true;
+  if (v === 'false' || v === 0 || v === 'off' || v === '') return false;
+  return Boolean(v);
+}
+
+/** Merge one override item onto its default shape, repairing wrong types. */
+function sanitizeItem(item, defaultsList, meta) {
+  if (!isPlainObject(item)) return null;
+  if (!meta) return item;
+  const base = (meta.key && defaultsList.find((d) => isPlainObject(d) && d[meta.key] === item[meta.key])) || {};
+  const out = { ...base, ...item };
+  meta.arrayFields.forEach((f) => {
+    out[f] = ensureArray(out[f]);
+  });
+  meta.boolFields.forEach((f) => {
+    out[f] = coerceBool(out[f]);
+  });
+  return out;
+}
+
+/**
+ * Repair anything saved from an older/broken admin session so the app
+ * can never crash on stale localStorage: non-array collections fall back
+ * to defaults, partial items are backfilled, booleans are re-coerced.
+ */
+function sanitizeContent(raw) {
+  if (!isPlainObject(raw)) return {};
+  const out = {};
+  Object.keys(defaults).forEach((key) => {
+    const val = raw[key];
+    if (val === undefined) return;
+    const def = defaults[key];
+    if (Array.isArray(def)) {
+      const meta = COLLECTION_META[key];
+      if (!Array.isArray(val)) {
+        out[key] = def; // corrupt entry -> keep the known-good defaults
+        return;
+      }
+      out[key] = meta ? val.map((it) => sanitizeItem(it, def, meta)).filter(Boolean) : val;
+    } else if (isPlainObject(def)) {
+      out[key] = isPlainObject(val) ? { ...def, ...val } : def;
+    } else {
+      out[key] = val;
+    }
+  });
+  return out;
+}
+
 const ContentContext = createContext(null);
 
 function loadStored() {
