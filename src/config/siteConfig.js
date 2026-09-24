@@ -10,7 +10,7 @@ export const siteConfig = {
   /** Full registered name of the organization */
   name: 'Janaki Technical Training Center Pvt. Ltd.',
   /** Shorter name used in tight spaces (navbar, page titles) */
-  shortName: 'Janaki TTC',
+  shortName: 'JTTC',
 
   /** Live website URL (no trailing slash) — used for SEO/canonical links */
   url: 'https://janakitechnical.com.np',
@@ -23,7 +23,7 @@ export const siteConfig = {
   // ✅ Real details added. Address/map still need to be filled in.
   email: 'janakitechnical73@gmail.com',
   phone: '9804804563',
-  phoneAlt: '',
+  phoneAlt: '041-420180',
   address: 'YOUR_COMPLETE_OFFICE_ADDRESS, Nepal',
   mapLinkUrl: '', // e.g. a Google Maps share link for directions
 
