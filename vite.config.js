@@ -1,12 +1,17 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { fileURLToPath, URL } from 'node:url';
-import { writeFileSync } from 'node:fs';
+import { writeFileSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 /**
- * Vite ignores dotfiles in public/, so the Apache/cPanel `.htaccess`
- * (SPA fallback + HTTPS + caching) is injected into dist/ at build time.
+ * Hosting-support files injected into dist/ at build time, because most
+ * of these cannot live in public/ or are host-specific:
+ *
+ *  - `.htaccess` : Apache/cPanel SPA fallback + HTTPS (Vite skips dotfiles in public/)
+ *  - `404.html`  : GitHub Pages has no URL rewrites; serving a copy of
+ *                  index.html for 404s boots the router, so deep links
+ *                  like /courses/... load correctly.
  */
 const apacheSpaConfig = `# -------------------------------------------------------------------
 # Janaki Technical Training Center - Apache hosting config
@@ -38,22 +43,24 @@ ErrorDocument 404 /index.html
   ExpiresByType application/javascript "access plus 1 week"
 </IfModule>`;
 
-function emitApacheConfig() {
+function emitHostingFiles() {
   let outDir = 'dist';
   return {
-    name: 'emit-apache-htaccess',
+    name: 'emit-hosting-files',
     apply: 'build',
     configResolved(config) {
       outDir = config.build.outDir;
     },
     closeBundle() {
       writeFileSync(resolve(outDir, '.htaccess'), apacheSpaConfig, 'utf8');
+      const html = readFileSync(resolve(outDir, 'index.html'), 'utf8');
+      writeFileSync(resolve(outDir, '404.html'), html, 'utf8');
     },
   };
 }
 
 export default defineConfig({
-  plugins: [react(), emitApacheConfig()],
+  plugins: [react(), emitHostingFiles()],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

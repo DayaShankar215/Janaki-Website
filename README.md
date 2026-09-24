@@ -182,7 +182,31 @@ If a remote image ever fails to load, the UI shows a branded fallback panel inst
 
 Live domain: **https://janakitechnical.com.np**
 
-### Option A — Netlify
+### Option A — GitHub Pages + Cloudflare (current setup) ⭐
+The repo includes everything needed: the build-action workflow, a `CNAME` file,
+and a `404.html` that makes React Router deep links work on GitHub Pages.
+
+1. **Push the repo to GitHub.** The workflow at `.github/workflows/deploy.yml`
+   builds on every push to `main` and publishes the `dist/` folder.
+2. **Enable Pages:** repo *Settings → Pages → Source*: select **GitHub Actions**.
+3. On the first successful deploy you get `https://<username>.github.io/<repo>/`.
+4. **Cloudflare DNS** (domain registered in registrar + DNS at Cloudflare):
+   - Add these DNS records (name = apex):
+     | Type  | Name                        | Content                     | Proxy |
+     |-------|-----------------------------|-----------------------------|-------|
+     | CNAME | `janakitechnical.com.np`    | `<username>.github.io`      | ☁️    |
+     | CNAME | `www`                       | `<username>.github.io`      | ☁️    |
+   - **SSL/TLS → Overview → SSL mode:** *Full* (GitHub Pages provides its own cert).
+5. Deep links like `/courses/building-electrician` work because the deployed
+   `404.html` is a copy of `index.html`, so GitHub Pages serves the app for any
+   unknown path and React Router takes over. ✅
+6. Canonical URL, `robots.txt` and `sitemap.xml` already point at the live domain.
+   Submit `https://janakitechnical.com.np/sitemap.xml` in Google Search Console.
+
+> The public `CNAME` file and 404 fallback are generated automatically into `dist/`
+> by the build; no manual steps required on repeat deploys.
+
+### Option B — Netlify
 1. Push this project to GitHub/GitLab.
 2. Netlify → *Add new site* → import the repo.
 3. Settings:
@@ -192,11 +216,9 @@ Live domain: **https://janakitechnical.com.np**
    `VITE_EMAILJS_SERVICE_ID`, `VITE_EMAILJS_TEMPLATE_ID`, `VITE_EMAILJS_PUBLIC_KEY`
 5. SPA routing already handled by `public/_redirects`. ✅
 6. Custom domain: *Domain settings → Add domain* → add `janakitechnical.com.np` and
-   follow the DNS wizard (CNAME `janakitechnical.com.np` → `your-site.netlify.app`,
-   then enable SSL). Canonical URL, `robots.txt` and `sitemap.xml` already point at the
-   live domain — no further code changes needed. ✅
+   follow the DNS wizard (CNAME to `your-site.netlify.app`, then enable SSL).
 
-### Option B — Vercel
+### Option C — Vercel
 1. Push the repo, then *Add New Project* in Vercel.
 2. Framework preset: **Vite** (auto-detected).
    - Build command: `npm run build` · Output directory: `dist`
@@ -206,7 +228,7 @@ Live domain: **https://janakitechnical.com.np**
 
 > ⚠️ After adding/changing environment variables, trigger a fresh deploy so they take effect.
 
-### Option C — Traditional hosting (cPanel / shared hosting in Nepal)
+### Option D — Traditional hosting (cPanel / shared hosting in Nepal)
 Many `.com.np` registrations come with a cPanel hosting account. To deploy there:
 1. Run `npm run build` locally → the built site is in the `dist/` folder.
 2. Upload **all contents of `dist/`** (including the hidden `.htaccess` file) into
