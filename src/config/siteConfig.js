@@ -24,7 +24,7 @@ export const siteConfig = {
   email: 'janakitechnical73@gmail.com',
   phone: '9804804563',
   phoneAlt: '041-420180',
-  address: 'YOUR_COMPLETE_OFFICE_ADDRESS, Nepal',
+  address: 'KadamChowk, Janakpurdham-02, Nepal',
   mapLinkUrl: '', // e.g. a Google Maps share link for directions
 
   /**
