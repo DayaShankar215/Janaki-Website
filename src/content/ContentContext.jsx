@@ -1,5 +1,6 @@
-import { createContext, useContext, useMemo, useState, useCallback } from 'react';
+import { createContext, useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
 import { defaults } from './defaults';
+import { subscribeRemote, pushRemote, loadFirebaseConfig, configSource } from '@/utils/firebaseBackend';
 
 const STORAGE_KEY = 'jttc-content-v1';
 
@@ -113,6 +114,11 @@ function loadStored() {
  */
 export function ContentProvider({ children }) {
   const [overrides, setOverrides] = useState(loadStored);
+  // Cloud sync status: 'off' (no Firebase configured) | 'connecting' | 'on' | 'error'
+  const [cloudStatus, setCloudStatus] = useState('off');
+  // Config source: 'static' (ships with the site) | 'local' (admin panel) | null
+  const [cloudSource, setCloudSource] = useState(null);
+  const cloudActive = useRef(false);
 
   const persist = useCallback((next) => {
     setOverrides(next);
@@ -125,13 +131,49 @@ export function ContentProvider({ children }) {
     }
   }, []);
 
+  // When cloud sync is active, every mutation is mirrored to the shared store
+  // so all devices see the same content. Fire-and-forget; failures are logged.
+  const mirrorToCloud = useCallback((next) => {
+    if (!cloudActive.current) return;
+    pushRemote(next).catch((e) => console.error('[Content] Cloud sync failed:', e));
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    let unsub = () => {};
+    (async () => {
+      const [cfg, src] = await Promise.all([loadFirebaseConfig(), configSource()]);
+      if (!cfg || cancelled) return;
+      cloudActive.current = true;
+      setCloudSource(src);
+      setCloudStatus('connecting');
+      unsub = subscribeRemote(
+        (remote) => {
+          if (cancelled) return;
+          setOverrides(remote || {}); // adopt shared snapshot — everyone sees the same content
+          setCloudStatus('on');
+        },
+        () => {
+          if (!cancelled) setCloudStatus('error');
+        }
+      );
+    })();
+    return () => {
+      cancelled = true;
+      unsub();
+      cloudActive.current = false;
+    };
+  }, []);
+
   /** Replace one section of the content tree. Returns success bool. */
   const updateSection = useCallback(
     (section, value) => {
       const next = { ...(loadStored() || {}), [section]: value };
-      return persist(next);
+      const ok = persist(next);
+      mirrorToCloud(next);
+      return ok;
     },
-    [persist]
+    [persist, mirrorToCloud]
   );
 
   /** Revert one section back to the code defaults. */
@@ -139,12 +181,18 @@ export function ContentProvider({ children }) {
     (section) => {
       const next = { ...(loadStored() || {}) };
       delete next[section];
-      return persist(next);
+      const ok = persist(next);
+      mirrorToCloud(next);
+      return ok;
     },
-    [persist]
+    [persist, mirrorToCloud]
   );
 
-  const resetAll = useCallback(() => persist({}), [persist]);
+  const resetAll = useCallback(() => {
+    const ok = persist({});
+    mirrorToCloud({});
+    return ok;
+  }, [persist, mirrorToCloud]);
 
   const exportAll = useCallback(() => JSON.stringify(overrides || {}, null, 2), [overrides]);
 
@@ -154,9 +202,11 @@ export function ContentProvider({ children }) {
       if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
         throw new Error('Invalid backup file');
       }
-      return persist(parsed);
+      const ok = persist(parsed);
+      mirrorToCloud(parsed); // restore applies to every device at once
+      return ok;
     },
-    [persist]
+    [persist, mirrorToCloud]
   );
 
   const value = useMemo(() => {
@@ -196,8 +246,13 @@ export function ContentProvider({ children }) {
       resetAll,
       exportAll,
       importAll,
+
+      // ── cloud sync ──
+      cloudStatus,
+      cloudSource,
+      cloudSyncEnabled: cloudActive.current,
     };
-  }, [overrides, updateSection, resetSection, resetAll, exportAll, importAll]);
+  }, [overrides, updateSection, resetSection, resetAll, exportAll, importAll, cloudStatus, cloudSource]);
 
   return <ContentContext.Provider value={value}>{children}</ContentContext.Provider>;
 }
