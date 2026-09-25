@@ -18,6 +18,7 @@ const primaryLinks = [
 
 const moreLinks = [
   { to: '/trainers', label: 'Trainers' },
+  { to: '/news', label: 'News & Notices' },
   { to: '/faq', label: 'FAQ' },
   { to: '/admission', label: 'Admission' },
 ];

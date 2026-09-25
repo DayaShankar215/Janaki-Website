@@ -7,6 +7,7 @@ import { Footer } from './Footer';
 import { ScrollToTop } from '@/hooks/ScrollToTop';
 import { CourseSearchModal } from '@/components/ui/CourseSearchModal';
 import { WhatsAppButton } from '@/components/ui/WhatsAppButton';
+import { AnnouncementPopup } from './AnnouncementPopup';
 
 function ScrollProgress() {
   const { scrollYProgress } = useScroll();
@@ -100,6 +101,7 @@ export function Layout() {
       <WhatsAppButton />
       <Footer />
       <CourseSearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
+      <AnnouncementPopup />
     </div>
   );
 }

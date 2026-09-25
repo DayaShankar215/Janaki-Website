@@ -17,7 +17,7 @@ const COLLECTION_META = {
   facilities: { key: 'id', arrayFields: ['features'], boolFields: [] },
   galleryItems: { key: 'id', arrayFields: [], boolFields: [] },
   faqs: { key: 'question', arrayFields: [], boolFields: [] },
-  announcements: { key: 'id', arrayFields: [], boolFields: ['pinned', 'isSample'] },
+  announcements: { key: 'id', arrayFields: ['images'], boolFields: ['pinned', 'isSample', 'popup'], enumFields: { status: ['draft', 'published', 'archived'] } },
   whyChooseUs: { key: 'title', arrayFields: [], boolFields: [] },
   values: { key: 'title', arrayFields: [], boolFields: [] },
   methodologySteps: { key: 'title', arrayFields: [], boolFields: [] },
@@ -56,6 +56,13 @@ function sanitizeItem(item, defaultsList, meta) {
   meta.boolFields.forEach((f) => {
     out[f] = coerceBool(out[f]);
   });
+  if (meta.enumFields) {
+    Object.entries(meta.enumFields).forEach(([f, allowed]) => {
+      if (!allowed.includes(out[f])) {
+        out[f] = (f === 'status' && Array.isArray(allowed)) ? allowed[1] : (allowed[0] || out[f]);
+      }
+    });
+  }
   return out;
 }
 
@@ -159,10 +166,17 @@ export function ContentProvider({ children }) {
     const labelMap = new Map(categories.map((c) => [c.id, c.label]));
     const iconMap = new Map(categories.map((c) => [c.id, c.icon]));
 
+    // Public-facing news: only items marked as published, newest first.
+    const publishedAnnouncements = [...(content.announcements || [])]
+      .filter((a) => a.status === 'published')
+      .sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
+
     return {
       ...content,
 
       // ── derived helpers (operate on live content) ──
+      publishedAnnouncements,
+      getAnnouncementBySlug: (slug) => publishedAnnouncements.find((a) => a.slug === slug),
       getCategoryLabel: (id) => labelMap.get(id) || id,
       getCategoryIcon: (id) => iconMap.get(id) || 'book-open',
       courseCountForCategory: (id) => courses.filter((c) => c.categoryId === id).length,

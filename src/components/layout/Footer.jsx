@@ -8,6 +8,7 @@ const quickLinks = [
   { to: '/courses', label: 'Courses' },
   { to: '/admission', label: 'Admission' },
   { to: '/gallery', label: 'Gallery' },
+  { to: '/news', label: 'News & Notices' },
   { to: '/contact', label: 'Contact' },
 ];
 
