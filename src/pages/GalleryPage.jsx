@@ -16,6 +16,12 @@ export default function GalleryPage() {
   const [filter, setFilter] = useState('All');
   const [lightboxIndex, setLightboxIndex] = useState(null);
 
+  const chips = useMemo(() => {
+    const seen = new Set(galleryCategories);
+    galleryItems.forEach((g) => g && g.category && seen.add(g.category));
+    return [...seen];
+  }, [galleryCategories, galleryItems]);
+
   const items = useMemo(
     () => (filter === 'All' ? galleryItems : galleryItems.filter((g) => g.category === filter)),
     [filter]
@@ -33,7 +39,7 @@ export default function GalleryPage() {
         <div className="container-x">
           {/* Filters */}
           <div className="flex flex-wrap justify-center gap-2" role="group" aria-label="Filter gallery by category">
-            {galleryCategories.map((cat) => (
+            {chips.map((cat) => (
               <button
                 key={cat}
                 type="button"

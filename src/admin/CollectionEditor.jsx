@@ -1,6 +1,7 @@
-import { useMemo, useState } from 'react';
-import { Plus, Trash2, Copy, Save, X, Search, RotateCcw } from 'lucide-react';
+import { useMemo, useRef, useState } from 'react';
+import { Plus, Trash2, Copy, Save, X, Search, RotateCcw, Upload } from 'lucide-react';
 import ImageInput from './ImageInput';
+import { fileToDataUrl } from '@/utils/imageTools';
 
 const inputCls =
   'w-full px-3 py-2 text-sm rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-accent-400 focus:border-transparent';
@@ -145,6 +146,7 @@ export default function CollectionEditor({
   onSave,
   onSaved,
   allowDelete = true,
+  bulkUpload = null,
 }) {
   const content = useContent();
   const [selectedId, setSelectedId] = useState(null); // null = nothing selected; '__new__' = creating
@@ -152,6 +154,12 @@ export default function CollectionEditor({
   const [query, setQuery] = useState('');
   const [error, setError] = useState('');
   const [pendingSave, setPendingSave] = useState(null); // asks "back up first?" before applying
+  const courses = content.courses || [];
+  const fileRef = useRef(null);
+  const [bulkCourse, setBulkCourse] = useState('');
+  const [bulkBusy, setBulkBusy] = useState(false);
+  const [bulkMsg, setBulkMsg] = useState('');
+  const effectiveBulkCourse = bulkCourse || courses[0]?.slug || '';
 
   const filtered = useMemo(() => {
     if (!query.trim()) return items;
@@ -177,8 +185,45 @@ export default function CollectionEditor({
 
   const commit = (list, idVal) => {
     onSave(list);
-    onSaved(`${title} saved.`);
+    onSaved(pendingSave?.note || `${title} saved.`);
     setSelectedId(idVal);
+    if (!idVal) {
+      setDraft(null);
+      setError('');
+    }
+  };
+
+  const startBulkUpload = async (e) => {
+    const files = Array.from(e.target.files || []).filter((f) => f.type.startsWith('image/'));
+    if (!files.length) return;
+    const course = courses.find((c) => c.slug === effectiveBulkCourse);
+    if (!course) {
+      setBulkMsg('Pick a course before uploading.');
+      return;
+    }
+    setBulkBusy(true);
+    setBulkMsg('');
+    try {
+      const images = await Promise.all(files.map((f) => fileToDataUrl(f)));
+      const stamp = Date.now().toString(36);
+      const created = images.map((dataUrl, i) => ({
+        ...bulkUpload.makeItem(course),
+        id: `${idKey}-${stamp}${i.toString(36)}`,
+        image: dataUrl,
+        alt: files[i].name.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ').trim() || course.title,
+      }));
+      setBulkMsg(`${created.length} photo(s) ready — confirm the backup step to save.`);
+      setPendingSave({
+        list: [...created, ...items],
+        idVal: null,
+        note: `${created.length} photo(s) uploaded for "${course.title}".`,
+      });
+    } catch (err) {
+      setBulkMsg(`Upload failed: ${err.message || 'unknown error'}`);
+    } finally {
+      setBulkBusy(false);
+      if (fileRef.current) fileRef.current.value = '';
+    }
   };
 
   const applySave = () => {
@@ -238,6 +283,41 @@ export default function CollectionEditor({
           <Plus className="w-4 h-4" /> Add new
         </button>
       </div>
+
+      {bulkUpload && courses.length > 0 && (
+        <div className="mb-5 rounded-lg border border-dashed border-accent-400/70 bg-accent-50/40 px-4 py-4 dark:bg-accent-500/[0.06]">
+          <div className="flex flex-wrap items-end gap-3">
+            <div className="min-w-[220px] flex-1">
+              <label className={labelCls}>{bulkUpload.label || 'Add multiple photos for a course'}</label>
+              <select value={effectiveBulkCourse} onChange={(e) => setBulkCourse(e.target.value)} className={inputCls}>
+                {courses.map((c) => (
+                  <option key={c.slug} value={c.slug}>{c.title}</option>
+                ))}
+              </select>
+            </div>
+            <div className="flex items-center gap-2 pb-0.5">
+              <button
+                type="button"
+                disabled={bulkBusy}
+                onClick={() => fileRef.current && fileRef.current.click()}
+                className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md bg-accent-500 hover:bg-accent-600 text-navy-950 disabled:opacity-50"
+              >
+                <Upload className="w-4 h-4" /> {bulkBusy ? 'Processing…' : 'Choose multiple photos'}
+              </button>
+              <input ref={fileRef} type="file" accept="image/*" multiple className="hidden" onChange={startBulkUpload} />
+            </div>
+          </div>
+          <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+            {bulkUpload.hint ||
+              'Pick a course, then select several photos at once — each becomes its own item.'}
+          </p>
+          {bulkMsg && (
+            <p className={`mt-1 text-xs ${bulkMsg.startsWith('Upload failed') ? 'text-red-500' : 'text-slate-500 dark:text-slate-400'}`}>
+              {bulkMsg}
+            </p>
+          )}
+        </div>
+      )}
 
       <div className="grid lg:grid-cols-[300px_1fr] gap-5">
         {/* List */}

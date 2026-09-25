@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   Settings, BookOpen, Users, Building2, Image as ImageIcon, MessageSquareQuote,
   Megaphone, HelpCircle, Download, Upload, LogOut, CheckCircle2, AlertTriangle,
@@ -31,6 +31,12 @@ export default function AdminPage() {
     window.clearTimeout(notify._t);
     notify._t = window.setTimeout(() => setToast(null), 2600);
   };
+
+  const galleryCategoryOptions = useMemo(() => {
+    const seen = new Set(content.galleryCategories.filter((c) => c !== 'All'));
+    (content.galleryItems || []).forEach((g) => g && g.category && seen.add(g.category));
+    return [...seen];
+  }, [content.galleryCategories, content.galleryItems]);
   const guard = (ok) => {
     if (!ok) {
       notify('Storage is full — remove some photos or use image URLs instead.', 'error');
@@ -222,13 +228,18 @@ export default function AdminPage() {
               imageKey="image"
               schema={[
                 { key: 'title', label: 'Title', required: true },
-                { key: 'category', label: 'Category', type: 'select', options: content.galleryCategories.filter((c) => c !== 'All') },
+                { key: 'category', label: 'Category', type: 'select', options: galleryCategoryOptions },
                 { key: 'alt', label: 'Alt text (accessibility)', placeholder: 'Describe the photo briefly' },
                 { key: 'image', label: 'Photo', type: 'image' },
               ]}
               newItem={() => ({ id: `g-${Date.now().toString(36)}`, title: '', category: 'Training', alt: '', image: '' })}
               onSave={(list) => guard(content.updateSection('galleryItems', list))}
               onSaved={(m) => notify(m)}
+              bulkUpload={{
+                label: 'Upload multiple photos for a course',
+                hint: 'Pick a course, then select several photos at once — each becomes its own gallery item. Photos are auto-resized and compressed.',
+                makeItem: (course) => ({ title: course.title, category: course.title, alt: '' }),
+              }}
             />
           )}
           {tab === 'testimonials' && (
