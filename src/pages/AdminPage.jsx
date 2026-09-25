@@ -74,7 +74,7 @@ export default function AdminPage() {
     { id: 'facilities', label: 'Facilities', icon: Building2 },
     { id: 'gallery', label: 'Gallery', icon: ImageIcon },
     { id: 'testimonials', label: 'Testimonials', icon: MessageSquareQuote },
-    { id: 'announcements', label: 'Announcements', icon: Megaphone },
+    { id: 'announcements', label: 'News & Notices', icon: Megaphone },
     { id: 'faqs', label: 'FAQs', icon: HelpCircle },
   ];
 
@@ -260,21 +260,46 @@ export default function AdminPage() {
           {tab === 'announcements' && (
             <CollectionEditor
               key="announcements"
-              title="Announcements"
-              description="News & notices shown on the home page ticker and cards."
+              title="News & Notices"
+              description="Admission notices, events and updates. Only Published items appear on the website; newest first."
               items={content.announcements}
               idKey="id"
               displayKey="title"
-              subtitleFn={(a) => a.tag}
+              subtitleFn={(a) => `${a.tag} · ${a.status || 'published'}`}
+              imageKey="image"
               schema={[
                 { key: 'title', label: 'Title', required: true },
-                { key: 'date', label: 'Date', type: 'date' },
-                { key: 'tag', label: 'Tag', type: 'select', options: ['Admission', 'Notice', 'Event', 'Achievement', 'Update'] },
-                { key: 'excerpt', label: 'Excerpt', type: 'textarea', rows: 2 },
+                { key: 'slug', label: 'URL slug', required: true, help: 'Used in the article link: /news/<slug>. Lowercase letters and dashes only.' },
+                { key: 'date', label: 'Publication date', type: 'date', help: 'Newer dates are listed first.' },
+                { key: 'tag', label: 'Category', type: 'select', options: ['Admission', 'Notice', 'Event', 'News', 'Achievement', 'Update'] },
+                { key: 'status', label: 'Status', type: 'select', options: [
+                  { value: 'published', label: 'Published — visible on website' },
+                  { value: 'draft', label: 'Draft — hidden' },
+                  { value: 'archived', label: 'Archived — hidden' },
+                ], help: 'Only "Published" items are visible to visitors.' },
+                { key: 'image', label: 'Featured photo', type: 'image', aspect: 'aspect-[16/9]', help: 'Shown on cards, the article header and the homepage popup.' },
+                { key: 'images', label: 'Gallery photos', type: 'imageList', aspect: 'aspect-video', help: 'Extra photos shown inside the article.' },
+                { key: 'excerpt', label: 'Short excerpt', type: 'textarea', rows: 2, help: 'One-liner used on cards and the popup.' },
+                { key: 'description', label: 'Full article text', type: 'textarea', rows: 6, help: 'Separate paragraphs with a blank line.' },
+                { key: 'popup', label: 'Show as homepage popup', type: 'bool', help: 'Floating announcement shown once per visit. Needs a featured photo.' },
                 { key: 'pinned', label: 'Pinned (stays at top)', type: 'bool' },
                 { key: 'isSample', label: 'Show "Sample" badge', type: 'bool' },
               ]}
-              newItem={() => ({ id: `an-${Date.now().toString(36)}`, title: '', date: new Date().toISOString().slice(0, 10), tag: 'Notice', excerpt: '', pinned: false, isSample: false })}
+              newItem={() => ({
+                id: `an-${Date.now().toString(36)}`,
+                slug: '',
+                title: '',
+                date: new Date().toISOString().slice(0, 10),
+                tag: 'Notice',
+                status: 'published',
+                image: '',
+                images: [],
+                excerpt: '',
+                description: '',
+                popup: false,
+                pinned: false,
+                isSample: false,
+              })}
               onSave={(list) => guard(content.updateSection('announcements', list))}
               onSaved={(m) => notify(m)}
             />

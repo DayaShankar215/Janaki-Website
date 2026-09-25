@@ -6,6 +6,11 @@ const inputCls =
   'w-full px-3 py-2 text-sm rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-accent-400 focus:border-transparent';
 const labelCls = 'block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5';
 
+function FieldHelp({ help }) {
+  if (!help) return null;
+  return <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">{help}</p>;
+}
+
 function Field({ field, value, onChange }) {
   switch (field.type) {
     case 'textarea':
@@ -14,6 +19,7 @@ function Field({ field, value, onChange }) {
           <label className={labelCls}>{field.label}</label>
           <textarea rows={field.rows || 3} className={inputCls} value={value ?? ''} placeholder={field.placeholder}
             onChange={(e) => onChange(e.target.value)} />
+          <FieldHelp help={field.help} />
         </div>
       );
     case 'lines':
@@ -27,16 +33,19 @@ function Field({ field, value, onChange }) {
             placeholder={'One item per line'}
             onChange={(e) => onChange(e.target.value.split('\n').map((s) => s.trim()).filter(Boolean))}
           />
-          <p className="mt-1 text-xs text-slate-400">One item per line.</p>
+          <FieldHelp help={field.help || 'One item per line.'} />
         </div>
       );
     case 'bool':
       return (
-        <label className="inline-flex items-center gap-2 cursor-pointer select-none">
-          <input type="checkbox" checked={!!value} onChange={(e) => onChange(e.target.checked)}
-            className="w-4 h-4 rounded accent-amber-500" />
-          <span className="text-sm text-slate-700 dark:text-slate-300">{field.label}</span>
-        </label>
+        <div>
+          <label className="inline-flex items-center gap-2 cursor-pointer select-none">
+            <input type="checkbox" checked={!!value} onChange={(e) => onChange(e.target.checked)}
+              className="w-4 h-4 rounded accent-amber-500" />
+            <span className="text-sm text-slate-700 dark:text-slate-300">{field.label}</span>
+          </label>
+          <FieldHelp help={field.help} />
+        </div>
       );
     case 'number':
       return (
@@ -44,6 +53,7 @@ function Field({ field, value, onChange }) {
           <label className={labelCls}>{field.label}</label>
           <input type="number" min={field.min} max={field.max} className={inputCls} value={value ?? ''}
             onChange={(e) => onChange(e.target.value === '' ? '' : Number(e.target.value))} />
+          <FieldHelp help={field.help} />
         </div>
       );
     case 'date':
@@ -51,6 +61,7 @@ function Field({ field, value, onChange }) {
         <div>
           <label className={labelCls}>{field.label}</label>
           <input type="date" className={inputCls} value={(value || '').slice(0, 10)} onChange={(e) => onChange(e.target.value)} />
+          <FieldHelp help={field.help} />
         </div>
       );
     case 'select': {
@@ -63,16 +74,51 @@ function Field({ field, value, onChange }) {
               <option key={o.value} value={o.value}>{o.label}</option>
             ))}
           </select>
+          <FieldHelp help={field.help} />
         </div>
       );
     }
     case 'image':
-      return <ImageInput label={field.label} value={value || ''} aspect={field.aspect} onChange={onChange} />;
+      return (
+        <div>
+          <ImageInput label={field.label} value={value || ''} aspect={field.aspect} onChange={onChange} />
+          <FieldHelp help={field.help} />
+        </div>
+      );
+    case 'imageList': {
+      const list = Array.isArray(value) ? value : [];
+      const setAt = (i, v) => {
+        const next = [...list];
+        if (v) next[i] = v;
+        else next.splice(i, 1);
+        onChange(next);
+      };
+      return (
+        <div>
+          <label className={labelCls}>{field.label}</label>
+          <div className="space-y-3">
+            {list.map((src, i) => (
+              <ImageInput key={i} label={`Photo ${i + 1}`} value={src || ''} aspect={field.aspect || 'aspect-video'} onChange={(v) => setAt(i, v)} />
+            ))}
+          </div>
+          <button
+            type="button"
+            disabled={list.length >= (field.maxItems || 8)}
+            onClick={() => onChange([...list, ''])}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md border border-dashed border-slate-300 dark:border-slate-600 text-slate-500 hover:border-accent-400 hover:text-accent-600 disabled:opacity-40 dark:text-slate-400"
+          >
+            <Plus className="w-4 h-4" /> Add photo
+          </button>
+          <FieldHelp help={field.help} />
+        </div>
+      );
+    }
     default:
       return (
         <div>
           <label className={labelCls}>{field.label}</label>
           <input type="text" className={inputCls} value={value ?? ''} placeholder={field.placeholder} onChange={(e) => onChange(e.target.value)} />
+          <FieldHelp help={field.help} />
         </div>
       );
   }
