@@ -6,6 +6,7 @@ import {
 import AdminLogin from '@/admin/AdminLogin';
 import CollectionEditor from '@/admin/CollectionEditor';
 import SiteSettingsTab from '@/admin/SiteSettingsTab';
+import { downloadJson, backupFilename } from '@/utils/downloadJson';
 import { useContent } from '@/content/ContentContext';
 
 function Toast({ toast }) {
@@ -39,13 +40,7 @@ export default function AdminPage() {
   };
 
   const exportBackup = () => {
-    const blob = new Blob([content.exportAll()], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `jttc-content-backup-${new Date().toISOString().slice(0, 10)}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+    downloadJson(backupFilename(), content.exportAll());
     notify('Backup downloaded.');
   };
 

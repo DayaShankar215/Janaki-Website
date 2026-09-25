@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo, useState, useCallback, useEffect, useRef } from 'react';
 import { defaults } from './defaults';
-import { subscribeRemote, pushRemote, loadFirebaseConfig, configSource } from '@/utils/firebaseBackend';
+import { subscribeRemote, pushRemote, loadFirebaseConfig, configSource, testFirebaseConnection, loadRemote } from '@/utils/firebaseBackend';
 
 const STORAGE_KEY = 'jttc-content-v1';
 
@@ -119,6 +119,11 @@ export function ContentProvider({ children }) {
   // Config source: 'static' (ships with the site) | 'local' (admin panel) | null
   const [cloudSource, setCloudSource] = useState(null);
   const cloudActive = useRef(false);
+  // Trusts the shared cloud snapshot only after a write succeeds. Until then the
+  // browser's localStorage is the source of truth, so edits are never wiped by a
+  // failed sync (previously: rejecting DB writes kept the cloud empty, and every
+  // reload adopted the empty snapshot — reverting the admin's changes).
+  const adoptRemote = useRef(false);
 
   const persist = useCallback((next) => {
     setOverrides(next);
@@ -132,10 +137,20 @@ export function ContentProvider({ children }) {
   }, []);
 
   // When cloud sync is active, every mutation is mirrored to the shared store
-  // so all devices see the same content. Fire-and-forget; failures are logged.
+  // so all devices see the same content. A failed push drops back to local-only
+  // mode (and stops trusting remote snapshots) until a write succeeds again.
   const mirrorToCloud = useCallback((next) => {
     if (!cloudActive.current) return;
-    pushRemote(next).catch((e) => console.error('[Content] Cloud sync failed:', e));
+    pushRemote(next)
+      .then(() => {
+        adoptRemote.current = true;
+        setCloudStatus('on');
+      })
+      .catch((e) => {
+        adoptRemote.current = false;
+        setCloudStatus('error');
+        console.error('[Content] Cloud sync failed — keeping changes local:', e);
+      });
   }, []);
 
   useEffect(() => {
@@ -149,19 +164,35 @@ export function ContentProvider({ children }) {
       setCloudStatus('connecting');
       unsub = subscribeRemote(
         (remote) => {
-          if (cancelled) return;
-          setOverrides(remote || {}); // adopt shared snapshot — everyone sees the same content
+          if (cancelled || !adoptRemote.current) return;
+          // adopt shared snapshot — everyone sees the same content
+          setOverrides(remote || {});
           setCloudStatus('on');
         },
         () => {
           if (!cancelled) setCloudStatus('error');
         }
       );
+      // Handshake: only start trusting the shared snapshot once a write works.
+      // Until then the browser keeps its own localStorage content, so edits are
+      // never lost to a sync that can't write.
+      try {
+        await testFirebaseConnection();
+        if (cancelled) return;
+        adoptRemote.current = true;
+        const snap = await loadRemote();
+        if (cancelled) return;
+        setOverrides(snap);
+        setCloudStatus('on');
+      } catch {
+        if (!cancelled) setCloudStatus('error'); // writes blocked → local-only mode
+      }
     })();
     return () => {
       cancelled = true;
       unsub();
       cloudActive.current = false;
+      adoptRemote.current = false;
     };
   }, []);
 

@@ -124,6 +124,10 @@ function Field({ field, value, onChange }) {
   }
 }
 
+import { useContent } from '@/content/ContentContext';
+import BackupPromptModal from './BackupPromptModal';
+import { downloadJson, backupFilename } from '@/utils/downloadJson';
+
 /**
  * Generic list + form editor for any array of objects stored in the
  * content context. Handles add / duplicate / delete / save.
@@ -142,10 +146,12 @@ export default function CollectionEditor({
   onSaved,
   allowDelete = true,
 }) {
+  const content = useContent();
   const [selectedId, setSelectedId] = useState(null); // null = nothing selected; '__new__' = creating
   const [draft, setDraft] = useState(null);
   const [query, setQuery] = useState('');
   const [error, setError] = useState('');
+  const [pendingSave, setPendingSave] = useState(null); // asks "back up first?" before applying
 
   const filtered = useMemo(() => {
     if (!query.trim()) return items;
@@ -169,6 +175,12 @@ export default function CollectionEditor({
     setError('');
   };
 
+  const commit = (list, idVal) => {
+    onSave(list);
+    onSaved(`${title} saved.`);
+    setSelectedId(idVal);
+  };
+
   const applySave = () => {
     const idVal = String(draft[idKey] ?? '').trim();
     if (!idVal) {
@@ -189,16 +201,12 @@ export default function CollectionEditor({
         list = [...items];
         list.splice(origIdx, 1);
         list.splice(origIdx, 0, { ...draft, [idKey]: idVal });
-        onSave(list);
-        onSaved(`${title} saved.`);
-        setSelectedId(idVal);
+        setPendingSave({ list, idVal });
         return;
       }
     }
     list.push({ ...draft, [idKey]: idVal });
-    onSave(list);
-    onSaved(`${title} saved.`);
-    setSelectedId(idVal);
+    setPendingSave({ list, idVal });
   };
 
   const removeItem = (item) => {
@@ -305,6 +313,22 @@ export default function CollectionEditor({
           )}
         </div>
       </div>
+
+      {pendingSave && (
+        <BackupPromptModal
+          body="Download a copy of the current content before applying your changes? You can restore it anytime with the Restore button."
+          onBackup={() => {
+            downloadJson(backupFilename(), content.exportAll());
+            commit(pendingSave.list, pendingSave.idVal);
+            setPendingSave(null);
+          }}
+          onSave={() => {
+            commit(pendingSave.list, pendingSave.idVal);
+            setPendingSave(null);
+          }}
+          onClose={() => setPendingSave(null)}
+        />
+      )}
     </div>
   );
 }

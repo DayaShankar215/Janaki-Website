@@ -8,6 +8,8 @@ import {
   configToJson,
   FIREBASE_RULES,
 } from '@/utils/firebaseBackend';
+import BackupPromptModal from './BackupPromptModal';
+import { downloadJson, backupFilename } from '@/utils/downloadJson';
 
 const inputCls =
   'w-full px-3 py-2 text-sm rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-accent-400 focus:border-transparent';
@@ -237,13 +239,16 @@ function CloudSyncCard({ notify, status, source }) {
 export default function SiteSettingsTab({ notify, guard }) {
   const content = useContent();
   const [draft, setDraft] = useState(() => JSON.parse(JSON.stringify(content.siteConfig)));
+  const [pendingSave, setPendingSave] = useState(false);
 
   const set = (key) => (v) => setDraft((d) => ({ ...d, [key]: v }));
   const setSocial = (key) => (v) => setDraft((d) => ({ ...d, socialLinks: { ...d.socialLinks, [key]: v } }));
 
-  const save = () => {
+  const doSave = () => {
     if (guard(content.updateSection('siteConfig', draft))) notify('Site settings saved.');
   };
+
+  const save = () => setPendingSave(true);
 
   const reset = () => {
     if (window.confirm('Reset site settings to the code defaults?')) {
@@ -314,6 +319,22 @@ export default function SiteSettingsTab({ notify, guard }) {
       </Group>
 
       <CloudSyncCard notify={notify} status={content.cloudStatus} source={content.cloudSource} />
+
+      {pendingSave && (
+        <BackupPromptModal
+          body="Download a copy of the current content before applying your settings changes? You can restore it anytime with the Restore button."
+          onBackup={() => {
+            downloadJson(backupFilename(), content.exportAll());
+            doSave();
+            setPendingSave(false);
+          }}
+          onSave={() => {
+            doSave();
+            setPendingSave(false);
+          }}
+          onClose={() => setPendingSave(false)}
+        />
+      )}
     </div>
   );
 }
