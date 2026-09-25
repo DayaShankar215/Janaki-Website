@@ -17,7 +17,7 @@ export function WhyChooseUs() {
       <div className="container-x relative">
         <SectionHeading
           dark
-          eyebrow="Why Janaki TTC"
+          eyebrow="Why JTTC"
           title="Why Students Choose Us"
           description="A practical-first approach to learning that prepares trainees for real work, real jobs and real opportunities."
         />

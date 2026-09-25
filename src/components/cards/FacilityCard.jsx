@@ -10,6 +10,7 @@ export function FacilityCard({ facility }) {
           src={facility.image}
           alt={facility.name}
           aspect="aspect-[16/10]"
+          className="transition-transform duration-500 ease-out group-hover:scale-[1.06]"
           fallbackIcon={facility.icon}
         />
         <span className="absolute -bottom-5 left-5 flex h-11 w-11 items-center justify-center rounded-xl bg-navy-800 text-accent-400 shadow-card-hover ring-4 ring-white transition-colors group-hover:bg-navy-700 dark:bg-navy-900 dark:ring-navy-950">

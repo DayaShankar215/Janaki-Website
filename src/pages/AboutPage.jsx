@@ -20,7 +20,7 @@ export default function AboutPage() {
   return (
     <>
       <PageHero
-        title="About Janaki TTC"
+        title="About JTTC"
         description="A technical and vocational training center committed to practical, employment-ready skills for every learner."
         breadcrumb={[{ label: 'About' }]}
       />
@@ -153,7 +153,7 @@ export default function AboutPage() {
       <section className="bg-slate-50 py-16 dark:bg-white/[0.02] sm:py-20">
         <div className="container-x">
           <SectionHeading
-            eyebrow="Why Janaki TTC"
+            eyebrow="Why JTTC"
             title="What Makes Us Different"
             description="Practical-first, instructor-guided, career-focused training."
           />

@@ -47,7 +47,7 @@ export function Footer() {
               <Zap className="h-5 w-5 text-accent-400" fill="currentColor" />
             </span>
             <span className="leading-tight">
-              <span className="block font-display text-[15px] font-bold text-white">Janaki Technical</span>
+              <span className="block font-display text-[15px] font-extrabold tracking-tight text-white">{siteConfig.shortName}</span>
               <span className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400">
                 Training Center
               </span>

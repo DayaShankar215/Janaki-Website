@@ -18,9 +18,9 @@ export function QuickInfoBar() {
             {items.map(({ icon: Icon, title, text }) => (
               <div
                 key={title}
-                className="flex items-start gap-4 bg-white p-5 transition-colors hover:bg-navy-50/70 dark:bg-navy-900 dark:hover:bg-white/[0.06] sm:p-6"
+                className="group flex items-start gap-4 bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:bg-navy-50/70 dark:bg-navy-900 dark:hover:bg-white/[0.06] sm:p-6"
               >
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-navy-600 to-navy-800 text-accent-400 shadow-soft">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-navy-600 to-navy-800 text-accent-400 shadow-soft transition-transform duration-300 group-hover:scale-110">
                   <Icon className="h-5 w-5" />
                 </span>
                 <div>

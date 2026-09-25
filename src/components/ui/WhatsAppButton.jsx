@@ -20,7 +20,7 @@ export function WhatsAppButton() {
   // without '+' or leading '0'.
   const waLink = `https://wa.me/977${digits.replace(/^0/, '')}`;
 
-  const message = encodeURIComponent('Hello Janaki TTC! I found your website and I would like to ask about your training programs.');
+  const message = encodeURIComponent('Hello JTTC! I found your website and I would like to ask about your training programs.');
 
   return (
     <div className="fixed bottom-6 left-6 z-40 flex flex-col items-start gap-3">
@@ -56,7 +56,7 @@ export function WhatsAppButton() {
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.94 }}
         aria-label={open ? 'Close WhatsApp chat' : 'Chat with us on WhatsApp'}
-        className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-card-hover"
+        className="pulse-ring relative flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-card-hover"
       >
         {open ? (
           <X className="h-6 w-6" />

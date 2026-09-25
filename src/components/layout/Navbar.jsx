@@ -30,8 +30,8 @@ function Logo() {
         <Zap className="h-5 w-5 text-accent-400" fill="currentColor" aria-hidden="true" />
       </span>
       <span className="leading-tight">
-        <span className="block font-display text-[15px] font-bold tracking-tight text-navy-900 dark:text-white">
-          Janaki Technical
+        <span className="block font-display text-[15px] font-extrabold tracking-tight text-navy-900 dark:text-white">
+          {siteConfig.shortName}
         </span>
         <span className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-navy-500 dark:text-navy-300">
           Training Center
