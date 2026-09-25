@@ -1,5 +1,5 @@
 ﻿import { Link } from 'react-router-dom';
-import { Megaphone, CalendarDays, ArrowRight, ImageIcon } from 'lucide-react';
+import { Megaphone, CalendarDays, ArrowRight } from 'lucide-react';
 import { useContent } from '@/content/ContentContext';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Reveal } from '@/components/ui/Reveal';
@@ -85,8 +85,7 @@ export function AnnouncementsSection() {
                 )}
                 <div className="flex flex-1 flex-col p-5">
                   <div className="flex items-center justify-between gap-2">
-                    {!a.image && null}
-                    <Badge tone={tagTones[a.tag] || 'gray'}>{a.tag}</Badge>
+                    {a.image ? <Badge tone={tagTones[a.tag] || 'gray'}>{a.tag}</Badge> : <span />}
                     <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-slate-400">
                       <CalendarDays className="h-3.5 w-3.5" />
                       {formatDate(a.date)}

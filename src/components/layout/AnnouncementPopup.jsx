@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X, CalendarDays, ArrowRight } from 'lucide-react';
 import { useContent } from '@/content/ContentContext';
@@ -23,8 +23,11 @@ const tagTones = {
 export function AnnouncementPopup() {
   const { publishedAnnouncements } = useContent();
   const navigate = useNavigate();
+  const location = useLocation();
   const [open, setOpen] = useState(false);
 
+  // Only feature the popup on the homepage — that is "when a visitor first opens the website".
+  const onHome = location.pathname === '/';
   const item = useMemo(
     () =>
       [...(publishedAnnouncements || [])]
@@ -36,7 +39,7 @@ export function AnnouncementPopup() {
   useBodyScrollLock(open);
 
   useEffect(() => {
-    if (!item) return undefined;
+    if (!onHome || !item) return undefined;
     const key = `jttc-popup-seen-${item.id}`;
     if (sessionStorage.getItem(key)) return undefined;
     const t = window.setTimeout(() => {
@@ -44,7 +47,7 @@ export function AnnouncementPopup() {
       setOpen(true);
     }, 900);
     return () => window.clearTimeout(t);
-  }, [item?.id]);
+  }, [onHome, item?.id]);
 
   useEffect(() => {
     if (!open) return undefined;
@@ -55,7 +58,7 @@ export function AnnouncementPopup() {
     return () => window.removeEventListener('keydown', onKey);
   }, [open]);
 
-  if (!item || !open) return null;
+  if (!onHome || !item || !open) return null;
 
   const goRead = () => {
     setOpen(false);

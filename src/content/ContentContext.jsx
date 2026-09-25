@@ -167,8 +167,10 @@ export function ContentProvider({ children }) {
     const iconMap = new Map(categories.map((c) => [c.id, c.icon]));
 
     // Public-facing news: only items marked as published, newest first.
+    // slug falls back to id so older entries always have a valid article link.
     const publishedAnnouncements = [...(content.announcements || [])]
-      .filter((a) => a.status === 'published')
+      .filter((a) => a.status === 'published' && (a.title || '').trim())
+      .map((a) => ({ ...a, slug: a.slug || a.id }))
       .sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
 
     return {
@@ -176,7 +178,7 @@ export function ContentProvider({ children }) {
 
       // ── derived helpers (operate on live content) ──
       publishedAnnouncements,
-      getAnnouncementBySlug: (slug) => publishedAnnouncements.find((a) => a.slug === slug),
+      getAnnouncementBySlug: (slug) => publishedAnnouncements.find((a) => a.slug === slug || a.id === slug),
       getCategoryLabel: (id) => labelMap.get(id) || id,
       getCategoryIcon: (id) => iconMap.get(id) || 'book-open',
       courseCountForCategory: (id) => courses.filter((c) => c.categoryId === id).length,

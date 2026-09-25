@@ -117,9 +117,11 @@ export default function NewsPage() {
                     )}
                     <div className="flex flex-1 flex-col p-5">
                       <div className="flex items-center gap-2">
-                        <span className={cn('rounded-full px-2.5 py-0.5 text-[11px] font-bold', toneClasses[tagTones[a.tag] || 'gray'])}>
-                          {a.tag}
-                        </span>
+                        {a.image ? (
+                          <span className={cn('rounded-full px-2.5 py-0.5 text-[11px] font-bold', toneClasses[tagTones[a.tag] || 'gray'])}>
+                            {a.tag}
+                          </span>
+                        ) : null}
                         <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-slate-400">
                           <CalendarDays className="h-3.5 w-3.5" />
                           {formatDate(a.date)}
