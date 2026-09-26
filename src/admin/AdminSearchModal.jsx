@@ -52,13 +52,14 @@ export default function AdminSearchModal({ open, onClose, onPick }) {
           key: c.key,
           label: c.label,
           icon: c.icon,
+          launcher: false,
           rows: hits.slice(0, 5).map((it) => ({ tab: c.key, id: it[c.idKey], title: it[c.displayKey] || it[c.idKey] })),
         });
       }
     }
     if (!needle) {
       // No query: offer the sections themselves as a quick launcher.
-      return COLLECTIONS.map((c) => ({ key: c.key, label: c.label, icon: c.icon, rows: [{ tab: c.key, id: null }] }));
+      return COLLECTIONS.map((c) => ({ key: c.key, label: c.label, icon: c.icon, launcher: true, rows: [{ tab: c.key, id: null }] }));
     }
     return out;
   }, [q, content]);
@@ -119,7 +120,8 @@ export default function AdminSearchModal({ open, onClose, onPick }) {
                 groups.map((g) => (
                   <div key={g.key} className="pb-1">
                     <p className="flex items-center gap-1.5 px-4 pb-1 pt-2 text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                      <g.icon className="h-3.5 w-3.5" /> {g.label} <span className="text-slate-300">({g.rows.length})</span>
+                      <g.icon className="h-3.5 w-3.5" /> {g.label}
+                      {!g.launcher && <span className="text-slate-300">({g.rows.length})</span>}
                     </p>
                     {g.rows.map((row) => {
                       const i = rows.indexOf(row);
