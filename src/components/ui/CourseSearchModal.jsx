@@ -41,7 +41,14 @@ export function CourseSearchModal({ open, onClose }) {
   }, [open]);
 
   const groups = useMemo(() => {
-    const rowsFor = (type, items) => items.map((item) => ({ type, item }));
+    // Every row carries its own destination: courses/news need it built from the slug.
+    const rowsFor = (type, hits) =>
+      hits.map((item) => ({
+        type,
+        item,
+        to: type === 'course' ? `/courses/${item.slug}` : `/news/${item.slug}`,
+      }));
+
     if (!q.trim()) {
       return [{ key: 'courses', label: 'Courses', icon: Zap, rows: rowsFor('course', courses.slice(0, 8)) }];
     }
@@ -65,7 +72,7 @@ export function CourseSearchModal({ open, onClose }) {
     const groups = [];
     if (courseHits.length) groups.push({ key: 'courses', label: 'Courses', icon: Zap, rows: rowsFor('course', courseHits.slice(0, maxPerGroup.courses)) });
     if (newsHits.length) groups.push({ key: 'news', label: 'News & notices', icon: Newspaper, rows: rowsFor('news', newsHits.slice(0, maxPerGroup.news)) });
-    if (pageHits.length) groups.push({ key: 'pages', label: 'Pages', icon: FileText, rows: rowsFor('page', pageHits.slice(0, maxPerGroup.pages)) });
+    if (pageHits.length) groups.push({ key: 'pages', label: 'Pages', icon: FileText, rows: PAGES.filter((p) => pageHits.includes(p)).map((p) => ({ type: 'page', item: p, to: p.to })) });
     return groups;
   }, [q, courses, publishedAnnouncements]);
 
@@ -88,8 +95,9 @@ export function CourseSearchModal({ open, onClose }) {
       }
       if (e.key === 'Enter' && rows[idx]) {
         e.preventDefault();
+        const target = rows[idx].to;
         onClose();
-        navigate(rows[idx].item.to);
+        navigate(target);
       }
     };
     window.addEventListener('keydown', onKey);
@@ -102,7 +110,6 @@ export function CourseSearchModal({ open, onClose }) {
     if (type === 'news') return `News · ${item.tag || 'Notice'}${item.date ? ` · ${String(item.date).slice(0, 10)}` : ''}`;
     return 'Page';
   };
-
   return createPortal(
     <AnimatePresence>
       {open && (
@@ -159,8 +166,8 @@ export function CourseSearchModal({ open, onClose }) {
                       const i = rows.indexOf(row);
                       return (
                         <Link
-                          key={item.to}
-                          to={item.to}
+                          key={row.to}
+                          to={row.to}
                           onClick={onClose}
                           onMouseEnter={() => setIdx(i)}
                           className={`flex items-center gap-3 px-4 py-2.5 transition ${i === idx ? 'bg-navy-50 dark:bg-white/10' : ''}`}
@@ -170,7 +177,7 @@ export function CourseSearchModal({ open, onClose }) {
                           </span>
                           <span className="min-w-0 flex-1">
                             <span className="block truncate text-sm font-semibold text-navy-900 dark:text-white">
-                              {type === 'course' ? item.title : item.title || item.to}
+                              {item.title}
                             </span>
                             <span className="block truncate text-xs text-slate-500 dark:text-slate-400">
                               {rowSub(type, item)}
