@@ -283,6 +283,9 @@ export default function CollectionEditor({
     onSave(list);
     onSaved(pendingSave?.note || `${title} saved.`);
     setPicked([]);
+    // A form save clears the "unsaved" state; other commits (reorder, delete,
+    // bulk upload) must leave a half-finished form marked as dirty.
+    if (pendingSave?.savedForm && draft) setBaseline(JSON.stringify(draft));
     setSelectedId(idVal);
     if (!idVal) {
       setDraft(null);
@@ -353,12 +356,12 @@ export default function CollectionEditor({
         list = [...items];
         list.splice(origIdx, 1);
         list.splice(origIdx, 0, { ...draft, [idKey]: idVal });
-        setPendingSave({ list, idVal });
+        setPendingSave({ list, idVal, savedForm: true });
         return;
       }
     }
     list.push({ ...draft, [idKey]: idVal });
-    setPendingSave({ list, idVal });
+    setPendingSave({ list, idVal, savedForm: true });
   };
   const applySaveRef = useRef(applySave);
   applySaveRef.current = applySave;
