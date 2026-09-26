@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Save, RotateCcw, MapPin, Info, Cloud, CloudOff, CheckCircle2, XCircle, Loader2, Copy, Plug, Unplug } from 'lucide-react';
+import { Save, RotateCcw, MapPin, Info, Cloud, CloudOff, CheckCircle2, XCircle, Loader2, Copy, Plug, Unplug, AlertTriangle } from 'lucide-react';
 import { useContent } from '@/content/ContentContext';
 import {
   saveFirebaseConfig,
@@ -236,16 +236,47 @@ function CloudSyncCard({ notify, status, source }) {
   );
 }
 
-export default function SiteSettingsTab({ notify, guard }) {
+export default function SiteSettingsTab({ notify, guard, onDirtyChange, onSaved }) {
   const content = useContent();
   const [draft, setDraft] = useState(() => JSON.parse(JSON.stringify(content.siteConfig)));
   const [pendingSave, setPendingSave] = useState(false);
+
+  const dirty = JSON.stringify(draft) !== JSON.stringify(content.siteConfig);
+
+  useEffect(() => {
+    if (onDirtyChange) onDirtyChange(dirty);
+  }, [dirty, onDirtyChange]);
+
+  useEffect(() => {
+    if (!dirty) return undefined;
+    const warn = (e) => {
+      e.preventDefault();
+      e.returnValue = '';
+      return '';
+    };
+    window.addEventListener('beforeunload', warn);
+    return () => window.removeEventListener('beforeunload', warn);
+  }, [dirty]);
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's' && dirty) {
+        e.preventDefault();
+        setPendingSave(true);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [dirty]);
 
   const set = (key) => (v) => setDraft((d) => ({ ...d, [key]: v }));
   const setSocial = (key) => (v) => setDraft((d) => ({ ...d, socialLinks: { ...d.socialLinks, [key]: v } }));
 
   const doSave = () => {
-    if (guard(content.updateSection('siteConfig', draft))) notify('Site settings saved.');
+    if (guard(content.updateSection('siteConfig', draft))) {
+      notify('Site settings saved.');
+      if (onSaved) onSaved('Site settings saved.');
+    }
   };
 
   const save = () => setPendingSave(true);
@@ -262,7 +293,14 @@ export default function SiteSettingsTab({ notify, guard }) {
     <div>
       <div className="flex items-start justify-between gap-4 mb-6">
         <div>
-          <h2 className="text-xl font-bold text-navy-900 dark:text-white">Site Settings</h2>
+          <h2 className="flex items-center gap-2 text-xl font-bold text-navy-900 dark:text-white">
+            Site Settings
+            {dirty && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-bold text-amber-700 dark:bg-amber-500/15 dark:text-amber-300">
+                <AlertTriangle className="h-3 w-3" /> Unsaved changes
+              </span>
+            )}
+          </h2>
           <p className="text-sm text-slate-500 dark:text-slate-400">
             Contact details, map location and links — used across every page.
           </p>
@@ -272,8 +310,8 @@ export default function SiteSettingsTab({ notify, guard }) {
             className="inline-flex items-center gap-1.5 px-3 py-2 text-sm rounded-md border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800">
             <RotateCcw className="w-4 h-4" /> Reset
           </button>
-          <button onClick={save}
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-md bg-navy-700 text-white hover:bg-navy-600 transition">
+          <button onClick={save} disabled={!dirty}
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-md bg-navy-700 text-white hover:bg-navy-600 transition disabled:opacity-40 disabled:cursor-not-allowed">
             <Save className="w-4 h-4" /> Save
           </button>
         </div>

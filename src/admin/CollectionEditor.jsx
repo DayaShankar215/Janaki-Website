@@ -183,6 +183,8 @@ export default function CollectionEditor({
   const courses = content.courses || [];
   const fileRef = useRef(null);
   const searchRef = useRef(null);
+  // Once the admin edits the slug by hand, stop auto-generating it from the title.
+  const slugTouched = useRef(false);
   const [bulkCourse, setBulkCourse] = useState('');
   const [bulkBusy, setBulkBusy] = useState(false);
   const [bulkMsg, setBulkMsg] = useState('');
@@ -222,6 +224,7 @@ export default function CollectionEditor({
 
   const startNew = () => {
     const item = typeof newItem === 'function' ? newItem() : { ...newItem };
+    slugTouched.current = false;
     setDraft(item);
     setBaseline(JSON.stringify(item));
     setSelectedId('__new__');
@@ -230,6 +233,7 @@ export default function CollectionEditor({
 
   const startEdit = (item) => {
     const copy = JSON.parse(JSON.stringify(item));
+    slugTouched.current = true; // never rewrite the slug of an existing entry
     setDraft(copy);
     setBaseline(JSON.stringify(copy));
     setSelectedId(item[idKey]);
@@ -595,17 +599,18 @@ export default function CollectionEditor({
                       field={f}
                       value={draft[f.key]}
                       invalid={invalidKeys.has(f.key)}
-                      onChange={(v) =>
+                      onChange={(v) => {
+                        if (f.key === 'slug') slugTouched.current = true;
                         setDraft((d) => {
                           const next = { ...d, [f.key]: v };
-                          // Auto-fill an empty URL slug from the main title field.
-                          if (f.key === 'title' && selectedId === '__new__') {
-                            const slugField = schema.find((x) => x.key === 'slug');
-                            if (slugField && !String(d.slug || '').trim()) next.slug = slugify(v);
+                          // Keep the URL slug in step with the title while typing a new entry,
+                          // until the admin overrides the slug by hand.
+                          if (f.key === 'title' && selectedId === '__new__' && !slugTouched.current) {
+                            next.slug = slugify(v);
                           }
                           return next;
-                        })
-                      }
+                        });
+                      }}
                     />
                   </div>
                 ))}
