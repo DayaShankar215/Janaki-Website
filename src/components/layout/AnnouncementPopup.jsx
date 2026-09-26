@@ -56,12 +56,14 @@ export function AnnouncementPopup() {
   // Only feature the popup on the homepage — that is "when a visitor first opens the website".
   const onHome = location.pathname === '/';
 
-  // Published + flagged for the popup + has a photo, newest first, minus
-  // everything already shown during this visit. Content comes from Firebase
-  // whenever cloud sync is live, so unpublished items never reach the queue.
+  // Published + flagged for the popup, newest first, minus everything already
+  // shown during this visit. Content comes from Firebase whenever cloud sync is
+  // live, so unpublished items never reach the queue. A featured photo is
+  // optional here — an item without one still shows, just without the image
+  // band, so a missing upload can never make the popup silently disappear.
   const queue = useMemo(() => {
     return [...(publishedAnnouncements || [])]
-      .filter((a) => a.popup === true && !!a.image && (a.title || '').trim())
+      .filter((a) => a.popup === true && (a.title || '').trim())
       .filter((a) => !seenIds.includes(a.id))
       .sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
   }, [publishedAnnouncements, seenIds]);
@@ -87,17 +89,37 @@ export function AnnouncementPopup() {
 
   // Open the first unseen item shortly after the homepage settles — but only
   // while nothing is on screen, so it can never interrupt the current item.
+  // The countdown is deliberately NOT re-armed by unrelated re-renders (the
+  // cloud snapshot landing, an image finishing, ...): it used to be cancelled
+  // and restarted on each one, which delayed the popup by seconds.
+  const openTimer = useRef(null);
   useEffect(() => {
-    if (!onHome || item || !queue.length) return undefined;
-    const t = window.setTimeout(() => {
+    if (!onHome || item || !queue.length) {
+      if (openTimer.current) {
+        window.clearTimeout(openTimer.current);
+        openTimer.current = null;
+      }
+      return;
+    }
+    if (openTimer.current) return; // already counting down — let it finish
+    openTimer.current = window.setTimeout(() => {
+      openTimer.current = null;
       const first = queue[0];
+      if (!first) return;
       setTotal(queue.length);
       setItem(first);
       setVisible(true);
       markSeen(first.id);
     }, 900);
-    return () => window.clearTimeout(t);
   }, [onHome, item, queue]);
+
+  // Never leave a timer running after the popup is gone.
+  useEffect(
+    () => () => {
+      if (openTimer.current) window.clearTimeout(openTimer.current);
+    },
+    []
+  );
 
   useEffect(() => {
     if (!visible) return undefined;

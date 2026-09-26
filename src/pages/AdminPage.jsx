@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import AdminLogin from '@/admin/AdminLogin';
 import CollectionEditor from '@/admin/CollectionEditor';
+import PopupReadiness from '@/admin/PopupReadiness';
 import DashboardTab from '@/admin/DashboardTab';
 import AdminSearchModal from '@/admin/AdminSearchModal';
 import SiteSettingsTab from '@/admin/SiteSettingsTab';
@@ -150,7 +151,7 @@ export default function AdminPage() {
       a.status === 'published' ? { label: 'Published', tone: 'green' }
         : a.status === 'archived' ? { label: 'Archived', tone: 'gray' } : { label: 'Draft', tone: 'amber' };
     if (a.pinned) return { ...base, label: `Pinned · ${base.label}` };
-    if (a.popup && !a.image) return { ...base, label: `${base.label} · popup needs photo` };
+    if (a.popup) return { ...base, label: `Popup on · ${base.label}` };
     return base;
   };
 
@@ -375,6 +376,8 @@ export default function AdminPage() {
             />
           )}
           {tab === 'announcements' && (
+            <>
+            <PopupReadiness announcements={content.announcements} />
             <CollectionEditor
               key="announcements"
               title="News & Notices"
@@ -425,6 +428,7 @@ export default function AdminPage() {
               onSave={(list) => guard(content.updateSection('announcements', list))}
               onSaved={(m) => saved(m, 'News')}
             />
+            </>
           )}
           {tab === 'faqs' && (
             <CollectionEditor
