@@ -116,6 +116,7 @@ export function ContentProvider({ children }) {
   const [overrides, setOverrides] = useState(loadStored);
   // Cloud sync status: 'off' (no Firebase configured) | 'connecting' | 'on' | 'error'
   const [cloudStatus, setCloudStatus] = useState('off');
+  const [lastSyncedAt, setLastSyncedAt] = useState(null);
   // Config source: 'static' (ships with the site) | 'local' (admin panel) | null
   const [cloudSource, setCloudSource] = useState(null);
   const cloudActive = useRef(false);
@@ -168,6 +169,7 @@ export function ContentProvider({ children }) {
           // adopt shared snapshot — everyone sees the same content
           setOverrides(remote || {});
           setCloudStatus('on');
+          setLastSyncedAt(Date.now());
         },
         () => {
           if (!cancelled) setCloudStatus('error');
@@ -184,6 +186,7 @@ export function ContentProvider({ children }) {
         if (cancelled) return;
         setOverrides(snap);
         setCloudStatus('on');
+        setLastSyncedAt(Date.now());
       } catch {
         if (!cancelled) setCloudStatus('error'); // writes blocked → local-only mode
       }
@@ -195,6 +198,24 @@ export function ContentProvider({ children }) {
       adoptRemote.current = false;
     };
   }, []);
+
+  /** Push the browser's content to the shared store on demand. */
+  const syncNow = useCallback(async () => {
+    if (!cloudActive.current) throw new Error('Cloud sync is not connected.');
+    await pushRemote(overrides || {});
+    setLastSyncedAt(Date.now());
+    return true;
+  }, [overrides]);
+
+  /** Replace browser content with the shared snapshot on demand. */
+  const pullNow = useCallback(async () => {
+    if (!cloudActive.current) throw new Error('Cloud sync is not connected.');
+    const snap = await loadRemote();
+    adoptRemote.current = true;
+    persist(snap);
+    setLastSyncedAt(Date.now());
+    return true;
+  }, [persist]);
 
   /** Replace one section of the content tree. Returns success bool. */
   const updateSection = useCallback(
@@ -282,8 +303,11 @@ export function ContentProvider({ children }) {
       cloudStatus,
       cloudSource,
       cloudSyncEnabled: cloudActive.current,
+      lastSyncedAt,
+      syncNow,
+      pullNow,
     };
-  }, [overrides, updateSection, resetSection, resetAll, exportAll, importAll, cloudStatus, cloudSource]);
+  }, [overrides, updateSection, resetSection, resetAll, exportAll, importAll, cloudStatus, cloudSource, lastSyncedAt, syncNow, pullNow]);
 
   return <ContentContext.Provider value={value}>{children}</ContentContext.Provider>;
 }
