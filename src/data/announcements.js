@@ -11,7 +11,8 @@
 //    slug        unique link (used in /news/<slug>)
 //    status      'draft' | 'published' | 'archived'
 //                (public site only ever shows 'published')
-//    popup       true = show once as a homepage popup (needs image)
+//    popup       true = show once as a homepage popup (a photo looks
+//                better, but is not required)
 //    date        publication date — newer items are listed first
 //    image       featured image
 //    images[]    additional photos shown on the article page

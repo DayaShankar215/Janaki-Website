@@ -406,7 +406,7 @@ export default function AdminPage() {
                 { key: 'images', label: 'Gallery photos', type: 'imageList', aspect: 'aspect-video', help: 'Extra photos shown inside the article.' },
                 { key: 'excerpt', label: 'Short excerpt', type: 'textarea', rows: 2, help: 'One-liner used on cards and the popup.' },
                 { key: 'description', label: 'Full article text', type: 'textarea', rows: 6, help: 'Separate paragraphs with a blank line.' },
-                { key: 'popup', label: 'Show as homepage popup', type: 'bool', help: 'Floating announcement shown once per visit. Needs a featured photo.' },
+                { key: 'popup', label: 'Show as homepage popup', type: 'bool', help: 'Floating announcement on the homepage, once per visit. Closing it moves to the next one. A featured photo is optional.' },
                 { key: 'pinned', label: 'Pinned (stays at top)', type: 'bool' },
                 { key: 'isSample', label: 'Show "Sample" badge', type: 'bool' },
               ]}
