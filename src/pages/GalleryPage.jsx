@@ -9,7 +9,7 @@ import { cn } from '@/utils/cn';
 const PAGE_SIZE = 8;
 
 export default function GalleryPage() {
-  const { galleryItems, galleryCategories } = useContent();
+  const { galleryItems } = useContent();
   useSeo(
     'Gallery',
     'Photos from training sessions, workshops and student activities at Janaki Technical Training Center.'
@@ -20,10 +20,10 @@ export default function GalleryPage() {
   const [visible, setVisible] = useState(PAGE_SIZE);
 
   const chips = useMemo(() => {
-    const seen = new Set(galleryCategories);
+    const seen = new Set();
     galleryItems.forEach((g) => g && g.category && seen.add(g.category));
-    return [...seen];
-  }, [galleryCategories, galleryItems]);
+    return [...seen].filter((cat) => cat !== 'All');
+  }, [galleryItems]);
 
   const counts = useMemo(() => {
     const map = new Map();
@@ -34,15 +34,18 @@ export default function GalleryPage() {
     return map;
   }, [galleryItems]);
 
-  const items = useMemo(
-    () => (filter === 'All' ? galleryItems : galleryItems.filter((g) => g.category === filter)),
-    [filter]
-  );
-
   useEffect(() => setVisible(PAGE_SIZE), [filter]);
 
-  const shown = items.slice(0, visible);
-  const total = items.length;
+  // A filter pointing at a category that no longer has photos falls back to "All".
+  const activeFilter = filter !== 'All' && (counts.get(filter) || 0) > 0 ? filter : 'All';
+
+  const filtered = useMemo(
+    () => (activeFilter === 'All' ? galleryItems : galleryItems.filter((g) => g.category === activeFilter)),
+    [activeFilter, galleryItems]
+  );
+
+  const total = filtered.length;
+  const shown = filtered.slice(0, visible);
 
   return (
     <>
@@ -67,26 +70,24 @@ export default function GalleryPage() {
                   : 'border-slate-300 bg-white text-slate-600 hover:border-navy-400 hover:text-navy-800 dark:border-white/15 dark:bg-white/[0.05] dark:text-slate-300 dark:hover:border-white/40'
               )}
             >
-              All ({total})
+              All ({galleryItems.length})
             </button>
-            {chips
-              .filter((cat) => cat !== 'All')
-              .map((cat) => (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => setFilter(cat)}
-                  aria-pressed={filter === cat}
-                  className={cn(
-                    'rounded-full border px-4 py-2 text-sm font-semibold transition-colors',
-                    filter === cat
-                      ? 'border-navy-700 bg-navy-700 text-white shadow-soft dark:border-accent-500 dark:bg-accent-500 dark:text-navy-950'
-                      : 'border-slate-300 bg-white text-slate-600 hover:border-navy-400 hover:text-navy-800 dark:border-white/15 dark:bg-white/[0.05] dark:text-slate-300 dark:hover:border-white/40'
-                  )}
-                >
-                  {cat} ({counts.get(cat) || 0})
-                </button>
-              ))}
+            {chips.map((cat) => (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => setFilter(cat)}
+                aria-pressed={activeFilter === cat}
+                className={cn(
+                  'rounded-full border px-4 py-2 text-sm font-semibold transition-colors',
+                  activeFilter === cat
+                    ? 'border-navy-700 bg-navy-700 text-white shadow-soft dark:border-accent-500 dark:bg-accent-500 dark:text-navy-950'
+                    : 'border-slate-300 bg-white text-slate-600 hover:border-navy-400 hover:text-navy-800 dark:border-white/15 dark:bg-white/[0.05] dark:text-slate-300 dark:hover:border-white/40'
+                )}
+              >
+                {cat} ({counts.get(cat) || 0})
+              </button>
+            ))}
           </div>
 
           {/* Grid */}
