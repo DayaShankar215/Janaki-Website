@@ -4,6 +4,7 @@ import { useSeo } from '@/hooks/useSeo';
 import { PageHero } from '@/components/layout/PageHero';
 import { CourseCard } from '@/components/cards/CourseCard';
 import { Reveal } from '@/components/ui/Reveal';
+import { RecentlyViewedCourses } from '@/components/ui/RecentlyViewed';
 import { Button } from '@/components/ui/Button';
 import { useContent } from '@/content/ContentContext';
 import { useBookmarks } from '@/hooks/useBookmarks';
@@ -84,6 +85,8 @@ export default function CoursesPage() {
         description="Hands-on vocational training across the trades that build our homes, businesses and communities."
         breadcrumb={[{ label: 'Courses' }]}
       />
+
+      <RecentlyViewedCourses max={4} />
 
       <section className="bg-slate-50 py-14 dark:bg-white/[0.02] sm:py-16">
         <div className="container-x">

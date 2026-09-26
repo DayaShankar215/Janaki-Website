@@ -1,6 +1,7 @@
 ﻿import { Link } from 'react-router-dom';
 import { Zap, MapPin, Phone, Mail, Clock, Facebook, Instagram, Youtube, Linkedin } from 'lucide-react';
 import { useContent } from '@/content/ContentContext';
+import { NewsletterSignup } from './NewsletterSignup';
 
 const quickLinks = [
   { to: '/', label: 'Home' },
@@ -139,6 +140,20 @@ export function Footer() {
               ))}
             </div>
           )}
+        </div>
+      </div>
+
+      <div className="container-x">
+        <div className="grid gap-8 border-t border-white/10 py-8 lg:grid-cols-3 lg:items-start">
+          <div className="lg:col-span-2">
+            <h3 className="font-display text-sm font-bold uppercase tracking-[0.14em] text-white">
+              Stay in the loop
+            </h3>
+            <p className="mt-2 max-w-xl text-sm text-slate-400">
+              Subscribe and we'll let you know as soon as new batches and admission dates open — no spam, unsubscribe anytime.
+            </p>
+          </div>
+          <NewsletterSignup />
         </div>
       </div>
 

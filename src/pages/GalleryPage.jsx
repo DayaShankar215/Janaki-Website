@@ -1,10 +1,12 @@
-﻿import { useMemo, useState } from 'react';
+﻿import { useEffect, useMemo, useState } from 'react';
 import { useSeo } from '@/hooks/useSeo';
 import { PageHero } from '@/components/layout/PageHero';
 import { Lightbox } from '@/components/Lightbox';
 import { Reveal } from '@/components/ui/Reveal';
 import { useContent } from '@/content/ContentContext';
 import { cn } from '@/utils/cn';
+
+const PAGE_SIZE = 8;
 
 export default function GalleryPage() {
   const { galleryItems, galleryCategories } = useContent();
@@ -15,6 +17,7 @@ export default function GalleryPage() {
 
   const [filter, setFilter] = useState('All');
   const [lightboxIndex, setLightboxIndex] = useState(null);
+  const [visible, setVisible] = useState(PAGE_SIZE);
 
   const chips = useMemo(() => {
     const seen = new Set(galleryCategories);
@@ -22,10 +25,24 @@ export default function GalleryPage() {
     return [...seen];
   }, [galleryCategories, galleryItems]);
 
+  const counts = useMemo(() => {
+    const map = new Map();
+    galleryItems.forEach((g) => {
+      if (!g || !g.category) return;
+      map.set(g.category, (map.get(g.category) || 0) + 1);
+    });
+    return map;
+  }, [galleryItems]);
+
   const items = useMemo(
     () => (filter === 'All' ? galleryItems : galleryItems.filter((g) => g.category === filter)),
     [filter]
   );
+
+  useEffect(() => setVisible(PAGE_SIZE), [filter]);
+
+  const shown = items.slice(0, visible);
+  const total = items.length;
 
   return (
     <>
@@ -39,27 +56,42 @@ export default function GalleryPage() {
         <div className="container-x">
           {/* Filters */}
           <div className="flex flex-wrap justify-center gap-2" role="group" aria-label="Filter gallery by category">
-            {chips.map((cat) => (
-              <button
-                key={cat}
-                type="button"
-                onClick={() => setFilter(cat)}
-                aria-pressed={filter === cat}
-                className={cn(
-                  'rounded-full border px-4 py-2 text-sm font-semibold transition-colors',
-                  filter === cat
-                    ? 'border-navy-700 bg-navy-700 text-white shadow-soft dark:border-accent-500 dark:bg-accent-500 dark:text-navy-950'
-                    : 'border-slate-300 bg-white text-slate-600 hover:border-navy-400 hover:text-navy-800 dark:border-white/15 dark:bg-white/[0.05] dark:text-slate-300 dark:hover:border-white/40'
-                )}
-              >
-                {cat}
-              </button>
-            ))}
+            <button
+              type="button"
+              onClick={() => setFilter('All')}
+              aria-pressed={filter === 'All'}
+              className={cn(
+                'rounded-full border px-4 py-2 text-sm font-semibold transition-colors',
+                filter === 'All'
+                  ? 'border-navy-700 bg-navy-700 text-white shadow-soft dark:border-accent-500 dark:bg-accent-500 dark:text-navy-950'
+                  : 'border-slate-300 bg-white text-slate-600 hover:border-navy-400 hover:text-navy-800 dark:border-white/15 dark:bg-white/[0.05] dark:text-slate-300 dark:hover:border-white/40'
+              )}
+            >
+              All ({total})
+            </button>
+            {chips
+              .filter((cat) => cat !== 'All')
+              .map((cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setFilter(cat)}
+                  aria-pressed={filter === cat}
+                  className={cn(
+                    'rounded-full border px-4 py-2 text-sm font-semibold transition-colors',
+                    filter === cat
+                      ? 'border-navy-700 bg-navy-700 text-white shadow-soft dark:border-accent-500 dark:bg-accent-500 dark:text-navy-950'
+                      : 'border-slate-300 bg-white text-slate-600 hover:border-navy-400 hover:text-navy-800 dark:border-white/15 dark:bg-white/[0.05] dark:text-slate-300 dark:hover:border-white/40'
+                  )}
+                >
+                  {cat} ({counts.get(cat) || 0})
+                </button>
+              ))}
           </div>
 
           {/* Grid */}
           <div className="mt-10 columns-1 gap-4 sm:columns-2 lg:columns-3 [&>*]:mb-4">
-            {items.map((item, i) => (
+            {shown.map((item, i) => (
               <Reveal key={item.id} delay={(i % 3) * 0.06} className="break-inside-avoid">
                 <button
                   type="button"
@@ -90,13 +122,25 @@ export default function GalleryPage() {
             ))}
           </div>
 
-<p className="mt-8 text-center text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+          {total > visible && (
+            <div className="mt-8 text-center">
+              <button
+                type="button"
+                onClick={() => setVisible((v) => v + PAGE_SIZE)}
+                className="rounded-full border border-navy-300 bg-white px-6 py-2.5 text-sm font-bold text-navy-800 transition-colors hover:border-navy-500 hover:bg-navy-50 hover:text-navy-950 dark:border-white/20 dark:bg-white/[0.05] dark:text-slate-200 dark:hover:border-accent-400 dark:hover:bg-white/10"
+              >
+                Load more photos ({shown.length} of {total})
+              </button>
+            </div>
+          )}
+
+          <p className="mt-8 text-center text-xs leading-relaxed text-slate-500 dark:text-slate-400">
             Photos of trainees at work will be added here as they become available. Click any photo to view it in full size.
           </p>
         </div>
       </section>
 
-      <Lightbox items={items} index={lightboxIndex} onClose={() => setLightboxIndex(null)} onNavigate={setLightboxIndex} />
+      <Lightbox items={shown} index={lightboxIndex} onClose={() => setLightboxIndex(null)} onNavigate={setLightboxIndex} />
     </>
   );
 }

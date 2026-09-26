@@ -15,6 +15,7 @@ import {
   Printer,
 } from 'lucide-react';
 import { useSeo } from '@/hooks/useSeo';
+import { JsonLd } from '@/components/Seo';
 import { PageHero } from '@/components/layout/PageHero';
 import { SmartImage } from '@/components/ui/SmartImage';
 import { Badge } from '@/components/ui/Badge';
@@ -45,7 +46,7 @@ function DetailBlock({ icon: Icon, title, children }) {
 }
 
 export default function CourseDetailsPage() {
-  const { getCourseBySlug, getRelatedCourses, getCategoryLabel } = useContent();
+  const { getCourseBySlug, getRelatedCourses, getCategoryLabel, siteConfig } = useContent();
   const { slug } = useParams();
   const course = getCourseBySlug(slug);
   const { isBookmarked, toggle } = useBookmarks();
@@ -70,6 +71,31 @@ export default function CourseDetailsPage() {
 return (
     <>
       <RecentStrip currentSlug={course.slug} />
+
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'Course',
+          name: course.title,
+          description: course.shortDescription,
+          url: `${siteConfig.url}/courses/${course.slug}`,
+          provider: {
+            '@type': 'EducationalOrganization',
+            name: siteConfig.name,
+            url: siteConfig.url,
+          },
+          ...(course.skills?.length ? { teaches: course.skills } : {}),
+          ...(course.durationWeeks
+            ? {
+                hasCourseInstance: {
+                  '@type': 'CourseInstance',
+                  courseMode: 'onsite',
+                  duration: `P${course.durationWeeks}W`,
+                },
+              }
+            : {}),
+        }}
+      />
 
       {/* Hero */}
       <section className="relative overflow-hidden bg-navy-950">

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { CalendarDays, ArrowLeft, ArrowRight, ImageIcon, Megaphone } from 'lucide-react';
+import { CalendarDays, ArrowLeft, ArrowRight, ImageIcon, Megaphone, Printer } from 'lucide-react';
 import { useSeo } from '@/hooks/useSeo';
 import { useContent } from '@/content/ContentContext';
 import { Badge } from '@/components/ui/Badge';
@@ -166,8 +166,15 @@ export default function NewsDetailsPage() {
                 </div>
               )}
 
-              <div className="mt-8 border-t border-slate-100 pt-6 dark:border-white/10">
+              <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-6 dark:border-white/10">
                 <ShareButtons title={news.title} />
+                <button
+                  type="button"
+                  onClick={() => window.print()}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 px-3.5 py-2 text-sm font-semibold text-navy-700 transition-colors hover:border-navy-500 hover:bg-navy-50 dark:border-white/15 dark:text-slate-200 dark:hover:bg-white/10"
+                >
+                  <Printer className="h-4 w-4" /> Print
+                </button>
               </div>
             </div>
           </Reveal>

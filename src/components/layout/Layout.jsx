@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
+import { AnimatePresence, motion, useScroll, useSpring, useReducedMotion } from 'framer-motion';
 import { ArrowUp } from 'lucide-react';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
+import { AnnouncementTicker } from './AnnouncementTicker';
 import { ScrollToTop } from '@/hooks/ScrollToTop';
 import { CourseSearchModal } from '@/components/ui/CourseSearchModal';
 import { WhatsAppButton } from '@/components/ui/WhatsAppButton';
 import { AnnouncementPopup } from './AnnouncementPopup';
+import { JsonLd, organizationSchema } from '@/components/Seo';
+import { useContent } from '@/content/ContentContext';
 
 function ScrollProgress() {
   const { scrollYProgress } = useScroll();
@@ -72,6 +75,12 @@ export function useGlobalSearch() {
 export function Layout() {
   const location = useLocation();
   const { searchOpen, setSearchOpen } = useGlobalSearch();
+  const { siteConfig } = useContent();
+  const reduceMotion = useReducedMotion();
+
+  const transition = reduceMotion
+    ? { duration: 0 }
+    : { duration: 0.28, ease: 'easeOut' };
 
   return (
     <div className="flex min-h-screen flex-col bg-white text-slate-700 dark:bg-navy-950 dark:text-slate-300">
@@ -83,15 +92,17 @@ export function Layout() {
       </a>
       <ScrollToTop />
       <ScrollProgress />
+      <AnnouncementTicker />
       <Navbar onOpenSearch={() => setSearchOpen(true)} />
+      <JsonLd data={organizationSchema(siteConfig)} />
       <main id="main-content" className="flex-1">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={location.pathname}
-            initial={{ opacity: 0, y: 14 }}
+            initial={{ opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : 14 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.28, ease: 'easeOut' }}
+            exit={{ opacity: reduceMotion ? 1 : 0 }}
+            transition={transition}
           >
             <Outlet />
           </motion.div>

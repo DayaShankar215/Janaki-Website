@@ -30,3 +30,20 @@ export async function sendInquiry(templateParams) {
 
   return { demo: false };
 }
+
+/**
+ * Subscribes an email address for newsletter updates. Reuses the EmailJS
+ * setup — the site template receives `from_name: "Newsletter subscription"`,
+ * so the owner can route these messages in the EmailJS dashboard/template.
+ * Returns { demo: true } when credentials are not configured.
+ */
+export async function subscribeNewsletter(email) {
+  return sendInquiry({
+    from_name: 'Newsletter subscription',
+    reply_email: email,
+    email,
+    subject: 'New newsletter subscription',
+    message: 'A visitor subscribed to receive updates about new batches and events.',
+    sent_at: new Date().toLocaleString(),
+  });
+}
