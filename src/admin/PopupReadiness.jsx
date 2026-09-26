@@ -86,11 +86,11 @@ export default function PopupReadiness({ announcements = [] }) {
           {waiting.length > 0 && (
             <p className="mt-1.5 text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">
               {total} notice{total === 1 ? '' : 's'} in total · not shown:{' '}
-              {waiting
-                .slice(0, 4)
-                .map((w) => `"${w.item.title || 'Untitled'}" (${w.reason})`)
-                .join(', ')}
-              {waiting.length > 4 ? ` +${waiting.length - 4} more` : ''}
+              {Object.entries(
+                waiting.reduce((acc, w) => ({ ...acc, [w.reason]: (acc[w.reason] || 0) + 1 }), {})
+              )
+                .map(([reason, count]) => `${count} ${reason}`)
+                .join(' · ')}
             </p>
           )}
         </div>
