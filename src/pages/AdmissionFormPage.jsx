@@ -111,6 +111,7 @@ export default function AdmissionFormPage() {
     if (form.email && !isValidEmail(form.email)) next.email = 'That email address looks incomplete.';
     if (!isNotEmpty(form.program)) next.program = 'Choose the program you are applying for.';
     if (!form.agree) next.agree = 'Please confirm the declaration before printing.';
+    if (!form.agreeTerms) next.agreeTerms = 'Please acknowledge the terms before printing.';
     setErrors(next);
     return Object.keys(next).length === 0;
   };
@@ -294,12 +295,13 @@ export default function AdmissionFormPage() {
               the information above is correct, and I allow {siteConfig?.name} to keep a copy of my documents for
               admission and record keeping.
             </Box>
-            <Box label="I understand" checked={form.agree}>
+            <Box label="I understand" checked={form.agreeTerms} onChange={set('agreeTerms')}>
               that fees once paid are not refundable, and that the centre may verify my details with the documents I
               submit.
             </Box>
           </div>
           {errors.agree && <p className="no-print mt-2 text-xs font-medium text-red-600">{errors.agree}</p>}
+          {errors.agreeTerms && <p className="no-print text-xs font-medium text-red-600">{errors.agreeTerms}</p>}
 
           <div className="mt-6 grid gap-6 sm:grid-cols-2">
             <div>

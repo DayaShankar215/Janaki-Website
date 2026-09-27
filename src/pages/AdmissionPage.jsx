@@ -1,4 +1,5 @@
-﻿import { FileText, Phone } from 'lucide-react';
+﻿import { FileText, Phone, Download, TicketCheck } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useSeo } from '@/hooks/useSeo';
 import { PageHero } from '@/components/layout/PageHero';
 import { SectionHeading } from '@/components/ui/SectionHeading';
@@ -68,6 +69,26 @@ export default function AdmissionPage() {
               <p className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
                 Typical requirements — please confirm with the center when you apply.
               </p>
+              <div className="mt-5 flex flex-wrap gap-2 border-t border-slate-100 pt-5 dark:border-white/10">
+                <Link
+                  to="/admission-form"
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-navy-800 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-navy-700 dark:bg-accent-500 dark:text-navy-950 dark:hover:bg-accent-400"
+                >
+                  <FileText className="h-4 w-4" /> Fill the printable form
+                </Link>
+                <Link
+                  to="/brochure"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 px-4 py-2.5 text-sm font-semibold text-navy-800 transition hover:border-accent-500 dark:border-white/20 dark:text-slate-200"
+                >
+                  <Download className="h-4 w-4" /> Brochure (save as PDF)
+                </Link>
+                <Link
+                  to="/track"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 px-4 py-2.5 text-sm font-semibold text-navy-800 transition hover:border-accent-500 dark:border-white/20 dark:text-slate-200"
+                >
+                  <TicketCheck className="h-4 w-4" /> Track an application
+                </Link>
+              </div>
             </div>
           </Reveal>
 

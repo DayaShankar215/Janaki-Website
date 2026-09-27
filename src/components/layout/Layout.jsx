@@ -8,6 +8,7 @@ import { AnnouncementTicker } from './AnnouncementTicker';
 import { ScrollToTop } from '@/hooks/ScrollToTop';
 import { CourseSearchModal } from '@/components/ui/CourseSearchModal';
 import { WhatsAppButton } from '@/components/ui/WhatsAppButton';
+import HelpAssistant from '@/components/HelpAssistant';
 import { AnnouncementPopup } from './AnnouncementPopup';
 import { JsonLd, organizationSchema } from '@/components/Seo';
 import { useContent } from '@/content/ContentContext';
@@ -113,6 +114,7 @@ export function Layout() {
       <Footer />
       <CourseSearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
       <AnnouncementPopup />
+      <HelpAssistant />
     </div>
   );
 }
