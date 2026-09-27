@@ -315,3 +315,47 @@ input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+/* ── Print (brochure, admission form) ──────────────────────────────────────
+   The visitor prints the page or saves it as a PDF, so the sheet itself is the
+   only thing on the paper: no site chrome, no colours to drain the ink. */
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+  body {
+    background: #fff !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-page {
+    max-width: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: 0 !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .print-page * {
+    color: #000 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  .print-page .print-keep {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .print-page .print-rule {
+    border-color: #000 !important;
+  }
+  .print-page a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 9pt;
+    color: #444;
+  }
+  .print-page a[href^='/']::after {
+    content: '';
+  }
+}

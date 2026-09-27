@@ -28,6 +28,7 @@ const COLLECTION_META = {
   admissionDocuments: { key: null, arrayFields: [], boolFields: [] },
   educationLevels: { key: null, arrayFields: [], boolFields: [] },
   preferredTimings: { key: null, arrayFields: [], boolFields: [] },
+  certificates: { key: 'number', arrayFields: [], boolFields: ['valid'] },
 };
 
 function isPlainObject(v) {

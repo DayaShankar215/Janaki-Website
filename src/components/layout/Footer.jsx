@@ -11,6 +11,8 @@ const quickLinks = [
   { to: '/gallery', label: 'Gallery' },
   { to: '/news', label: 'News & Notices' },
   { to: '/contact', label: 'Contact' },
+  { to: '/track', label: 'Track Application' },
+  { to: '/verify', label: 'Verify Certificate' },
 ];
 
 const trainingAreas = [

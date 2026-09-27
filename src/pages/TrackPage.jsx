@@ -21,7 +21,7 @@ const when = (ts) => {
 };
 
 export default function TrackPage() {
-  const { courses } = useContent();
+  const { courses, siteConfig } = useContent();
   useSeo(
     'Track your application',
     'Check the status of your enquiry to Janaki Technical Training Center with your reference number.'
@@ -212,8 +212,8 @@ export default function TrackPage() {
                 <Button to="/contact" variant="outline" size="sm">
                   <Mail className="h-4 w-4" /> Message us
                 </Button>
-                <a href="tel:+977000000000" className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy-800 hover:text-accent-600 dark:text-slate-200">
-                  <Phone className="h-4 w-4" /> Call the centre
+                <a href={`tel:${siteConfig?.phone || ''}`} className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy-800 hover:text-accent-600 dark:text-slate-200">
+                  <Phone className="h-4 w-4" /> {siteConfig?.phone}
                 </a>
               </div>
             </div>

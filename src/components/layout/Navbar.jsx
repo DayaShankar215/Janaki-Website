@@ -21,6 +21,8 @@ const moreLinks = [
   { to: '/news', label: 'News & Notices' },
   { to: '/faq', label: 'FAQ' },
   { to: '/admission', label: 'Admission' },
+  { to: '/track', label: 'Track Application' },
+  { to: '/verify', label: 'Verify Certificate' },
 ];
 
 function Logo() {

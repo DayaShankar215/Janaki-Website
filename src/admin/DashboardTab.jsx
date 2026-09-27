@@ -1,11 +1,12 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   BookOpen, Users, Building2, Image as ImageIcon, MessageSquareQuote, Megaphone, HelpCircle,
   Download, Upload, ExternalLink, AlertTriangle, CheckCircle2, Cloud, CloudOff, Loader2,
-  RefreshCw, ArrowRight, HardDrive, Plus, History, XCircle,
+  RefreshCw, ArrowRight, HardDrive, Plus, History, XCircle, Inbox, Award,
 } from 'lucide-react';
 import { useContent } from '@/content/ContentContext';
 import { useAdminActivity } from '@/hooks/useAdminActivity';
+import { listSubmissions } from '@/utils/submissions';
 
 const STORAGE_KEY = 'jttc-content-v1';
 const QUOTA_BYTES = 5 * 1024 * 1024;
@@ -56,6 +57,23 @@ export default function DashboardTab({ onNavigate, onBackup, onRestore, notify }
   const published = announcements.filter((a) => a.status === 'published');
   const drafts = announcements.filter((a) => a.status === 'draft');
   const gallery = content.galleryItems || [];
+
+  // Enquiry totals live in the cloud, not in the content store — best effort, so
+  // a database that is switched off shows "—" rather than a wrong zero.
+  const [enquiries, setEnquiries] = useState(null);
+  useEffect(() => {
+    let alive = true;
+    listSubmissions()
+      .then((list) => {
+        if (alive) setEnquiries({ total: list.length, unread: list.filter((s) => !s.read).length });
+      })
+      .catch(() => {
+        if (alive) setEnquiries(null);
+      });
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   const storage = useMemo(() => {
     let bytes = 0;
@@ -152,6 +170,14 @@ export default function DashboardTab({ onNavigate, onBackup, onRestore, notify }
           onClick={() => onNavigate('trainers')} />
         <StatCard icon={Building2} label="Facilities" value={(content.facilities || []).length}
           onClick={() => onNavigate('facilities')} />
+        <StatCard icon={Inbox} label="Enquiries" value={enquiries ? enquiries.total : '—'}
+          sub={enquiries ? (enquiries.unread ? `${enquiries.unread} unread` : 'all read') : 'cloud unavailable'}
+          tone="green"
+          onClick={() => onNavigate('submissions')} />
+        <StatCard icon={Award} label="Certificates" value={(content.certificates || []).length}
+          sub={`${(content.certificates || []).filter((c) => c.valid === false).length} revoked`}
+          tone="amber"
+          onClick={() => onNavigate('certificates')} />
         <StatCard icon={HelpCircle} label="FAQs" value={(content.faqs || []).length}
           onClick={() => onNavigate('faqs')} />
         <StatCard icon={MessageSquareQuote} label="Testimonials" value={(content.testimonials || []).length}
@@ -177,6 +203,10 @@ export default function DashboardTab({ onNavigate, onBackup, onRestore, notify }
             <button onClick={addNews}
               className="inline-flex items-center justify-between gap-2 rounded-lg border border-slate-200 px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:border-accent-400 hover:bg-accent-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-white/5">
               Post a notice <ArrowRight className="h-4 w-4 text-slate-400" />
+            </button>
+            <button onClick={() => onNavigate('certificates')}
+              className="inline-flex items-center justify-between gap-2 rounded-lg border border-slate-200 px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:border-accent-400 hover:bg-accent-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-white/5">
+              Issue a certificate <ArrowRight className="w-4 h-4 text-slate-400" />
             </button>
             <button onClick={() => onNavigate('gallery')}
               className="inline-flex items-center justify-between gap-2 rounded-lg border border-slate-200 px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:border-accent-400 hover:bg-accent-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-white/5">

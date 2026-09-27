@@ -10,6 +10,7 @@ import { facilities } from '@/data/facilities';
 import { galleryItems, galleryCategories } from '@/data/gallery';
 import { faqs } from '@/data/faqs';
 import { announcements } from '@/data/announcements';
+import { certificates } from '@/data/certificates';
 import {
   whyChooseUs,
   values,
@@ -42,4 +43,5 @@ export const defaults = {
   admissionDocuments,
   educationLevels,
   preferredTimings,
+  certificates,
 };

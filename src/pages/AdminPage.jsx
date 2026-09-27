@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import {
   Settings, BookOpen, Users, Building2, Image as ImageIcon, MessageSquareQuote,
   Megaphone, HelpCircle, Download, Upload, LogOut, CheckCircle2, AlertTriangle,
-  LayoutDashboard, Search, Keyboard,
+  LayoutDashboard, Search, Keyboard, Inbox, Award,
 } from 'lucide-react';
 import AdminLogin from '@/admin/AdminLogin';
 import CollectionEditor from '@/admin/CollectionEditor';
@@ -10,6 +10,8 @@ import PopupReadiness from '@/admin/PopupReadiness';
 import DashboardTab from '@/admin/DashboardTab';
 import AdminSearchModal from '@/admin/AdminSearchModal';
 import SiteSettingsTab from '@/admin/SiteSettingsTab';
+import SubmissionsTab from '@/admin/SubmissionsTab';
+import CertificatesTab from '@/admin/CertificatesTab';
 import { downloadJson, backupFilename } from '@/utils/downloadJson';
 import { useContent } from '@/content/ContentContext';
 import { logActivity, markSaved } from '@/hooks/useAdminActivity';
@@ -113,6 +115,8 @@ export default function AdminPage() {
 
   const tabs = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'submissions', label: 'Enquiries', icon: Inbox },
+    { id: 'certificates', label: 'Certificates', icon: Award },
     { id: 'settings', label: 'Site Settings', icon: Settings },
     { id: 'courses', label: 'Courses', icon: BookOpen },
     { id: 'trainers', label: 'Trainers', icon: Users },
@@ -219,6 +223,8 @@ export default function AdminPage() {
           {tab === 'dashboard' && (
             <DashboardTab onNavigate={goTo} onBackup={exportBackup} onRestore={importBackup} notify={notify} />
           )}
+          {tab === 'submissions' && <SubmissionsTab notify={notify} />}
+          {tab === 'certificates' && <CertificatesTab notify={notify} />}
           {tab === 'settings' && (
             <SiteSettingsTab
               notify={notify}
