@@ -92,21 +92,28 @@ export function AnnouncementPopup() {
   // modal, and each dismissal chains to the next). Using the load event instead
   // of a fixed timer means the popup never appears before the homepage is
   // painted, and never gets pushed out by re-renders while it counts down.
-  // `armedFor` remembers which set of items was already opened, so re-renders,
-  // late cloud snapshots and image loads can never re-arm or skip the popup,
-  // while a notice published later in the same visit still gets its turn.
+  //
+  // Exactly one automatic open per visit to the homepage: re-renders, the late
+  // cloud snapshot, image loads, "Read full notice" and the end of a sequence
+  // all leave `armedVisit` alone, so an item can never be skipped or shown
+  // twice. Coming back to the homepage later starts a new visit and offers the
+  // next unseen item.
   const openTimer = useRef(null);
   const loadFallback = useRef(null);
-  const armedFor = useRef('');
-  const signature = queue.map((a) => a.id).join('|');
+  const visitRef = useRef(onHome ? 1 : 0);
+  const armedVisit = useRef(0);
+  const prevHome = useRef(onHome);
 
   useEffect(() => {
-    if (!onHome) {
-      armedFor.current = ''; // back on the homepage later: allow the next item
-      return undefined;
+    if (onHome && !prevHome.current) {
+      visitRef.current += 1; // back on the homepage: the next notice may show
+      armedVisit.current = 0;
     }
-    if (item || !queue.length || armedFor.current === signature) return undefined;
-    armedFor.current = signature;
+    prevHome.current = onHome;
+    if (!onHome) return undefined;
+    if (item || !queue.length) return undefined;
+    if (armedVisit.current === visitRef.current) return undefined;
+    armedVisit.current = visitRef.current;
 
     const openFirst = () => {
       const first = queue[0];
@@ -136,7 +143,16 @@ export function AnnouncementPopup() {
       }, 2500);
     }
     return undefined;
-  }, [onHome, item, queue, signature]);
+  }, [onHome, item, queue]);
+
+  // Never leave a pending timer behind when the popup goes away.
+  useEffect(
+    () => () => {
+      if (openTimer.current) window.clearTimeout(openTimer.current);
+      if (loadFallback.current) window.clearTimeout(loadFallback.current);
+    },
+    []
+  );
 
   // Never leave a pending timer behind when the popup goes away.
   useEffect(
