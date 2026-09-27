@@ -97,12 +97,47 @@ function sanitizeContent(raw) {
 
 const ContentContext = createContext(null);
 
+/**
+ * Bump this whenever the shipped sample content changes in a way that should
+ * not survive on a visitor's device. Stored copies older than this are
+ * migrated once (see `migrate`), which is how the placeholder testimonials
+ * and trainer profiles were removed from browsers that had already saved them.
+ */
+export const CONTENT_VERSION = 2;
+
+/** Records that only ever existed as design placeholders. */
+const RETIRED_SAMPLES = { testimonials: true, trainers: true };
+
+function migrate(stored) {
+  if (!isPlainObject(stored)) return stored;
+  const version = Number(stored.__version) || 0;
+  if (version >= CONTENT_VERSION) return stored;
+  const next = { ...stored };
+  Object.keys(RETIRED_SAMPLES).forEach((key) => {
+    if (!Array.isArray(next[key])) return;
+    next[key] = next[key].filter((item) => !isPlainObject(item) || item.isSample !== true);
+  });
+  next.__version = CONTENT_VERSION;
+  return next;
+}
+
 function loadStored() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw);
-    return typeof parsed === 'object' && parsed !== null ? parsed : null;
+    if (typeof parsed !== 'object' || parsed === null) return null;
+    const next = migrate(parsed);
+    // Write the migrated copy straight back so the cleanup is durable even if
+    // the visitor never opens the Admin Panel again.
+    if (next !== parsed) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      } catch {
+        /* ignore */
+      }
+    }
+    return next;
   } catch {
     return null;  
   }
@@ -167,7 +202,7 @@ export function ContentProvider({ children }) {
         (remote) => {
           if (cancelled || !adoptRemote.current) return;
           // adopt shared snapshot — everyone sees the same content
-          setOverrides(remote || {});
+          setOverrides(migrate(remote || {}));
           setCloudStatus('on');
           setLastSyncedAt(Date.now());
         },
@@ -184,7 +219,7 @@ export function ContentProvider({ children }) {
         adoptRemote.current = true;
         const snap = await loadRemote();
         if (cancelled) return;
-        setOverrides(snap);
+        setOverrides(migrate(snap));
         setCloudStatus('on');
         setLastSyncedAt(Date.now());
       } catch {

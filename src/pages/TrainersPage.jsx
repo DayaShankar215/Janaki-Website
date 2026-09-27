@@ -1,4 +1,4 @@
-﻿import { Info, Mail } from 'lucide-react';
+﻿import { Mail } from 'lucide-react';
 import { useSeo } from '@/hooks/useSeo';
 import { PageHero } from '@/components/layout/PageHero';
 import { TrainerCard } from '@/components/cards/TrainerCard';
@@ -23,20 +23,48 @@ export default function TrainersPage() {
 
       <section className="bg-slate-50 py-14 dark:bg-white/[0.02] sm:py-16">
         <div className="container-x">
-          <p className="mx-auto flex max-w-2xl items-start gap-2.5 rounded-xl border border-accent-200 bg-accent-50 p-4 text-xs leading-relaxed text-accent-900 dark:border-accent-500/30 dark:bg-accent-500/10 dark:text-accent-200">
-            <Info className="mt-0.5 h-4 w-4 shrink-0" />
-            Trainer profiles below are clearly-marked samples for design purposes. Real instructor profiles should replace them in{' '}
-            <code className="mx-1 rounded bg-white/60 px-1.5 py-0.5 font-mono dark:bg-white/10">src/data/trainers.js</code>{' '}
-            before launch.
-          </p>
-
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {trainers.map((t, i) => (
-              <Reveal key={t.id} delay={(i % 3) * 0.08} className="h-full">
-                <TrainerCard trainer={t} />
-              </Reveal>
-            ))}
-          </div>
+          {trainers.length > 0 ? (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {trainers.map((t, i) => (
+                <Reveal key={t.id} delay={(i % 3) * 0.08} className="h-full">
+                  <TrainerCard trainer={t} />
+                </Reveal>
+              ))}
+            </div>
+          ) : (
+            /* No invented profiles: say what trainees can expect instead. */
+            <div className="mx-auto max-w-3xl rounded-3xl border border-slate-200 bg-white p-8 shadow-card dark:border-white/10 dark:bg-white/[0.04] sm:p-10">
+              <h2 className="font-display text-xl font-bold text-navy-900 dark:text-white">
+                Instructor profiles are being published
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+                We would rather show you nothing than make up a name. Every trainer who takes a class here is a
+                certified tradesperson with real field experience, and we publish their full profile — certifications,
+                specialisations and the courses they teach — before their first intake.
+              </p>
+              <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+                {[
+                  'Certified in the trade they teach',
+                  'Field experience, not only classroom theory',
+                  'Practical workshop assessment every intake',
+                  'Small batches so nobody gets left behind',
+                ].map((point) => (
+                  <li key={point} className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-500" />
+                    {point}
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Button to="/admission" variant="accent">
+                  How admission works
+                </Button>
+                <Button to="/courses" variant="outline">
+                  Browse programs
+                </Button>
+              </div>
+            </div>
+          )}
 
           {/* Join as trainer */}
           <Reveal delay={0.15}>

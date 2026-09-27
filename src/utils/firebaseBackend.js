@@ -128,7 +128,7 @@ function getFirebase() {
  */
 let authPromise = null;
 
-function ensureAuth() {
+export function ensureAuth() {
   if (!authPromise) {
     authPromise = getFirebase()
       .then(async ({ db, auth, signInAnonymously }) => {

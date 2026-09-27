@@ -5,6 +5,12 @@ import { Reveal } from '@/components/ui/Reveal';
 
 export function TestimonialsSection() {
   const { testimonials } = useContent();
+
+  // No verified reviews yet: showing an empty grid under a heading looks
+  // broken, and invented quotes cost trust. The section simply stays away
+  // until real testimonials are added in Admin → Testimonials.
+  if (!testimonials.length) return null;
+
   return (
     <section className="bg-white py-16 dark:bg-navy-950 sm:py-24">
       <div className="container-x">
