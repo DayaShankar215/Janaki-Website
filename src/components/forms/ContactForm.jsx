@@ -136,7 +136,12 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
     }
 
     setDemoMode(Boolean(emailOutcome.status === 'fulfilled' && emailOutcome.value.demo));
-    setResult({ reference: savedRecord.reference, queued: savedRecord.queued, emailed: emailOutcome.status === 'fulfilled' });
+    setResult({
+      reference: savedRecord.reference,
+      queued: savedRecord.queued,
+      emailed: emailOutcome.status === 'fulfilled',
+      email: form.email.trim(),
+    });
     setStatus('success');
     setForm({ ...initialForm });
     setDocuments([]);
@@ -144,6 +149,7 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
   };
 
   if (status === 'success') {
+    const ref_ = result?.reference;
     return (
       <div className="flex h-full min-h-[320px] flex-col items-center justify-center rounded-2xl border border-emerald-200 bg-emerald-50 p-8 text-center dark:border-emerald-500/30 dark:bg-emerald-500/10">
         <span className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500 text-white shadow-card">
@@ -155,14 +161,61 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
         <p className="mt-2 max-w-sm text-sm leading-relaxed text-emerald-800 dark:text-emerald-300">
           Thank you — we will get back to you within one to two working days.
         </p>
+
+        {ref_ && (
+          <div className="mt-5 w-full max-w-sm rounded-xl border border-emerald-300 bg-white p-4 text-left dark:border-emerald-500/40 dark:bg-white/[0.06]" data-testid="submit-reference">
+            <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-emerald-700 dark:text-emerald-300">
+              <TicketCheck className="h-3.5 w-3.5" /> Your reference number
+            </p>
+            <div className="mt-1.5 flex items-center justify-between gap-2">
+              <span className="font-mono text-lg font-bold tracking-wide text-navy-900 dark:text-white">{ref_}</span>
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard?.writeText(ref_);
+                  setCopied(true);
+                  window.setTimeout(() => setCopied(false), 1600);
+                }}
+                className="rounded-md border border-slate-300 px-2 py-1 text-xs font-semibold text-slate-600 transition hover:border-emerald-500 hover:text-emerald-700 dark:border-white/20 dark:text-slate-300"
+              >
+                {copied ? 'Copied' : 'Copy'}
+              </button>
+            </div>
+              <p className="mt-2 text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+                Keep this safe — use it with your email address to{' '}
+                <a
+                  href={`/track?ref=${encodeURIComponent(ref_)}&email=${encodeURIComponent(result?.email || '')}`}
+                  className="font-semibold text-emerald-700 underline underline-offset-2 dark:text-emerald-300"
+                >
+                  track your application
+                </a>
+                .
+              </p>
+          </div>
+        )}
+
+        {result?.queued && (
+          <p className="mt-3 max-w-sm rounded-lg bg-amber-100 px-3 py-2 text-xs font-semibold text-amber-800 dark:bg-amber-500/20 dark:text-amber-200">
+            Your connection dropped while uploading, so we have saved your details on this device and will send them the
+            moment you are back online.
+          </p>
+        )}
+        {!result?.emailed && (
+          <p className="mt-3 max-w-sm rounded-lg bg-amber-100 px-3 py-2 text-xs font-semibold text-amber-800 dark:bg-amber-500/20 dark:text-amber-200">
+            The confirmation email could not be sent, but your enquiry is safely with us — we will contact you by phone.
+          </p>
+        )}
         {demoMode && (
           <p className="mt-3 rounded-lg bg-emerald-100 px-3 py-1.5 text-xs font-semibold text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300">
-            Demo mode: message will not actually be sent until EmailJS is configured in the .env file.
+            Demo mode: no real email was sent — add the EmailJS keys to send confirmation emails.
           </p>
         )}
         <button
           type="button"
-          onClick={() => setStatus('idle')}
+          onClick={() => {
+            setStatus('idle');
+            setResult(null);
+          }}
           className="mt-5 text-sm font-bold text-emerald-700 underline-offset-4 hover:underline dark:text-emerald-300"
         >
           Send another inquiry
@@ -299,6 +352,15 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
         />
       </Field>
 
+      {/* Documents: optional, but it saves a trip if the applicant can attach
+          a citizenship photo, a marksheet or a previous certificate now. */}
+      <DocumentUpload
+        documents={documents}
+        onChange={setDocuments}
+        disabled={status === 'sending'}
+        error={errors.documents}
+      />
+
       {status === 'error' && (
         <div
           role="alert"
@@ -312,7 +374,8 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
       <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
         <p className="inline-flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
           <ShieldCheck className="h-4 w-4 text-emerald-500" />
-          Your details are only used to respond to your inquiry.
+          Your details and documents are only used to process your enquiry.
+          {documents.length > 0 && ` ${describeBytes(documents.reduce((s, d) => s + (d.size || 0), 0))} attached.`}
         </p>
         <button
           type="submit"
