@@ -14,7 +14,7 @@ const labelCls = 'block text-sm font-medium text-slate-700 dark:text-slate-300 m
 const blank = { number: '', name: '', course: '', issued: '', grade: '', note: '', valid: true };
 
 export default function CertificatesTab({ notify }) {
-  const { content, updateSection } = useContent();
+  const content = useContent();
   const certificates = Array.isArray(content.certificates) ? content.certificates : [];
   const courses = Array.isArray(content.courses) ? content.courses : [];
 
@@ -48,7 +48,7 @@ export default function CertificatesTab({ notify }) {
       note: draft.note.trim(),
       valid: true,
     };
-    updateSection('certificates', [record, ...certificates]);
+    content.updateSection('certificates', [record, ...certificates]);
     logActivity?.('Issued certificate', `${record.number} — ${record.name}`);
     notify?.(`Certificate ${record.number} issued`, 'success');
     setDraft({ ...blank, number: suggestNumber([record, ...certificates]) });
@@ -56,7 +56,7 @@ export default function CertificatesTab({ notify }) {
   };
 
   const setValid = (number, valid, note) => {
-    updateSection(
+    content.updateSection(
       'certificates',
       certificates.map((c) => (normaliseNumber(c.number) === normaliseNumber(number) ? { ...c, valid, note } : c))
     );
@@ -66,7 +66,7 @@ export default function CertificatesTab({ notify }) {
 
   const remove = (number) => {
     if (!window.confirm(`Delete certificate ${number}? Anyone verifying it will be told it cannot be found.`)) return;
-    updateSection('certificates', certificates.filter((c) => normaliseNumber(c.number) !== normaliseNumber(number)));
+    content.updateSection('certificates', certificates.filter((c) => normaliseNumber(c.number) !== normaliseNumber(number)));
     logActivity?.('Deleted certificate', number);
     notify?.('Certificate deleted', 'success');
   };
