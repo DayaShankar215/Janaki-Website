@@ -87,36 +87,62 @@ export function AnnouncementPopup() {
     });
   };
 
-  // Open the first unseen item shortly after the homepage settles — but only
-  // while nothing is on screen, so it can never interrupt the current item.
-  // The countdown is deliberately NOT re-armed by unrelated re-renders (the
-  // cloud snapshot landing, an image finishing, ...): it used to be cancelled
-  // and restarted on each one, which delayed the popup by seconds.
+  // Open the first unseen item once the page has finished loading (the way the
+  // notice popups work on ncit.edu.np: `$(window).load(...)` shows the first
+  // modal, and each dismissal chains to the next). Using the load event instead
+  // of a fixed timer means the popup never appears before the homepage is
+  // painted, and never gets pushed out by re-renders while it counts down.
+  // `armedFor` remembers which set of items was already opened, so re-renders,
+  // late cloud snapshots and image loads can never re-arm or skip the popup,
+  // while a notice published later in the same visit still gets its turn.
   const openTimer = useRef(null);
+  const loadFallback = useRef(null);
+  const armedFor = useRef('');
+  const signature = queue.map((a) => a.id).join('|');
+
   useEffect(() => {
-    if (!onHome || item || !queue.length) {
-      if (openTimer.current) {
-        window.clearTimeout(openTimer.current);
-        openTimer.current = null;
-      }
-      return;
+    if (!onHome) {
+      armedFor.current = ''; // back on the homepage later: allow the next item
+      return undefined;
     }
-    if (openTimer.current) return; // already counting down — let it finish
-    openTimer.current = window.setTimeout(() => {
-      openTimer.current = null;
+    if (item || !queue.length || armedFor.current === signature) return undefined;
+    armedFor.current = signature;
+
+    const openFirst = () => {
       const first = queue[0];
       if (!first) return;
       setTotal(queue.length);
       setItem(first);
       setVisible(true);
       markSeen(first.id);
-    }, 900);
-  }, [onHome, item, queue]);
+    };
+    const fire = () => {
+      if (openTimer.current) return;
+      openTimer.current = window.setTimeout(() => {
+        openTimer.current = null;
+        openFirst();
+      }, 200); // a beat after load, so the entrance never fights the page paint
+    };
 
-  // Never leave a timer running after the popup is gone.
+    if (document.readyState === 'complete') {
+      fire();
+    } else {
+      window.addEventListener('load', fire, { once: true });
+      // A slow or hanging asset must never keep the popup hostage.
+      loadFallback.current = window.setTimeout(() => {
+        loadFallback.current = null;
+        window.removeEventListener('load', fire);
+        fire();
+      }, 2500);
+    }
+    return undefined;
+  }, [onHome, item, queue, signature]);
+
+  // Never leave a pending timer behind when the popup goes away.
   useEffect(
     () => () => {
       if (openTimer.current) window.clearTimeout(openTimer.current);
+      if (loadFallback.current) window.clearTimeout(loadFallback.current);
     },
     []
   );
@@ -212,7 +238,7 @@ export function AnnouncementPopup() {
                 exit={{ opacity: 0, y: 24, scale: 0.97, transition: { duration: 0.18, ease: 'easeIn' } }}
                 transition={{ type: 'spring', damping: 24, stiffness: 260 }}
                 onClick={(e) => e.stopPropagation()}
-                className="relative w-full max-w-md overflow-hidden rounded-2xl border border-white/10 bg-white shadow-2xl dark:bg-slate-900"
+                className="relative w-full max-w-xl overflow-hidden rounded-2xl border border-white/10 bg-white shadow-2xl dark:bg-slate-900"
               >
                 {/* Close — moves on to the next announcement */}
                 <button
