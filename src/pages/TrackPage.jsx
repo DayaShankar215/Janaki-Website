@@ -60,8 +60,10 @@ export default function TrackPage() {
         setState('missing');
       }
     } catch (err) {
+      // The database being unreachable is not the same as "no such application",
+      // and telling the visitor their file does not exist would be a lie.
       console.error('[Track] lookup failed:', err);
-      setState('missing');
+      setState('offline');
     }
   };
 
@@ -130,6 +132,16 @@ export default function TrackPage() {
               <span>
                 We could not find that reference with that email address. Check both, or call us and we will look it
                 up for you.
+              </span>
+            </div>
+          )}
+
+          {state === 'offline' && (
+            <div role="alert" className="mt-6 flex items-start gap-3 rounded-2xl border border-amber-300 bg-amber-50 p-5 text-sm text-amber-900 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-200" data-testid="track-offline">
+              <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0" />
+              <span>
+                We cannot reach the centre&rsquo;s system right now, so we cannot check that reference yet. Your
+                application is safe — try again in a few minutes, or call us and we will look it up.
               </span>
             </div>
           )}
