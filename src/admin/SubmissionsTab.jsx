@@ -316,7 +316,8 @@ export default function SubmissionsTab({ notify }) {
     const csv = [head, ...rows]
       .map((r) => r.map((cell) => `"${String(cell ?? '').replace(/"/g, '""')}"`).join(','))
       .join('\r\n');
-    downloadJson({ filename: backupFilename('submissions'), data: csv, type: 'text/csv;charset=utf-8' });
+    // UTF-8 BOM so Excel opens Nepali/accented names correctly.
+    downloadJson(`${backupFilename()}-submissions.csv`, `\uFEFF${csv}`);
     notify?.(`Exported ${rows.length} submission${rows.length === 1 ? '' : 's'}`, 'success');
   };
 

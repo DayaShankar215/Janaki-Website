@@ -15,6 +15,7 @@ const TrainersPage = lazy(() => import('@/pages/TrainersPage'));
 const AdmissionPage = lazy(() => import('@/pages/AdmissionPage'));
 const FaqPage = lazy(() => import('@/pages/FaqPage'));
 const ContactPage = lazy(() => import('@/pages/ContactPage'));
+const TrackPage = lazy(() => import('@/pages/TrackPage'));
 const NewsPage = lazy(() => import('@/pages/NewsPage'));
 const NewsDetailsPage = lazy(() => import('@/pages/NewsDetailsPage'));
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
@@ -44,6 +45,7 @@ export default function App() {
           <Route path="/admission" element={<AdmissionPage />} />
           <Route path="/faq" element={<FaqPage />} />
           <Route path="/contact" element={<ContactPage />} />
+      <Route path="/track" element={<TrackPage />} />
           <Route path="/news" element={<NewsPage />} />
           <Route path="/news/:slug" element={<NewsDetailsPage />} />
           <Route path="*" element={<NotFoundPage />} />
