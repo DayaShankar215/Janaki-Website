@@ -36,19 +36,22 @@ export function DocumentUpload({ documents = [], onChange, disabled, error }) {
   const add = async (fileList) => {
     const files = Array.from(fileList || []);
     if (!files.length) return;
+    setBusy(true);
     let next = [...documents];
+    const issues = [];
     for (const file of files) {
       const issue = validateFile(file, next.length);
       if (issue) {
-        setProblem(issue);
+        issues.push(issue);
         continue;
       }
       // eslint-disable-next-line no-await-in-loop
       const [record] = await prepareFiles([file]);
       if (record) next = [...next, record];
     }
-    setProblem('');
+    setProblem(issues[0] || '');
     onChange(next);
+    setBusy(false);
   };
 
   const removeAt = (index) => onChange(documents.filter((_, i) => i !== index));
