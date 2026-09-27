@@ -1,8 +1,11 @@
 ﻿import { useMemo, useRef, useState } from 'react';
-import { Send, Loader2, CheckCircle2, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { Send, Loader2, CheckCircle2, AlertTriangle, ShieldCheck, Copy, TicketCheck } from 'lucide-react';
 import { useContent } from '@/content/ContentContext';
 import { isNotEmpty, isValidEmail, isValidPhone } from '@/utils/validate';
 import { sendInquiry } from '@/utils/sendInquiry';
+import { saveSubmission } from '@/utils/submissions';
+import { DocumentUpload } from '@/components/forms/DocumentUpload';
+import { describeBytes } from '@/utils/documents';
 import { cn } from '@/utils/cn';
 
 const initialForm = {
@@ -51,6 +54,9 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState('idle'); // idle | sending | success | error
   const [demoMode, setDemoMode] = useState(false);
+  const [documents, setDocuments] = useState([]);
+  const [result, setResult] = useState(null); // { reference, queued, emailed }
+  const [copied, setCopied] = useState(false);
   const sendingRef = useRef(false);
 
   const activeCourses = useMemo(() => courses.filter((c) => c.active), [courses]);
@@ -83,27 +89,58 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
     sendingRef.current = true;
     setStatus('sending');
 
-    try {
-      const result = await sendInquiry({
-        from_name: form.name.trim(),
-        reply_email: form.email.trim(),
+    const courseTitle = activeCourses.find((c) => c.slug === form.course)?.title || form.course || '—';
+    const payload = {
+      from_name: form.name.trim(),
+      reply_email: form.email.trim(),
+      phone: form.phone.trim(),
+      address: form.address.trim() || '—',
+      course: form.course,
+      education: form.education || '—',
+      preferred_time: form.timing || '—',
+      message: form.message.trim(),
+      documents: documents.length ? documents.map((d) => d.name).join(', ') : 'none attached',
+      sent_at: new Date().toLocaleString(),
+    };
+
+    // EmailJS stays the notification channel. Saving the application (with the
+    // uploaded documents) runs in parallel and must never block the email: if
+    // the cloud is unreachable the record is queued locally and retried later.
+    const [emailOutcome, saved] = await Promise.allSettled([
+      sendInquiry(payload),
+      saveSubmission({
+        name: form.name.trim(),
+        email: form.email.trim(),
         phone: form.phone.trim(),
-        address: form.address.trim() || '—',
+        address: form.address.trim(),
         course: form.course,
-        education: form.education || '—',
-        preferred_time: form.timing || '—',
+        courseTitle,
+        education: form.education,
+        timing: form.timing,
         message: form.message.trim(),
-        sent_at: new Date().toLocaleString(),
-      });
-      setDemoMode(Boolean(result.demo));
-      setStatus('success');
-      setForm({ ...initialForm });
-    } catch (err) {
-      console.error('[EmailJS] Submission failed:', err);
-      setStatus('error');
-    } finally {
-      sendingRef.current = false;
+        documents,
+        source: compact ? 'contact-compact' : 'contact',
+      }),
+    ]);
+
+    if (emailOutcome.status === 'rejected') {
+      console.error('[EmailJS] Submission failed:', emailOutcome.reason);
     }
+    const savedRecord = saved.status === 'fulfilled' ? saved.value : null;
+
+    if (!savedRecord) {
+      // Nothing stored anywhere — the visitor must be told, not left guessing.
+      setStatus('error');
+      sendingRef.current = false;
+      return;
+    }
+
+    setDemoMode(Boolean(emailOutcome.status === 'fulfilled' && emailOutcome.value.demo));
+    setResult({ reference: savedRecord.reference, queued: savedRecord.queued, emailed: emailOutcome.status === 'fulfilled' });
+    setStatus('success');
+    setForm({ ...initialForm });
+    setDocuments([]);
+    sendingRef.current = false;
   };
 
   if (status === 'success') {
