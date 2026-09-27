@@ -103,12 +103,14 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
       sent_at: new Date().toLocaleString(),
     };
 
-    // EmailJS stays the notification channel. Saving the application (with the
-    // uploaded documents) runs in parallel and must never block the email: if
-    // the cloud is unreachable the record is queued locally and retried later.
-    const [emailOutcome, saved] = await Promise.allSettled([
-      sendInquiry(payload),
-      saveSubmission({
+    // The enquiry itself is the thing that must not be lost, so it is stored
+    // first. EmailJS stays the notification channel, but the visitor is not made
+    // to wait for a third-party script on a slow connection — the confirmation
+    // (and their reference number) appears as soon as the enquiry is safe, and
+    // the email result updates the panel a moment later if it has not landed.
+    let savedRecord = null;
+    try {
+      savedRecord = await saveSubmission({
         name: form.name.trim(),
         email: form.email.trim(),
         phone: form.phone.trim(),
@@ -120,13 +122,10 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
         message: form.message.trim(),
         documents,
         source: compact ? 'contact-compact' : 'contact',
-      }),
-    ]);
-
-    if (emailOutcome.status === 'rejected') {
-      console.error('[EmailJS] Submission failed:', emailOutcome.reason);
+      });
+    } catch (err) {
+      console.error('[Submissions] Save failed:', err);
     }
-    const savedRecord = saved.status === 'fulfilled' ? saved.value : null;
 
     if (!savedRecord) {
       // Nothing stored anywhere — the visitor must be told, not left guessing.
@@ -135,17 +134,26 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
       return;
     }
 
-    setDemoMode(Boolean(emailOutcome.status === 'fulfilled' && emailOutcome.value.demo));
     setResult({
       reference: savedRecord.reference,
       queued: savedRecord.queued,
-      emailed: emailOutcome.status === 'fulfilled',
+      emailed: null, // decided below
       email: form.email.trim(),
     });
     setStatus('success');
     setForm({ ...initialForm });
     setDocuments([]);
     sendingRef.current = false;
+
+    sendInquiry(payload)
+      .then((res) => {
+        setDemoMode(Boolean(res && res.demo));
+        setResult((prev) => (prev ? { ...prev, emailed: true } : prev));
+      })
+      .catch((err) => {
+        console.error('[EmailJS] Submission failed:', err);
+        setResult((prev) => (prev ? { ...prev, emailed: false } : prev));
+      });
   };
 
   if (status === 'success') {
@@ -200,7 +208,7 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
             moment you are back online.
           </p>
         )}
-        {!result?.emailed && (
+        {!result?.emailed && result?.emailed === false && (
           <p className="mt-3 max-w-sm rounded-lg bg-amber-100 px-3 py-2 text-xs font-semibold text-amber-800 dark:bg-amber-500/20 dark:text-amber-200">
             The confirmation email could not be sent, but your enquiry is safely with us — we will contact you by phone.
           </p>

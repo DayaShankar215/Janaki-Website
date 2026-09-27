@@ -13,6 +13,8 @@ const quickLinks = [
   { to: '/contact', label: 'Contact' },
   { to: '/track', label: 'Track Application' },
   { to: '/verify', label: 'Verify Certificate' },
+  { to: '/brochure', label: 'Brochure (PDF)' },
+  { to: '/admission-form', label: 'Admission Form' },
 ];
 
 const trainingAreas = [

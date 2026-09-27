@@ -64,7 +64,10 @@ export default function BrochurePage() {
 
       {/* ── The sheet ── */}
       <article className="print-page container-x max-w-3xl bg-white py-10 text-slate-900 dark:bg-white dark:text-slate-100">
-        <header className="flex flex-wrap items-start justify-between gap-4 border-b-2 border-navy-900 pb-4 print-rule dark:border-slate-200">
+        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-accent-600 dark:text-accent-500">
+          Programme brochure
+        </p>
+        <header className="mt-1 flex flex-wrap items-start justify-between gap-4 border-b-2 border-navy-900 pb-4 print-rule dark:border-slate-200">
           <div>
             <h1 className="font-display text-2xl font-extrabold tracking-tight text-navy-900 dark:text-slate-900">
               {siteConfig?.name || 'Janaki Technical Training Center'}

@@ -28,16 +28,18 @@ const blankForm = {
 const FIELD_LABEL = 'text-[10px] font-bold uppercase tracking-[0.1em] text-slate-500 dark:text-slate-600';
 
 /** Print-friendly input: a lined box that keeps its value on paper. */
-function Line({ label, value, onChange, type = 'text', placeholder, className = '', ...rest }) {
+function Line({ label, name, value, onChange, type = 'text', placeholder, className = '', ...rest }) {
+  const field = name || label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
   return (
-    <label className={`block ${className}`}>
+    <label className={`block ${className}`} htmlFor={`admission-${field}`}>
       <span className={FIELD_LABEL}>{label}</span>
       <input
+        id={`admission-${field}`}
         type={type}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        data-testid={`admission-${label.toLowerCase().replace(/[^a-z]+/g, '-')}`}
+        data-testid={`admission-${field}`}
         className="mt-1 w-full border-b border-slate-400 bg-transparent px-0 py-1 text-[12.5px] text-slate-900 outline-none placeholder:text-slate-300 focus:border-navy-700 dark:border-slate-500 dark:text-slate-900 dark:placeholder:text-slate-400"
         {...rest}
       />
@@ -191,14 +193,14 @@ export default function AdmissionFormPage() {
             1. Applicant details
           </h2>
           <div className="grid gap-x-6 gap-y-3 sm:grid-cols-2">
-            <Line label="Full name" value={form.fullName} onChange={set('fullName')} placeholder="As in your citizenship copy" />
+            <Line label="Full name" name="full-name" value={form.fullName} onChange={set('fullName')} placeholder="As in your citizenship copy" />
             <Line label="Date of birth" type="date" value={form.dob} onChange={set('dob')} />
             <Line label="Gender" value={form.gender} onChange={set('gender')} placeholder="Male / Female / Other" />
-            <Line label="Phone (mobile)" value={form.phone} onChange={set('phone')} placeholder="98XXXXXXXX" />
-            <Line label="Email" type="email" value={form.email} onChange={set('email')} placeholder="you@example.com" />
-            <Line label="Current address" value={form.address} onChange={set('address')} />
-            <Line label="Guardian / parent name" value={form.guardian} onChange={set('guardian')} />
-            <Line label="Guardian phone" value={form.guardianPhone} onChange={set('guardianPhone')} />
+            <Line label="Phone (mobile)" name="phone" value={form.phone} onChange={set('phone')} placeholder="98XXXXXXXX" />
+            <Line label="Email" name="email" type="email" value={form.email} onChange={set('email')} placeholder="you@example.com" />
+            <Line label="Current address" name="address" value={form.address} onChange={set('address')} />
+            <Line label="Guardian / parent name" name="guardian" value={form.guardian} onChange={set('guardian')} />
+            <Line label="Guardian phone" name="guardian-phone" value={form.guardianPhone} onChange={set('guardianPhone')} />
           </div>
           {errors.fullName && <p className="no-print mt-2 text-xs font-medium text-red-600">{errors.fullName}</p>}
           {errors.phone && <p className="no-print text-xs font-medium text-red-600">{errors.phone}</p>}
