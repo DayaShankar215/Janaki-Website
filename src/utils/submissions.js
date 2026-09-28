@@ -165,22 +165,34 @@ export async function listSubmissions() {
 
 /** Live stream of submissions (admin inbox). Returns an unsubscribe function. */
 export function subscribeSubmissions(onData, onError) {
-  let stop = () => {};
+  let stop = null;
   let cancelled = false;
   ensureDb()
     .then(async () => {
       const [{ ref, onValue, query, orderByChild }, target] = await Promise.all([rtdb(), root()]);
+      // The caller can leave at any point while we are opening the connection.
+      // Registering a listener after that would attach it to the database for
+      // the life of the page, re-sorting the whole inbox on every write.
+      if (cancelled) return;
       const r = query(target, orderByChild('createdAt'));
-      stop = onValue(
+      const off = onValue(
         r,
         (snap) => !cancelled && onData(recordToArray(snap.val())),
         (err) => !cancelled && onError && onError(err)
       );
+      // ...and cancellation can land between the two lines above.
+      if (cancelled) off();
+      else stop = off;
     })
-    .catch((err) => !cancelled && onError && onError(err));
+    .catch((err) => {
+      if (!cancelled && onError) onError(err);
+    });
   return () => {
     cancelled = true;
-    stop();
+    if (stop) {
+      stop();
+      stop = null;
+    }
   };
 }
 

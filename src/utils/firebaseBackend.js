@@ -211,20 +211,35 @@ export async function loadRemote() {
  * whenever any device writes. Returns an unsubscribe function.
  */
 export function subscribeRemote(onData, onError) {
-  let unsub = () => {};
+  let stop = null;
+  let closed = false;
   ensureDb()
     .then(async (fb) => {
       if (!fb) throw new Error('Firebase not configured');
       const { ref, onValue } = await rtdbApi();
-      const r = ref(fb.db, 'content');
-      unsub = onValue(
-        r,
-        (snap) => onData(snap.exists() && typeof snap.val() === 'object' ? snap.val() : {}),
-        (err) => onError && onError(err)
+      // Opening the connection takes two awaits, and the caller can walk away in
+      // that window. Attaching the listener anyway would keep this provider's
+      // data handler alive for the rest of the session.
+      if (closed) return;
+      const off = onValue(
+        ref(fb.db, 'content'),
+        (snap) => !closed && onData(snap.exists() && typeof snap.val() === 'object' ? snap.val() : {}),
+        (err) => !closed && onError && onError(err)
       );
+      // ...and the caller can leave between registering and storing the handle.
+      if (closed) off();
+      else stop = off;
     })
-    .catch((err) => onError && onError(err));
-  return () => unsub();
+    .catch((err) => {
+      if (!closed && onError) onError(err);
+    });
+  return () => {
+    closed = true;
+    if (stop) {
+      stop();
+      stop = null;
+    }
+  };
 }
 
 /** Write the full content snapshot to the shared store (last writer wins). */
