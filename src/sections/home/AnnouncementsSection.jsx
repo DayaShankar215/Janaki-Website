@@ -55,33 +55,40 @@ export function AnnouncementsSection() {
           {latest.map((a, i) => (
             <Reveal key={a.id} delay={i * 0.08} className="h-full">
               <article
-                className={`group flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover dark:bg-white/[0.04] ${
+                className={`group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover dark:bg-white/[0.04] ${
                   a.pinned ? 'border-accent-400/60 dark:border-accent-500/40' : 'border-slate-200 dark:border-white/10'
                 }`}
               >
                 {a.image ? (
-                  <Link to={`/news/${a.slug}`} className="relative block overflow-hidden" tabIndex={-1}>
+                  <Link
+                    to={`/news/${a.slug}`}
+                    className="relative block overflow-hidden"
+                    tabIndex={-1}
+                    aria-hidden="true"
+                  >
                     <img
                       src={a.image}
-                      alt={a.title}
+                      alt=""
                       loading="lazy"
                       onError={(e) => {
                         e.currentTarget.style.display = 'none';
                       }}
                       className="aspect-[16/9] w-full object-cover transition-transform duration-500 group-hover:scale-[1.05]"
                     />
-                    {a.pinned && (
-                      <span className="absolute left-3 top-3 flex items-center gap-1 rounded-full bg-accent-500 px-2.5 py-1 text-[11px] font-bold text-navy-950">
-                        <Megaphone className="h-3 w-3" />
-                        {'Pinned'}
-                      </span>
-                    )}
                   </Link>
                 ) : (
                   <div className="flex items-center justify-between bg-navy-50 px-4 py-3 dark:bg-white/[0.05]">
                     <Badge tone={tagTones[a.tag] || 'gray'}>{a.tag}</Badge>
                     {a.pinned && <Megaphone className="h-4 w-4 text-accent-500" aria-label="Pinned" />}
                   </div>
+                )}
+                {/* Outside the decorative image link: stays visible and
+                    announced even when the photo fails to load. */}
+                {a.image && a.pinned && (
+                  <span className="pointer-events-none absolute left-3 top-3 z-10 flex items-center gap-1 rounded-full bg-accent-500 px-2.5 py-1 text-[11px] font-bold text-navy-950">
+                    <Megaphone className="h-3 w-3" />
+                    {'Pinned'}
+                  </span>
                 )}
                 <div className="flex flex-1 flex-col p-5">
                   <div className="flex items-center justify-between gap-2">
