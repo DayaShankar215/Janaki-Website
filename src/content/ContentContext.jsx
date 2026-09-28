@@ -215,8 +215,12 @@ export function ContentProvider({ children }) {
             setCloudStatus('on');
             setLastSyncedAt(Date.now());
           },
-          () => {
-            if (!cancelled) setCloudStatus('error');
+          (err) => {
+            if (cancelled) return;
+            setCloudStatus('error');
+            // Surfaced on purpose: a silently dead live connection is impossible
+            // to diagnose from the admin panel, which only shows a red dot.
+            console.error('[Content] Live sync failed - showing bundled content:', err);
           }
         );
         // Handshake: only start trusting the shared snapshot once a write works.
