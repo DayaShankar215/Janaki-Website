@@ -1,4 +1,4 @@
-﻿import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Send, Loader2, CheckCircle2, AlertTriangle, ShieldCheck, Copy, TicketCheck } from 'lucide-react';
 import { useContent } from '@/content/ContentContext';
 import { isNotEmpty, isValidEmail, isValidPhone } from '@/utils/validate';
@@ -60,7 +60,7 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
   const sendingRef = useRef(false);
   // When the form first appeared, so a submit that arrives implausibly fast can
   // be treated as a bot.
-  const openedAt = useRef(typeof Date.now === 'function' ? Date.now() : 0);
+  const openedAt = useRef(Date.now());
 
   const activeCourses = useMemo(() => courses.filter((c) => c.active), [courses]);
 
@@ -93,19 +93,14 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
     setStatus('sending');
 
     // Spam guard, checked before anything is stored or emailed:
-    //  - the hidden "company" field is only ever filled in by a bot;
+    //  - the off-screen "company" field is only ever filled in by a bot;
     //  - nobody types a six-field form with attachments in under 900 ms.
-    // A caught submission is accepted silently (the bot sees a normal
-    // confirmation and moves on) instead of being told it was caught.
+    // A caught submission is accepted silently (the bot sees the same
+    // confirmation a real visitor gets and moves on) rather than being told it
+    // was caught, and nothing is stored or emailed.
     const filledInMs = Date.now() - openedAt.current;
     if (isNotEmpty(form.company) || filledInMs < 900) {
-      setResult({
-        reference: makeReference(),
-        queued: false,
-        emailed: true,
-        email: form.email.trim(),
-        discarded: true,
-      });
+      setResult({ reference: makeReference(), queued: false, emailed: true, email: form.email.trim() });
       setStatus('success');
       setForm({ ...initialForm });
       setDocuments([]);

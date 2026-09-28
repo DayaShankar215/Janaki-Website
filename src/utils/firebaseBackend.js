@@ -100,7 +100,7 @@ export function configToJson(cfg) {
   return JSON.stringify(cfg, null, 2);
 }
 
-let corePromise = null;
+let sdkPromise = null;
 
 /**
  * The app + database pair, and nothing else. `firebase/auth` is a separate
@@ -110,8 +110,8 @@ let corePromise = null;
  * either — a second import site ships a duplicate copy of the SDK.
  */
 function getCore() {
-  if (!corePromise) {
-    corePromise = (async () => {
+  if (!sdkPromise) {
+    sdkPromise = (async () => {
       const [{ initializeApp }, { getDatabase }] = await Promise.all([
         import('firebase/app'),
         import('firebase/database'),
@@ -121,17 +121,28 @@ function getCore() {
       const app = initializeApp(cfg, 'jttc');
       return { app, db: getDatabase(app) };
     })().catch((err) => {
-      corePromise = null; // let a later attempt retry (config may have arrived)
+      sdkPromise = null; // let a later attempt retry
       throw err;
     });
   }
-  return corePromise;
+  return sdkPromise;
 }
 
-/** Resolves `{ app, db }`, or `null` when Firebase is not usable at all. */
+let dbPromise = null;
+
+/**
+ * Resolves `{ app, db }`, or `null` when Firebase is not usable right now. A
+ * failure is not cached: the config may be pasted in later, or a flaky
+ * connection may recover, so the next call tries again.
+ */
 export function ensureDb() {
-  if (!corePromise) corePromise = getCore().catch(() => null);
-  return corePromise;
+  if (!dbPromise) {
+    dbPromise = getCore().catch(() => {
+      dbPromise = null;
+      return null;
+    });
+  }
+  return dbPromise;
 }
 
 /**
@@ -145,19 +156,18 @@ export async function rtdbApi() {
 
 let authPromise = null;
 
-/** Loads the auth chunk and signs in anonymously. Resolves `null` on failure. */
+/** Loads the auth chunk and signs in anonymously. Resolves `false` on failure. */
 function signInAnonymouslyOnce() {
   if (!authPromise) {
     authPromise = (async () => {
       const { app } = await getCore();
-      const [{ getAuth, signInAnonymously }] = await Promise.all([import('firebase/auth')]);
+      const { getAuth, signInAnonymously } = await import('firebase/auth');
       await signInAnonymously(getAuth(app));
       return true;
-    })()
-      .catch(() => {
-        authPromise = null;
-        return false;
-      });
+    })().catch(() => {
+      authPromise = null;
+      return false;
+    });
   }
   return authPromise;
 }
