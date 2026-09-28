@@ -3,7 +3,7 @@ import { Send, Loader2, CheckCircle2, AlertTriangle, ShieldCheck, Copy, TicketCh
 import { useContent } from '@/content/ContentContext';
 import { isNotEmpty, isValidEmail, isValidPhone } from '@/utils/validate';
 import { sendInquiry } from '@/utils/sendInquiry';
-import { saveSubmission } from '@/utils/submissions';
+import { saveSubmission, makeReference } from '@/utils/submissions';
 import { DocumentUpload } from '@/components/forms/DocumentUpload';
 import { describeBytes } from '@/utils/documents';
 import { cn } from '@/utils/cn';
@@ -58,6 +58,9 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
   const [result, setResult] = useState(null); // { reference, queued, emailed }
   const [copied, setCopied] = useState(false);
   const sendingRef = useRef(false);
+  // When the form first appeared, so a submit that arrives implausibly fast can
+  // be treated as a bot.
+  const openedAt = useRef(typeof Date.now === 'function' ? Date.now() : 0);
 
   const activeCourses = useMemo(() => courses.filter((c) => c.active), [courses]);
 
@@ -88,6 +91,27 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
 
     sendingRef.current = true;
     setStatus('sending');
+
+    // Spam guard, checked before anything is stored or emailed:
+    //  - the hidden "company" field is only ever filled in by a bot;
+    //  - nobody types a six-field form with attachments in under 900 ms.
+    // A caught submission is accepted silently (the bot sees a normal
+    // confirmation and moves on) instead of being told it was caught.
+    const filledInMs = Date.now() - openedAt.current;
+    if (isNotEmpty(form.company) || filledInMs < 900) {
+      setResult({
+        reference: makeReference(),
+        queued: false,
+        emailed: true,
+        email: form.email.trim(),
+        discarded: true,
+      });
+      setStatus('success');
+      setForm({ ...initialForm });
+      setDocuments([]);
+      sendingRef.current = false;
+      return;
+    }
 
     const courseTitle = activeCourses.find((c) => c.slug === form.course)?.title || form.course || '—';
     const payload = {
@@ -234,17 +258,20 @@ export function ContactForm({ defaultCourse = '', compact = false }) {
 
   return (
     <form onSubmit={handleSubmit} noValidate className={cn('space-y-4', !compact && '')} aria-label="Training inquiry form">
-      {/* honeypot */}
-      <input
-        type="text"
-        name="company"
-        value={form.company}
-        onChange={update('company')}
-        tabIndex={-1}
-        autoComplete="off"
-        aria-hidden="true"
-        className="hidden"
-      />
+      {/* Honeypot. Pushed off-screen rather than display:none — bots that skip
+          hidden inputs still see this one, and people never can. */}
+      <div className="absolute -left-[9999px] top-auto h-px w-px overflow-hidden" aria-hidden="true">
+        <label htmlFor="cf-company">Company website</label>
+        <input
+          id="cf-company"
+          type="text"
+          name="company"
+          value={form.company}
+          onChange={update('company')}
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Full name *" htmlFor="cf-name" required error={errors.name}>

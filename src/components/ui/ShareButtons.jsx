@@ -7,10 +7,14 @@ export function copyToClipboard(text) {
   return Promise.reject(new Error('Clipboard unavailable'));
 }
 
-/** Share buttons for course details: copy link, WhatsApp, Facebook. */
+/** Share buttons: copy link, WhatsApp, Facebook, and the native sheet on mobile. */
 export function ShareButtons({ title, compact = false }) {
   const [copied, setCopied] = useState(false);
   const url = typeof window !== 'undefined' ? window.location.href : '';
+  // Phones get the system share sheet (WhatsApp, SMS, email, Instagram...) which
+  // is what people actually want; desktop keeps the explicit links.
+  const canNativeShare =
+    typeof navigator !== 'undefined' && typeof navigator.share === 'function';
 
   const doCopy = async () => {
     try {
@@ -19,6 +23,14 @@ export function ShareButtons({ title, compact = false }) {
       window.setTimeout(() => setCopied(false), 1800);
     } catch {
       /* ignore */
+    }
+  };
+
+  const doNativeShare = async () => {
+    try {
+      await navigator.share({ title, url });
+    } catch {
+      /* the visitor dismissed the sheet */
     }
   };
 
@@ -35,6 +47,11 @@ export function ShareButtons({ title, compact = false }) {
       <span className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-slate-400">
         <Share2 className="h-3.5 w-3.5" /> Share
       </span>
+      {canNativeShare && (
+        <button onClick={doNativeShare} className={cn(cls, 'hover:bg-slate-50 dark:hover:bg-white/5')}>
+          <Share2 className="h-3.5 w-3.5" /> Share
+        </button>
+      )}
       <button onClick={doCopy} className={cn(cls, copied ? 'border-emerald-400 text-emerald-600 dark:text-emerald-300' : 'hover:bg-slate-50 dark:hover:bg-white/5')}>
         {copied ? <Check className="h-3.5 w-3.5" /> : <Link2 className="h-3.5 w-3.5" />}
         {copied ? 'Copied!' : 'Copy link'}
