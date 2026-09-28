@@ -202,7 +202,7 @@ export default function CoursesPage() {
           )}
 
           <p className="mt-10 rounded-xl border border-accent-200 bg-accent-50 p-4 text-xs leading-relaxed text-accent-900 dark:border-accent-500/30 dark:bg-accent-500/10 dark:text-accent-200">
-            Note: Program availability changes between batches. Durations shown are typical samples — contact the center for current schedules and confirmed details.
+            Note: Program availability changes between batches. Durations shown are indicative — contact the center for current schedules and confirmed details.
           </p>
         </div>
       </section>
