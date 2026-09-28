@@ -100,28 +100,38 @@ export function configToJson(cfg) {
   return JSON.stringify(cfg, null, 2);
 }
 
-let firebasePromise = null;
+let corePromise = null;
 
-function getFirebase() {
-  if (!firebasePromise) {
-    firebasePromise = (async () => {
-      // Everything goes through this one lazy import. A second
-      // `import('firebase/database')` elsewhere in the app would make the
-      // bundler emit a duplicate copy of the whole SDK, which is ~200 kB.
-      const [{ initializeApp }, { getDatabase }, { getAuth, signInAnonymously }] = await Promise.all([
+/**
+ * The app + database pair, and nothing else. `firebase/auth` is a separate
+ * ~190 kB chunk, so it is deliberately NOT loaded here: reading the shared
+ * content does not need it, and neither does writing when the rules allow
+ * anonymous writes. Callers must not import 'firebase/database' themselves
+ * either — a second import site ships a duplicate copy of the SDK.
+ */
+function getCore() {
+  if (!corePromise) {
+    corePromise = (async () => {
+      const [{ initializeApp }, { getDatabase }] = await Promise.all([
         import('firebase/app'),
         import('firebase/database'),
-        import('firebase/auth'),
       ]);
       const cfg = await loadFirebaseConfig();
       if (!cfg) throw new Error('Firebase not configured');
       const app = initializeApp(cfg, 'jttc');
-      const db = getDatabase(app);
-      const auth = getAuth(app);
-      return { db, auth, signInAnonymously };
-    })();
+      return { app, db: getDatabase(app) };
+    })().catch((err) => {
+      corePromise = null; // let a later attempt retry (config may have arrived)
+      throw err;
+    });
   }
-  return firebasePromise;
+  return corePromise;
+}
+
+/** Resolves `{ app, db }`, or `null` when Firebase is not usable at all. */
+export function ensureDb() {
+  if (!corePromise) corePromise = getCore().catch(() => null);
+  return corePromise;
 }
 
 /**
@@ -129,35 +139,50 @@ function getFirebase() {
  * 'firebase/database' themselves — that ships a second copy of the SDK.
  */
 export async function rtdbApi() {
-  await getFirebase();
+  await getCore();
   return import('firebase/database');
 }
 
-/**
- * Sign in anonymously so writes satisfy the recommended
- * ".write": "auth != null" rule. Falls back to unauthenticated (some
- * setups allow writes without a signed-in user).
- */
 let authPromise = null;
 
-export function ensureAuth() {
+/** Loads the auth chunk and signs in anonymously. Resolves `null` on failure. */
+function signInAnonymouslyOnce() {
   if (!authPromise) {
-    authPromise = getFirebase()
-      .then(async ({ db, auth, signInAnonymously }) => {
-        try {
-          await signInAnonymously(auth);
-        } catch {
-          /* keep going — rules may not require auth */
-        }
-        return { db };
-      })
-      .catch(() => null);
+    authPromise = (async () => {
+      const { app } = await getCore();
+      const [{ getAuth, signInAnonymously }] = await Promise.all([import('firebase/auth')]);
+      await signInAnonymously(getAuth(app));
+      return true;
+    })()
+      .catch(() => {
+        authPromise = null;
+        return false;
+      });
   }
   return authPromise;
 }
 
+const isPermissionError = (err) =>
+  /permission|unauthenticated|unauthorized/i.test(String((err && (err.code || err.message)) || err));
+
+/**
+ * Run a write, and only if the rules reject it, sign in anonymously and try
+ * once more. This keeps the auth chunk off the critical path for everyone whose
+ * rules already allow the write, while still supporting the stricter
+ * ".write": "auth != null" setup.
+ */
+export async function withWriteRetry(fn) {
+  try {
+    return await fn();
+  } catch (err) {
+    if (!isPermissionError(err)) throw err;
+    await signInAnonymouslyOnce();
+    return fn();
+  }
+}
+
 async function getDbRef() {
-  const fb = await ensureAuth();
+  const fb = await ensureDb();
   if (!fb) throw new Error('Firebase not configured');
   const { ref } = await rtdbApi();
   return { db: fb.db, rootRef: ref(fb.db, 'content') };
@@ -177,7 +202,7 @@ export async function loadRemote() {
  */
 export function subscribeRemote(onData, onError) {
   let unsub = () => {};
-  ensureAuth()
+  ensureDb()
     .then(async (fb) => {
       if (!fb) throw new Error('Firebase not configured');
       const { ref, onValue } = await rtdbApi();
@@ -201,19 +226,23 @@ export async function pushRemote(contentObj) {
 
 /** Empty the shared store (used by "Reset everything"). */
 export async function clearRemote() {
-  const { db, rootRef } = await getDbRef();
-  const { set } = await rtdbApi();
-  await set(rootRef, null);
+  await withWriteRetry(async () => {
+    const { rootRef } = await getDbRef();
+    const { set } = await rtdbApi();
+    await set(rootRef, null);
+  });
 }
 
 /** Smoke test: write + read a heartbeat value to confirm the connection. */
 export async function testFirebaseConnection() {
-  const { db } = await ensureAuth();
-  if (!db) throw new Error('Firebase not configured');
-  const { set, get, ref } = await rtdbApi();
-  const probe = ref(db, '__probe__');
-  await set(probe, { ts: Date.now() });
-  const snap = await get(probe);
-  await set(probe, null);
-  return snap.exists();
+  return withWriteRetry(async () => {
+    const { db } = (await ensureDb()) || {};
+    if (!db) throw new Error('Firebase not configured');
+    const { set, get, ref } = await rtdbApi();
+    const probe = ref(db, '__probe__');
+    await set(probe, { ts: Date.now() });
+    const snap = await get(probe);
+    await set(probe, null);
+    return snap.exists();
+  });
 }

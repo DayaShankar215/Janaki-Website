@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Enquiry submissions: the visitor's form data plus any uploaded documents.
  *
  * Storage: Firebase Realtime Database under `submissions/<id>` (same free-tier
@@ -17,7 +17,7 @@
  * can read this node. See PRIVACY_NOTE below and the admin Submissions tab.
  */
 
-import { ensureAuth, rtdbApi } from './firebaseBackend';
+import { ensureDb, rtdbApi, withWriteRetry } from './firebaseBackend';
 
 const SUBMISSIONS_PATH = 'submissions';
 const PENDING_KEY = 'jttc-pending-submissions';
@@ -52,7 +52,7 @@ export function makeReference(date = new Date()) {
 }
 
 const db = async () => {
-  const fb = await ensureAuth();
+  const fb = await ensureDb();
   if (!fb) throw new Error('Cloud storage is not available.');
   return fb.db;
 };
@@ -106,8 +106,10 @@ export async function saveSubmission(input) {
   const record = normalise(input);
   const key = record.reference;
   try {
-    const [{ ref, set }, target] = await Promise.all([rtdb(), at(key)]);
-    await set(target, record);
+    await withWriteRetry(async () => {
+      const [{ set }, target] = await Promise.all([rtdb(), at(key)]);
+      await set(target, record);
+    });
     return { ok: true, queued: false, reference: key, record };
   } catch (err) {
     queuePending(record);
@@ -165,7 +167,7 @@ export async function listSubmissions() {
 export function subscribeSubmissions(onData, onError) {
   let stop = () => {};
   let cancelled = false;
-  ensureAuth()
+  ensureDb()
     .then(async () => {
       const [{ ref, onValue, query, orderByChild }, target] = await Promise.all([rtdb(), root()]);
       const r = query(target, orderByChild('createdAt'));
@@ -198,13 +200,13 @@ export async function updateSubmission(reference, patch) {
     ];
   }
   if (patch.markRead) changes.read = true;
-  await update(target, changes);
+  await withWriteRetry(() => update(target, changes));
   return { ...current, ...changes };
 }
 
 export async function deleteSubmission(reference) {
   const [{ remove }, target] = await Promise.all([rtdb(), at(reference)]);
-  await remove(target);
+  await withWriteRetry(() => remove(target));
   return true;
 }
 
@@ -215,7 +217,7 @@ export async function markAllRead() {
   await Promise.all(
     all
       .filter((s) => !s.read)
-      .map((s) => update(ref(target.parent, s.id || s.reference), { read: true, updatedAt: Date.now() }))
+      .map((s) => withWriteRetry(() => update(ref(target.parent, s.id || s.reference), { read: true, updatedAt: Date.now() })))
   );
   return all.length;
 }
@@ -265,8 +267,10 @@ export async function flushPending() {
   let sent = 0;
   for (const record of list) {
     try {
-      const [{ ref, set }, database] = await Promise.all([rtdb(), db()]);
-      await set(ref(database, `${SUBMISSIONS_PATH}/${record.reference}`), record);
+      await withWriteRetry(async () => {
+        const [{ ref, set }, database] = await Promise.all([rtdb(), db()]);
+        await set(ref(database, `${SUBMISSIONS_PATH}/${record.reference}`), record);
+      });
       sent += 1;
     } catch {
       stillPending.push(record);

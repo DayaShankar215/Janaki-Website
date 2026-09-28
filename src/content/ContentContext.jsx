@@ -193,42 +193,62 @@ export function ContentProvider({ children }) {
   useEffect(() => {
     let cancelled = false;
     let unsub = () => {};
-    (async () => {
-      const [cfg, src] = await Promise.all([loadFirebaseConfig(), configSource()]);
-      if (!cfg || cancelled) return;
-      cloudActive.current = true;
-      setCloudSource(src);
-      setCloudStatus('connecting');
-      unsub = subscribeRemote(
-        (remote) => {
-          if (cancelled || !adoptRemote.current) return;
-          // adopt shared snapshot — everyone sees the same content
-          setOverrides(migrate(remote || {}));
+    // A visitor's first paint must not queue behind a third-party socket, so the
+    // cloud connection waits for the browser to go idle. The page renders from
+    // the bundled defaults (plus this device's own edits) either way.
+    const idle =
+      typeof window.requestIdleCallback === 'function'
+        ? window.requestIdleCallback
+        : (fn) => setTimeout(fn, 1200);
+    const handle = idle(() => {
+      (async () => {
+        const [cfg, src] = await Promise.all([loadFirebaseConfig(), configSource()]);
+        if (!cfg || cancelled) return;
+        cloudActive.current = true;
+        setCloudSource(src);
+        setCloudStatus('connecting');
+        unsub = subscribeRemote(
+          (remote) => {
+            if (cancelled || !adoptRemote.current) return;
+            // adopt shared snapshot — everyone sees the same content
+            setOverrides(migrate(remote || {}));
+            setCloudStatus('on');
+            setLastSyncedAt(Date.now());
+          },
+          () => {
+            if (!cancelled) setCloudStatus('error');
+          }
+        );
+        // Handshake: only start trusting the shared snapshot once a write works.
+        // Until then the browser keeps its own localStorage content, so edits are
+        // never lost to a sync that can't write.
+        //
+        // A device with nothing of its own stored has nothing to lose, so it
+        // trusts the shared snapshot straight away and skips the write probe —
+        // that probe is a write (and pulls in the auth chunk) on what used to be
+        // every single page view.
+        const hasLocalEdits = Object.keys(loadStored() || {}).length > 0;
+        if (!hasLocalEdits) {
+          adoptRemote.current = true;
+          return;
+        }
+        try {
+          await testFirebaseConnection();
+          if (cancelled) return;
+          adoptRemote.current = true;
+          const snap = await loadRemote();
+          if (cancelled) return;
+          setOverrides(migrate(snap));
           setCloudStatus('on');
           setLastSyncedAt(Date.now());
-        },
-        () => {
-          if (!cancelled) setCloudStatus('error');
+        } catch {
+          if (!cancelled) setCloudStatus('error'); // writes blocked → local-only mode
         }
-      );
-      // Handshake: only start trusting the shared snapshot once a write works.
-      // Until then the browser keeps its own localStorage content, so edits are
-      // never lost to a sync that can't write.
-      try {
-        await testFirebaseConnection();
-        if (cancelled) return;
-        adoptRemote.current = true;
-        const snap = await loadRemote();
-        if (cancelled) return;
-        setOverrides(migrate(snap));
-        setCloudStatus('on');
-        setLastSyncedAt(Date.now());
-      } catch {
-        if (!cancelled) setCloudStatus('error'); // writes blocked → local-only mode
-      }
-    })();
+      })();
+    });
     return () => {
       cancelled = true;
+      if (typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(handle);
       unsub();
       cloudActive.current = false;
       adoptRemote.current = false;
