@@ -73,6 +73,39 @@ export function useGlobalSearch() {
   return { searchOpen, setSearchOpen };
 }
 
+/**
+ * A thin strip that only appears when the browser reports it is offline. It
+ * saves a visitor from wondering why a form is not sending, and it disappears
+ * by itself when the connection returns.
+ */
+function OfflineNotice() {
+  const [offline, setOffline] = useState(
+    () => typeof navigator !== 'undefined' && navigator.onLine === false
+  );
+
+  useEffect(() => {
+    const goOffline = () => setOffline(true);
+    const goOnline = () => setOffline(false);
+    window.addEventListener('offline', goOffline);
+    window.addEventListener('online', goOnline);
+    return () => {
+      window.removeEventListener('offline', goOffline);
+      window.removeEventListener('online', goOnline);
+    };
+  }, []);
+
+  if (!offline) return null;
+  return (
+    <div
+      role="status"
+      className="no-print sticky top-0 z-[65] bg-amber-500 px-4 py-2 text-center text-[13px] font-semibold text-navy-950"
+    >
+      You are offline. You can keep reading, and anything you send is saved and
+      delivered when the connection comes back.
+    </div>
+  );
+}
+
 export function Layout() {
   const location = useLocation();
   const { searchOpen, setSearchOpen } = useGlobalSearch();
@@ -93,6 +126,7 @@ export function Layout() {
       </a>
       <ScrollToTop />
       <ScrollProgress />
+      <OfflineNotice />
       {/* Each chrome piece carries `no-print` on its own root, so printing the
           brochure or admission form puts only the sheet on the paper. A wrapper
           div is avoided on purpose: it would break the sticky header. */}
