@@ -21,4 +21,5 @@
     { "name": "Enquire about a course", "short_name": "Contact", "url": "/contact" },
     { "name": "Download the brochure", "short_name": "Brochure", "url": "/brochure" }
   ]
+  
 }
