@@ -98,7 +98,11 @@ function OfflineNotice() {
   return (
     <div
       role="status"
-      className="no-print sticky top-0 z-[65] bg-amber-500 px-4 py-2 text-center text-[13px] font-semibold text-navy-950"
+      // Anchored to the bottom, not the top: the header is already sticky at
+      // top-0, so a second sticky strip up there would sit on top of the logo
+      // and nav links the moment the visitor scrolls. A bottom strip is visible
+      // at any scroll position and clears the floating buttons.
+      className="no-print fixed inset-x-0 bottom-0 z-[65] bg-amber-500 px-4 py-2 text-center text-[13px] font-semibold text-navy-950 shadow-[0_-2px_10px_rgba(2,15,35,0.18)]"
     >
       You are offline. You can keep reading, and anything you send is saved and
       delivered when the connection comes back.
