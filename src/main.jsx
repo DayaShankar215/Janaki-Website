@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { ContentProvider } from './content/ContentContext';
+import ErrorBoundary from './components/ErrorBoundary';
 import { flushPending } from './utils/submissions';
 import './styles/index.css';
 
@@ -12,10 +13,12 @@ flushPending().catch(() => {});
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-      <ContentProvider>
-        <App />
-      </ContentProvider>
-    </BrowserRouter>
+    <ErrorBoundary>
+      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <ContentProvider>
+          <App />
+        </ContentProvider>
+      </BrowserRouter>
+    </ErrorBoundary>
   </React.StrictMode>
 );
