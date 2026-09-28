@@ -20,7 +20,7 @@ export function organizationSchema(siteConfig) {
     name: siteConfig.name,
     alternateName: siteConfig.shortName,
     url: siteConfig.url,
-    logo: `${siteConfig.url}/favicon.svg`,
+    logo: `${siteConfig.url}/icon-256.png`,
     description: siteConfig.description,
     email: siteConfig.email,
     telephone: `+${(siteConfig.phone || '').replace(/\D/g, '')}`,
