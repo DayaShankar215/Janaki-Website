@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Cloud sync layer (Firebase Realtime Database, free Spark tier).
  *
  * Purpose: make Admin Panel edits visible on EVERY device, not just the

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Enquiry submissions: the visitor's form data plus any uploaded documents.
  *
  * Storage: Firebase Realtime Database under `submissions/<id>` (same free-tier
