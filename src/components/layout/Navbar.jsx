@@ -96,7 +96,7 @@ export function Navbar({ onOpenSearch }) {
       {/* ── Main navbar ── */}
       <header
         className={cn(
-          'sticky top-0 z-50 border-b backdrop-blur-md transition-all duration-300',
+          'no-print sticky top-0 z-50 border-b backdrop-blur-md transition-all duration-300',
           scrolled
             ? 'border-slate-200/80 bg-white/90 shadow-soft dark:border-white/10 dark:bg-navy-950/85'
             : 'border-transparent bg-white/80 dark:bg-navy-950/70'

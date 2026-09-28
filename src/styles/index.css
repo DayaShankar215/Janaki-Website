@@ -324,8 +324,13 @@ input[type='number']::-webkit-outer-spin-button {
     size: A4;
     margin: 12mm;
   }
-  body {
+  /* The layout root carries a dark-mode background class; without this the
+     whole sheet prints on navy. */
+  html,
+  body,
+  body > * {
     background: #fff !important;
+    color: #000 !important;
   }
   .no-print {
     display: none !important;

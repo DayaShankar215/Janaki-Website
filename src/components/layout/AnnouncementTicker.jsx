@@ -49,7 +49,7 @@ export function AnnouncementTicker() {
       aria-label="Announcements"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
-      className="relative z-40 bg-navy-950 text-slate-300"
+      className="no-print relative z-40 bg-navy-950 text-slate-300"
     >
       <div className="container-x flex h-9 items-center gap-3">
         <span className="flex shrink-0 items-center gap-1.5 rounded-full bg-accent-500 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-navy-950">

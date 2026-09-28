@@ -44,7 +44,7 @@ function BackToTop() {
           type="button"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           aria-label="Back to top"
-          className="fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-navy-700 text-white shadow-card-hover transition-colors hover:bg-navy-600 dark:bg-accent-500 dark:text-navy-950 dark:hover:bg-accent-400"
+          className="no-print fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-navy-700 text-white shadow-card-hover transition-colors hover:bg-navy-600 dark:bg-accent-500 dark:text-navy-950 dark:hover:bg-accent-400"
         >
           <ArrowUp className="h-5 w-5" />
         </motion.button>
@@ -93,6 +93,9 @@ export function Layout() {
       </a>
       <ScrollToTop />
       <ScrollProgress />
+      {/* Each chrome piece carries `no-print` on its own root, so printing the
+          brochure or admission form puts only the sheet on the paper. A wrapper
+          div is avoided on purpose: it would break the sticky header. */}
       <AnnouncementTicker />
       <Navbar onOpenSearch={() => setSearchOpen(true)} />
       <JsonLd data={organizationSchema(siteConfig)} />

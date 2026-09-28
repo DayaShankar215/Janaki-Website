@@ -114,6 +114,23 @@ export async function saveSubmission(input) {
   }
 }
 
+/**
+ * Strip the parts an applicant must never receive over a public link: the
+ * base64 file contents and their preview thumbnails. A tracking page only needs
+ * to say "we received your citizenship copy, 210 KB" — not hand the bytes back
+ * out to whoever holds the reference number and email.
+ */
+export function toPublicView(record) {
+  if (!record) return null;
+  const { documents, ...rest } = record;
+  return {
+    ...rest,
+    documents: Array.isArray(documents)
+      ? documents.map(({ name, size, type }) => ({ name, size, type }))
+      : [],
+  };
+}
+
 /** One submission by reference (used by the public tracker). */
 export async function getSubmission(reference, email) {
   const key = String(reference || '').trim().toUpperCase();
@@ -125,7 +142,7 @@ export async function getSubmission(reference, email) {
   // Reference + matching email: stops anyone guessing a reference from reading
   // somebody else's application.
   const sameEmail = String(email || '').trim().toLowerCase() === String(record.email || '').toLowerCase();
-  return sameEmail ? record : null;
+  return sameEmail ? toPublicView(record) : null;
 }
 
 function recordToArray(value) {

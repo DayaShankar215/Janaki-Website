@@ -23,7 +23,7 @@ export function WhatsAppButton() {
   const message = encodeURIComponent('Hello JTTC! I found your website and I would like to ask about your training programs.');
 
   return (
-    <div className="fixed bottom-6 left-6 z-40 flex flex-col items-start gap-3">
+      <div className="no-print fixed bottom-6 left-6 z-40 flex flex-col items-start gap-3">
       <AnimatePresence>
         {open && (
           <motion.div

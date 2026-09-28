@@ -41,7 +41,7 @@ export function Footer() {
   const activeSocials = socials.filter((s) => siteConfig.socialLinks[s.key]);
 
   return (
-    <footer className="bg-navy-950 text-slate-300">
+    <footer className="no-print bg-navy-950 text-slate-300">
       {/* Accent strip */}
       <div className="h-1 bg-gradient-to-r from-accent-500 via-accent-400 to-navy-500" aria-hidden="true" />
 
