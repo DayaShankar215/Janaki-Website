@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Cloud sync layer (Firebase Realtime Database, free Spark tier).
  *
  * Purpose: make Admin Panel edits visible on EVERY device, not just the
@@ -105,6 +105,9 @@ let firebasePromise = null;
 function getFirebase() {
   if (!firebasePromise) {
     firebasePromise = (async () => {
+      // Everything goes through this one lazy import. A second
+      // `import('firebase/database')` elsewhere in the app would make the
+      // bundler emit a duplicate copy of the whole SDK, which is ~200 kB.
       const [{ initializeApp }, { getDatabase }, { getAuth, signInAnonymously }] = await Promise.all([
         import('firebase/app'),
         import('firebase/database'),
@@ -119,6 +122,15 @@ function getFirebase() {
     })();
   }
   return firebasePromise;
+}
+
+/**
+ * The database module, shared with the rest of the app. Callers must not import
+ * 'firebase/database' themselves — that ships a second copy of the SDK.
+ */
+export async function rtdbApi() {
+  await getFirebase();
+  return import('firebase/database');
 }
 
 /**
@@ -147,14 +159,14 @@ export function ensureAuth() {
 async function getDbRef() {
   const fb = await ensureAuth();
   if (!fb) throw new Error('Firebase not configured');
-  const { ref } = await import('firebase/database');
+  const { ref } = await rtdbApi();
   return { db: fb.db, rootRef: ref(fb.db, 'content') };
 }
 
 /** Fetch the shared content snapshot once. Resolves `{}` if empty/missing. */
 export async function loadRemote() {
   const { db, rootRef } = await getDbRef();
-  const { get } = await import('firebase/database');
+  const { get } = await rtdbApi();
   const snap = await get(rootRef);
   return snap.exists() && typeof snap.val() === 'object' ? snap.val() : {};
 }
@@ -168,7 +180,7 @@ export function subscribeRemote(onData, onError) {
   ensureAuth()
     .then(async (fb) => {
       if (!fb) throw new Error('Firebase not configured');
-      const { ref, onValue } = await import('firebase/database');
+      const { ref, onValue } = await rtdbApi();
       const r = ref(fb.db, 'content');
       unsub = onValue(
         r,
@@ -183,14 +195,14 @@ export function subscribeRemote(onData, onError) {
 /** Write the full content snapshot to the shared store (last writer wins). */
 export async function pushRemote(contentObj) {
   const { db, rootRef } = await getDbRef();
-  const { set } = await import('firebase/database');
+  const { set } = await rtdbApi();
   await set(rootRef, contentObj == null ? {} : contentObj);
 }
 
 /** Empty the shared store (used by "Reset everything"). */
 export async function clearRemote() {
   const { db, rootRef } = await getDbRef();
-  const { set } = await import('firebase/database');
+  const { set } = await rtdbApi();
   await set(rootRef, null);
 }
 
@@ -198,7 +210,7 @@ export async function clearRemote() {
 export async function testFirebaseConnection() {
   const { db } = await ensureAuth();
   if (!db) throw new Error('Firebase not configured');
-  const { set, get, ref } = await import('firebase/database');
+  const { set, get, ref } = await rtdbApi();
   const probe = ref(db, '__probe__');
   await set(probe, { ts: Date.now() });
   const snap = await get(probe);
