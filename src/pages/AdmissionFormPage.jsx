@@ -54,7 +54,7 @@ function Box({ label, checked, onChange, children }) {
         type="checkbox"
         checked={checked}
         onChange={onChange}
-        className="mt-0.5 h-3.5 w-3.5 shrink-0 accent-navy-800"
+        className="mt-px h-4 w-4 shrink-0 accent-navy-800"
       />
       <span>
         <span className="font-semibold">{label}</span> {children}

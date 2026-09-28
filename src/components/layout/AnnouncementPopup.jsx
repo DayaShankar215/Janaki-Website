@@ -314,7 +314,7 @@ export function AnnouncementPopup() {
                           type="button"
                           data-testid="popup-close-all"
                           onClick={closeAll}
-                          className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-400 transition hover:text-red-500"
+                          className="-mx-2 inline-flex items-center gap-1.5 rounded px-2 py-1.5 text-sm font-semibold text-slate-400 transition hover:bg-white/5 hover:text-red-500"
                         >
                           <XCircle className="h-4 w-4" /> Close all
                         </button>
@@ -323,7 +323,7 @@ export function AnnouncementPopup() {
                         type="button"
                         data-testid="popup-close"
                         onClick={showNext}
-                        className="text-sm font-semibold text-slate-500 transition hover:text-navy-800 dark:hover:text-slate-200"
+                        className="-mx-2 rounded px-2 py-1.5 text-sm font-semibold text-slate-500 transition hover:bg-white/5 hover:text-navy-800 dark:hover:bg-white/5 dark:hover:text-slate-200"
                       >
                         Close
                       </button>
