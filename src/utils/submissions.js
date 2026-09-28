@@ -17,7 +17,7 @@
  * can read this node. See PRIVACY_NOTE below and the admin Submissions tab.
  */
 
-import { ensureAuth } from './firebaseBackend';
+import { ensureAuth, rtdbApi } from './firebaseBackend';
 
 const SUBMISSIONS_PATH = 'submissions';
 const PENDING_KEY = 'jttc-pending-submissions';
@@ -58,10 +58,11 @@ const db = async () => {
 };
 
 /**
- * The database SDK is imported lazily (same rule as firebaseBackend) so the
- * public bundle stays small — the contact form is on the critical path.
+ * The database SDK is reached through the shared backend module (the same rule
+ * as firebaseBackend itself) so the public bundle stays small — the contact form
+ * is on the critical path — and so only one copy of the SDK is ever shipped.
  */
-const rtdb = () => import('firebase/database');
+const rtdb = () => rtdbApi();
 const at = async (path) => {
   const [{ ref }, database] = await Promise.all([rtdb(), db()]);
   return ref(database, `${SUBMISSIONS_PATH}/${String(path).trim().toUpperCase()}`);
