@@ -106,7 +106,13 @@ export function Footer() {
           <ul className="mt-4 space-y-3.5 text-sm text-slate-400">
             <li className="flex items-start gap-2.5">
               <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-accent-400" />
-              <span>{siteConfig.address}</span>
+              {siteConfig.mapLinkUrl ? (
+                <a href={siteConfig.mapLinkUrl} target="_blank" rel="noopener noreferrer" className="flex-1 transition-colors hover:text-accent-400">
+                  {siteConfig.address}
+                </a>
+              ) : (
+                <span>{siteConfig.address}</span>
+              )}
             </li>
             <li>
               <a href={`tel:${siteConfig.phone}`} className="flex items-center gap-2.5 transition-colors hover:text-accent-400">
