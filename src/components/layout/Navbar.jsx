@@ -208,20 +208,21 @@ export function Navbar({ onOpenSearch }) {
             <motion.div
               id="mobile-menu"
               initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
+              animate={{ height: '100vh', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.25, ease: 'easeInOut' }}
-              className="overflow-hidden border-t border-slate-200 bg-white dark:border-white/10 dark:bg-navy-950 lg:hidden"
+              className="fixed inset-x-0 top-16 z-[60] overflow-y-auto overscroll-contain border-t border-slate-200 bg-white shadow-xl dark:border-white/10 dark:bg-navy-950 lg:hidden"
             >
-              <ul className="container-x space-y-1 py-4">
+              <ul className="container-x flex flex-col gap-1 py-4 pb-10">
                 {[...primaryLinks, ...moreLinks].map((l) => (
                   <li key={l.to}>
                     <NavLink
                       to={l.to}
                       end={l.to === '/'}
+                      onClick={() => setOpen(false)}
                       className={({ isActive }) =>
                         cn(
-                          'block rounded-lg px-4 py-3 text-base font-semibold',
+                          'block rounded-lg px-4 py-3.5 text-base font-semibold',
                           isActive
                             ? 'bg-navy-50 text-navy-800 dark:bg-white/10 dark:text-white'
                             : 'text-slate-700 hover:bg-navy-50 dark:text-slate-200 dark:hover:bg-white/10'
@@ -235,7 +236,8 @@ export function Navbar({ onOpenSearch }) {
                 <li className="pt-2">
                   <Link
                     to="/admission"
-                    className="block rounded-xl bg-accent-500 px-4 py-3 text-center text-base font-bold text-navy-950"
+                    onClick={() => setOpen(false)}
+                    className="block rounded-xl bg-accent-500 px-4 py-3.5 text-center text-base font-bold text-navy-950 shadow-card-hover"
                   >
                     Apply Now — Enroll in a Course
                   </Link>
