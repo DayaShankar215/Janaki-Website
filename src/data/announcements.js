@@ -81,7 +81,7 @@ export const announcements = [
     tag: 'Admission',
     status: 'published',
     pinned: true,
-    popup: true,
+    popup: false,
     isSample: true,
     image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=70',
     images: [],

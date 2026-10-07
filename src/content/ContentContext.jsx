@@ -109,16 +109,32 @@ export const CONTENT_VERSION = 2;
 /** Records that only ever existed as design placeholders. */
 const RETIRED_SAMPLES = { testimonials: true, trainers: true };
 
+function stripSampleAnnouncements(stored) {
+  if (!isPlainObject(stored)) return stored;
+  const next = { ...stored };
+  if (Array.isArray(next.announcements)) {
+    next.announcements = next.announcements.filter(
+      (a) => !isPlainObject(a) || a.isSample !== true
+    );
+  }
+  next.__version = CONTENT_VERSION;
+  return next;
+}
+
 function migrate(stored) {
   if (!isPlainObject(stored)) return stored;
-  const version = Number(stored.__version) || 0;
-  if (version >= CONTENT_VERSION) return stored;
-  const next = { ...stored };
-  Object.keys(RETIRED_SAMPLES).forEach((key) => {
-    if (!Array.isArray(next[key])) return;
-    next[key] = next[key].filter((item) => !isPlainObject(item) || item.isSample !== true);
-  });
-  next.__version = CONTENT_VERSION;
+  let next = stored;
+  const version = Number(next.__version) || 0;
+  if (version < CONTENT_VERSION) {
+    next = { ...next };
+    Object.keys(RETIRED_SAMPLES).forEach((key) => {
+      if (!Array.isArray(next[key])) return;
+      next[key] = next[key].filter((item) => !isPlainObject(item) || item.isSample !== true);
+    });
+    next.__version = CONTENT_VERSION;
+  }
+  next = stripSampleAnnouncements(next);
+  if (next !== stored) return next;
   return next;
 }
 
